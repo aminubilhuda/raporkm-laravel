@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --flip7-primary: #2BA8A2;
+    --flip7-primary-light: #3CC4BD;
+    --flip7-primary-dark: #1E8C86;
+    --flip7-primary-bg: #E8F6F5;
+    --flip7-accent-gold: #FFD23F;
+    --flip7-accent-light: #FFE47A;
+    --flip7-accent-dark: #E6B800;
+    --flip7-coral: #EF6C4A;
+    --flip7-coral-light: #FF8A6A;
+    --flip7-coral-dark: #D45233;
+    --flip7-cream: #FFF8E7;
+    --flip7-sky: #5DADE2;
+    --flip7-surface-base: #EFF8F7;
+    --flip7-surface-card: #FFFFFF;
+    --flip7-success: #27AE60;
+    --flip7-error: #E74C3C;
+}
+
+@layer base {
+    body {
+        @apply bg-surface-base font-sans antialiased;
+    }
+}
+
+@layer components {
+    /* ── Sidebar ── */
+    .sidebar-overlay {
+        @apply fixed inset-0 bg-black/50 z-40 transition-opacity duration-300;
+    }
+
+    .sidebar-panel {
+        @apply fixed inset-y-0 left-0 z-50 w-64 flex flex-col shadow-lg transition-transform duration-300 ease-in-out;
+    }
+
+    .sidebar-section-title {
+        @apply px-4 mb-2 text-xs font-extrabold uppercase tracking-widest border-b-2 border-dashed pb-1;
+    }
+
+    .sidebar-link {
+        @apply flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-pill mx-2 transition-all duration-200;
+    }
+
+    .sidebar-link-active {
+        @apply bg-white/20 shadow-teal-glow;
+    }
+
+    .sidebar-link-active-coral {
+        @apply bg-white/20 shadow-coral-glow;
+    }
+
+    /* ── Stat Cards ── */
+    .stat-card {
+        @apply rounded-card shadow-card p-5 transition-all duration-300 border-l-[6px] hover:scale-[1.02] hover:shadow-accent-glow;
+    }
+
+    .stat-card-teal  { @apply bg-gradient-to-br from-teal-bg to-white border-l-teal-primary; }
+    .stat-card-coral { @apply bg-gradient-to-br from-red-50 to-white border-l-coral; }
+    .stat-card-gold  { @apply bg-gradient-to-br from-yellow-50 to-white border-l-gold; }
+    .stat-card-sky   { @apply bg-gradient-to-br from-blue-50 to-white border-l-sky; }
+
+    /* ── Flash ── */
+    .flash-message {
+        @apply fixed top-4 right-4 z-50 px-6 py-3 rounded-pill font-medium text-white shadow-lg animate-bounce-in;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+        @apply bg-gold hover:bg-gold-dark text-white font-bold py-2.5 px-6 rounded-pill shadow-accent-glow transition-all duration-200 active:scale-95;
+    }
+
+    .btn-secondary {
+        @apply bg-cream border-2 border-teal-primary text-teal-primary font-bold py-2.5 px-6 rounded-pill transition-all duration-200 hover:bg-teal-bg active:scale-95;
+    }
+
+    .btn-danger {
+        @apply bg-coral hover:bg-coral-dark text-white font-bold py-2.5 px-6 rounded-pill shadow-coral-glow transition-all duration-200 active:scale-95;
+    }
+
+    .btn-ghost-teal {
+        @apply text-teal-primary font-bold py-2.5 px-6 rounded-pill transition-all duration-200 hover:bg-teal-bg active:scale-95;
+    }
+
+    .btn-ghost-coral {
+        @apply text-coral font-bold py-2.5 px-6 rounded-pill transition-all duration-200 hover:bg-coral/5 active:scale-95;
+    }
+
+    /* ── Icon Circle ── */
+    .icon-circle {
+        @apply w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0;
+    }
+
+    .icon-circle-teal  { @apply bg-teal-primary/10 text-teal-primary; }
+    .icon-circle-coral { @apply bg-coral/10 text-coral; }
+    .icon-circle-gold  { @apply bg-gold/20 text-gold-dark; }
+    .icon-circle-sky   { @apply bg-sky/10 text-sky; }
+    .icon-circle-white { @apply bg-white/20 text-white; }
+
+    /* ── Progress Bar ── */
+    .progress-track {
+        @apply h-2.5 rounded-full bg-gray-200 overflow-hidden;
+    }
+
+    .progress-fill {
+        @apply h-full rounded-full transition-all duration-1000 ease-out;
+    }
+
+    .progress-fill-teal  { @apply bg-gradient-to-r from-teal-primary to-teal-light; }
+    .progress-fill-coral { @apply bg-gradient-to-r from-coral to-coral-light; }
+    .progress-fill-gold  { @apply bg-gradient-to-r from-gold to-gold-light; }
+
+    /* ── Quick Action ── */
+    .quick-action {
+        @apply flex flex-col items-center gap-2 p-3 rounded-card transition-all duration-200 hover:scale-105 hover:shadow-card cursor-pointer text-center;
+    }
+
+    .quick-action-teal  { @apply bg-teal-bg/50 hover:bg-teal-bg; }
+    .quick-action-gold  { @apply bg-gold/10 hover:bg-gold/20; }
+    .quick-action-coral { @apply bg-coral/5 hover:bg-coral/10; }
+    .quick-action-sky   { @apply bg-sky/5 hover:bg-sky/10; }
+}
+
+@layer utilities {
+    /* ── Animations ── */
+    .animate-bounce-in {
+        animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .animate-fade-up {
+        animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .stagger-1 { animation-delay: 0.05s; }
+    .stagger-2 { animation-delay: 0.1s; }
+    .stagger-3 { animation-delay: 0.15s; }
+    .stagger-4 { animation-delay: 0.2s; }
+    .stagger-5 { animation-delay: 0.25s; }
+    .stagger-6 { animation-delay: 0.3s; }
+
+    @keyframes bounceIn {
+        0%   { opacity: 0; transform: translateY(-20px) scale(0.9); }
+        60%  { opacity: 1; transform: translateY(4px) scale(1.02); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shimmer {
+        0%   { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 4px 20px rgba(43,168,162,0.10); }
+        50%      { box-shadow: 0 4px 30px rgba(43,168,162,0.25); }
+    }
+
+    /* ── Background Pattern ── */
+    .bg-dots {
+        background-image: radial-gradient(circle, rgba(43,168,162,0.06) 1px, transparent 1px);
+        background-size: 24px 24px;
+    }
+
+    /* ── Misc ── */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .animate-pulse-glow {
+        animation: pulse-glow 3s ease-in-out infinite;
+    }
+}

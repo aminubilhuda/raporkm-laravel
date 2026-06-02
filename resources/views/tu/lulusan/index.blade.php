@@ -1,0 +1,17 @@
+@extends('layouts.tu')
+@section('content')
+<div class="space-y-6">
+<div><h1 class="text-2xl md:text-3xl font-extrabold text-teal-primary-dark flex items-center gap-2"><x-heroicon-o-academic-cap class="w-7 h-7"/> Kelulusan</h1><p class="mt-1 text-sm text-gray-500">Kelola data kelulusan siswa.</p></div>
+<div class="bg-white rounded-card shadow-card p-5 md:p-6 border-l-[6px] border-l-teal-primary">
+    <form method="POST" action="{{route('tu.lulusan.store')}}" class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">@csrf
+    <select name="siswa_id" class="block w-full border-teal-primary/20 rounded-card" required><option value="">Pilih Siswa</option>@foreach($siswas as $s)<option value="{{$s->id}}">{{$s->nama_siswa}}</option>@endforeach</select>
+    <select name="kelas_id" class="block w-full border-teal-primary/20 rounded-card" required><option value="">Kelas</option>@foreach($kelass as $k)<option value="{{$k->id}}">{{$k->nama_kelas}}</option>@endforeach</select>
+    <div><x-text-input name="tanggal_lulus" type="date" class="block w-full"/></div>
+    <div><x-text-input name="no_ijazah" placeholder="No. Ijazah" class="block w-full"/></div>
+    <div><x-text-input name="lanjut_ke" placeholder="Lanjut ke" class="block w-full"/></div>
+    <button class="btn-primary">Tambah</button></form>
+</div>
+<div class="bg-white rounded-card shadow-card overflow-hidden"><table class="w-full text-sm"><thead class="bg-surface-base text-left"><tr><th class="px-4 py-3 font-extrabold text-xs uppercase">Siswa</th><th class="px-4 py-3 font-extrabold text-xs uppercase hidden sm:table-cell">Kelas</th><th class="px-4 py-3 font-extrabold text-xs uppercase hidden md:table-cell">No. Ijazah</th><th class="px-4 py-3 font-extrabold text-xs uppercase hidden lg:table-cell">Lanjut ke</th><th class="px-4 py-3 text-right font-extrabold text-xs uppercase">Aksi</th></tr></thead>
+<tbody>@forelse($lulusans as $l)<tr><td class="px-4 py-3 font-bold">{{$l->siswa->nama_siswa??'-'}}</td><td class="px-4 py-3 hidden sm:table-cell">{{$l->kelas->nama_kelas??'-'}}</td><td class="px-4 py-3 hidden md:table-cell">{{$l->no_ijazah??'-'}}</td><td class="px-4 py-3 hidden lg:table-cell text-gray-500">{{$l->lanjut_ke??'-'}}</td><td class="px-4 py-3 text-right"><button onclick="document.getElementById('lu-{{$l->id}}').classList.toggle('hidden')" class="p-1 text-sky hover:bg-sky/5 rounded"><x-heroicon-o-pencil-square class="w-4 h-4"/></button><form method="POST" action="{{route('tu.lulusan.destroy',$l)}}" class="inline" onsubmit="return confirm('Hapus?')">@csrf @method('DELETE')<button class="p-1 text-coral hover:bg-coral/5 rounded"><x-heroicon-o-trash class="w-4 h-4"/></button></form></td></tr>
+<tr id="lu-{{$l->id}}" class="hidden bg-surface-base/50"><td colspan="5" class="px-4 py-2"><form method="POST" action="{{route('tu.lulusan.update',$l)}}" class="grid grid-cols-1 md:grid-cols-4 gap-3">@csrf @method('PUT')<x-text-input name="no_ijazah" :value="$l->no_ijazah" class="block w-full"/><x-text-input name="lanjut_ke" :value="$l->lanjut_ke" class="block w-full"/><x-text-input name="keterangan" :value="$l->keterangan" class="block w-full"/><button class="btn-primary">Simpan</button></form></td></tr>@empty<tr><td colspan="5" class="px-4 py-12 text-center text-gray-400">Belum ada data.</td></tr>@endforelse</tbody></table><div class="px-4 py-3 border-t">{{$lulusans->links()}}</div></div></div></div>
+@endsection

@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+#[Fillable(['nama', 'angka', 'fase', 'urutan'])]
+class Tingkat extends Model
+{
+    use HasFactory;
+
+    protected $table = 'tingkat';
+
+    protected function casts(): array
+    {
+        return [
+            'angka' => 'integer',
+            'urutan' => 'integer',
+        ];
+    }
+
+    public function kelas()
+    {
+        return $this->hasMany(Kelas::class);
+    }
+}

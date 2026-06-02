@@ -1,0 +1,47 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('nilai_formatif', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('tahun_pelajaran_id');
+            $table->unsignedBigInteger('semester_id');
+            $table->unsignedBigInteger('kelas_id');
+            $table->unsignedBigInteger('mapel_id');
+            $table->unsignedBigInteger('tujuan_pembelajaran_id');
+            $table->unsignedBigInteger('siswa_id');
+            $table->integer('nilai')->default(0);
+            $table->integer('middle')->default(0);
+            $table->integer('nas')->default(0);
+
+            $table->foreign('tahun_pelajaran_id')->references('id')->on('tahun_pelajaran')->onDelete('cascade');
+            $table->foreign('semester_id')->references('id')->on('semester')->onDelete('cascade');
+            $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('cascade');
+            $table->foreign('mapel_id')->references('id')->on('mapel')->onDelete('cascade');
+            $table->foreign('tujuan_pembelajaran_id')->references('id')->on('tujuan_pembelajaran')->onDelete('cascade');
+            $table->foreign('siswa_id')->references('id')->on('siswa')->onDelete('cascade');
+
+            $table->index(['tahun_pelajaran_id', 'semester_id', 'kelas_id', 'mapel_id']);
+            $table->index('siswa_id');
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('nilai_formatif');
+    }
+};
