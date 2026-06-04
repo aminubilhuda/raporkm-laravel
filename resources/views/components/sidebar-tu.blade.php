@@ -1,8 +1,13 @@
 <div class="flex flex-col h-full">
     <div class="p-4 border-b border-white/20 flex items-center justify-between">
-        <div>
-            <h1 class="text-lg font-extrabold tracking-wide">E-Rapor KM</h1>
-            <p class="text-xs text-teal-light mt-0.5 tracking-widest uppercase font-bold opacity-80">Panel Tata Usaha</p>
+        <div class="flex items-center gap-3">
+            @if($sekolah?->logo)
+                <img src="{{ asset('storage/'.$sekolah->logo) }}" alt="Logo" class="h-10 w-auto">
+            @endif
+            <div>
+                <h1 class="text-lg font-extrabold tracking-wide">{{ $sekolah?->nama_sekolah ?? 'E-Rapor KM' }}</h1>
+                <p class="text-xs text-teal-light mt-0.5 tracking-widest uppercase font-bold opacity-80">Panel Tata Usaha</p>
+            </div>
         </div>
         <button data-close-sidebar class="md:hidden p-1 rounded-lg hover:bg-white/10 transition-colors" aria-label="Close menu">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,6 +132,22 @@
             ['route' => 'tu.rapor.pilih', 'icon' => 'o-document-text', 'label' => 'Cetak Rapor'],
             ['route' => 'tu.laporan.pendidikan', 'icon' => 'o-document-chart-bar', 'label' => 'Laporan Pendidikan'],
             ['route' => 'tu.ekspor.index', 'icon' => 'o-arrow-down-tray', 'label' => 'Ekspor Data'],
+        ] as $item)
+            <a href="{{ route($item['route']) }}" class="sidebar-link {{ request()->routeIs($item['route']) ? 'sidebar-link-active' : 'hover:bg-white/10' }}">
+                <x-dynamic-component :component="'heroicon-'.$item['icon']" class="w-5 h-5" />
+                <span>{{ $item['label'] }}</span>
+            </a>
+        @endforeach
+
+        <div class="px-4 mt-5 mb-3">
+            <span class="sidebar-section-title border-teal-light/30 text-teal-light/70">
+                <x-heroicon-o-cloud-arrow-down class="w-4 h-4 inline-block mr-1" />
+                Integrasi
+            </span>
+        </div>
+
+        @foreach([
+            ['route' => 'tu.dapodik.index', 'icon' => 'o-cloud-arrow-down', 'label' => 'Dapodik'],
         ] as $item)
             <a href="{{ route($item['route']) }}" class="sidebar-link {{ request()->routeIs($item['route']) ? 'sidebar-link-active' : 'hover:bg-white/10' }}">
                 <x-dynamic-component :component="'heroicon-'.$item['icon']" class="w-5 h-5" />

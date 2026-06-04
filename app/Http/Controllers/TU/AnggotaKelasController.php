@@ -4,6 +4,7 @@ namespace App\Http\Controllers\TU;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kelas;
+use App\Models\Sekolah;
 use App\Models\SiswaKelas;
 use Illuminate\Http\Request;
 
@@ -42,11 +43,13 @@ class AnggotaKelasController extends Controller
             return back()->with('error', 'Siswa sudah terdaftar di kelas ini.');
         }
 
+        $sekolah = Sekolah::first();
+
         SiswaKelas::create([
             'siswa_id' => $validated['siswa_id'],
             'kelas_id' => $validated['kelas_id'],
-            'tahun_pelajaran_id' => $request->tahun_pelajaran_id ?? 2,
-            'semester_id' => $request->semester_id ?? 2,
+            'tahun_pelajaran_id' => $request->tahun_pelajaran_id ?? $sekolah?->tahun_aktif,
+            'semester_id' => $request->semester_id ?? $sekolah?->semester_aktif,
             'status' => 'aktif',
         ]);
 

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Kelas;
+use App\Models\Mapel;
 use App\Models\TujuanPembelajaran;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -15,8 +17,8 @@ class TujuanPembelajaranFactory extends Factory
     public function definition(): array
     {
         return [
-            'mapel_id' => \App\Models\Mapel::factory(),
-            'kelas_id' => \App\Models\Kelas::factory(),
+            'mapel_id' => Mapel::factory(),
+            'kelas_id' => Kelas::factory(),
             'kode_tp' => 'TP-'.fake()->unique()->numberBetween(1, 999),
             'nama_tp' => 'Mampu '.fake()->sentence(6),
             'tahun_pelajaran_id' => null,

@@ -60,6 +60,15 @@
                     </select>
                 </div>
                 <div>
+                    <x-input-label for="jurusan" value="Jurusan" />
+                    <select id="jurusan" name="jurusan" class="mt-1 block w-full border-teal-primary/20 rounded-card">
+                        <option value="">-- Pilih Jurusan --</option>
+                        @foreach($kompetensi as $k)
+                            <option value="{{ $k->id }}" {{ old('jurusan', $siswa->jurusan) == $k->id ? 'selected' : '' }}>{{ $k->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
                     <x-input-label for="kontak_siswa" value="Kontak" />
                     <x-text-input id="kontak_siswa" name="kontak_siswa" :value="old('kontak_siswa', $siswa->kontak_siswa)" class="block w-full mt-1" />
                 </div>

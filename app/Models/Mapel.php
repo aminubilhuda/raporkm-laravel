@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable(['kelompok_mapel_id', 'kode', 'nama_mapel', 'kkm', 'kurikulum_id'])]
+#[Fillable(['dapodik_id', 'kelompok_mapel_id', 'kode', 'nama_mapel', 'urutan', 'kkm', 'kurikulum_id'])]
 class Mapel extends Model
 {
     use HasFactory;
@@ -19,6 +19,7 @@ class Mapel extends Model
     {
         return [
             'kkm' => 'integer',
+            'urutan' => 'integer',
         ];
     }
 

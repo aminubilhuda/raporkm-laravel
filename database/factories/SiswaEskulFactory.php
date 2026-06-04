@@ -4,14 +4,15 @@ namespace Database\Factories;
 
 use App\Models\Eskul;
 use App\Models\Siswa;
+use App\Models\SiswaEskul;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\SiswaEskul>
+ * @extends Factory<SiswaEskul>
  */
 class SiswaEskulFactory extends Factory
 {
-    protected $model = \App\Models\SiswaEskul::class;
+    protected $model = SiswaEskul::class;
 
     public function definition(): array
     {

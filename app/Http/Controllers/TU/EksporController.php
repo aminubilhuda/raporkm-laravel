@@ -1,25 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Tu;
+namespace App\Http\Controllers\TU;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kelas;
 use App\Models\Mapel;
+use App\Models\Semester;
+use App\Models\TahunPelajaran;
 use App\Services\ExportService;
 use Illuminate\Http\Request;
 
 class EksporController extends Controller
 {
-    public function __construct(private ExportService $ekspor)
-    {
-    }
+    public function __construct(private ExportService $ekspor) {}
 
     public function index()
     {
         $kelasList = Kelas::with('tingkat', 'kompetensiKeahlian')->orderBy('nama_kelas')->get();
         $mapelList = Mapel::orderBy('nama_mapel')->get();
+        $tahunList = TahunPelajaran::orderByDesc('status')->orderByDesc('tahun')->get();
+        $semesterList = Semester::orderBy('urutan')->get();
 
-        return view('tu.ekspor.index', compact('kelasList', 'mapelList'));
+        return view('tu.ekspor.index', compact('kelasList', 'mapelList', 'tahunList', 'semesterList'));
     }
 
     public function nilai(Request $request)

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tu;
 
+use App\Models\DeskripsiKokurikuler;
 use App\Models\Dimensi;
 use App\Models\DimensiKokurikuler;
 use App\Models\Elemen;
@@ -45,7 +46,7 @@ class FactorySmokeTest extends TestCase
         $this->assertNotNull(ProyekTema::factory()->create()->id);
         $this->assertNotNull(ProyekKelas::factory()->create()->id);
         $this->assertNotNull(DimensiKokurikuler::factory()->create()->id);
-        $this->assertNotNull(\App\Models\DeskripsiKokurikuler::factory()->create()->id);
+        $this->assertNotNull(DeskripsiKokurikuler::factory()->create()->id);
         $this->assertNotNull(MutasiMasuk::factory()->create()->id);
         $this->assertNotNull(MutasiKeluar::factory()->create()->id);
         $this->assertNotNull(Lulusan::factory()->create()->id);

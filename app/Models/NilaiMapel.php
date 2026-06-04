@@ -15,8 +15,6 @@ class NilaiMapel extends Model
 
     protected $table = 'nilai_mapel';
 
-    use SoftDeletes;
-
     protected function casts(): array
     {
         return [

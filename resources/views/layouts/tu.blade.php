@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'E-Rapor KM') }} - Tata Usaha</title>
+    @if($sekolah?->favicon)
+        <link rel="icon" type="image/png" href="{{ asset('storage/'.$sekolah->favicon) }}">
+    @else
+        <link rel="icon" href="{{ asset('favicon.ico') }}">
+    @endif
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="theme-color" content="#2BA8A2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="E-Rapor">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -59,6 +69,8 @@
 
     })();
     </script>
+
+    <script src="{{ asset('js/pwa.js') }}"></script>
 
     {{-- Tailwind JIT safelist --}}
     <div class="hidden hover:shadow-accent-glow hover:shadow-teal-glow hover:shadow-coral-glow hover:bg-teal-bg hover:bg-coral/5 hover:scale-[1.02] active:scale-95"></div>

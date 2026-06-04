@@ -21,7 +21,7 @@ class MutasiMasukFactory extends Factory
         return [
             'siswa_id' => Siswa::factory(),
             'kelas_id' => Kelas::factory(),
-            'asal_sekolah' => 'SMP ' . fake()->city(),
+            'asal_sekolah' => 'SMP '.fake()->city(),
             'tanggal_masuk' => fake()->dateTimeBetween('-1 year', 'now'),
             'alasan' => fake()->sentence(),
             'tahun_pelajaran_id' => TahunPelajaran::factory(),

@@ -14,7 +14,7 @@ class UpdateLulusanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'no_ijazah' => 'nullable|string|max:50|unique:lulusan,no_ijazah,' . $this->route('lulusan')?->id,
+            'no_ijazah' => 'nullable|string|max:50|unique:lulusan,no_ijazah,'.$this->route('lulusan')?->id,
             'lanjut_ke' => 'nullable|string|max:200',
             'keterangan' => 'nullable|string',
         ];

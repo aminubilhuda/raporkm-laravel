@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['mapel_id', 'kelas_id', 'user_id', 'tahun_pelajaran_id', 'semester_id', 'kkm'])]
+#[Fillable(['dapodik_id', 'mapel_id', 'kelas_id', 'user_id', 'tahun_pelajaran_id', 'semester_id', 'kkm'])]
 class MapelKelas extends Model
 {
     use HasFactory;

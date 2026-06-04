@@ -5,10 +5,12 @@ namespace Database\Seeders;
 use App\Models\CatatanWali;
 use App\Models\DeskripsiKokurikuler;
 use App\Models\Dimensi;
+use App\Models\DimensiKokurikuler;
 use App\Models\Elemen;
 use App\Models\Eskul;
 use App\Models\Kelas;
 use App\Models\KelasWali;
+use App\Models\KelompokMapel;
 use App\Models\KompetensiKeahlian;
 use App\Models\Lulusan;
 use App\Models\Mapel;
@@ -22,9 +24,9 @@ use App\Models\Organisasi as OrganisasiModel;
 use App\Models\PembagianRaport;
 use App\Models\PembinaEskul;
 use App\Models\Pengingat;
-use App\Models\Prestasi;
 use App\Models\PiketHarian;
 use App\Models\Prakerin;
+use App\Models\Prestasi;
 use App\Models\ProyekKelas;
 use App\Models\ProyekTema;
 use App\Models\RefHari;
@@ -40,6 +42,7 @@ use App\Models\Tingkat;
 use App\Models\TujuanPembelajaran;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class DemoDataSeeder extends Seeder
@@ -114,7 +117,7 @@ class DemoDataSeeder extends Seeder
         ]);
     }
 
-    private function seedGuruTambahan(): \Illuminate\Support\Collection
+    private function seedGuruTambahan(): Collection
     {
         $guruBaru = User::factory()->guru()->count(10)->create();
 
@@ -126,11 +129,11 @@ class DemoDataSeeder extends Seeder
         });
     }
 
-    private function seedMapel(): \Illuminate\Support\Collection
+    private function seedMapel(): Collection
     {
-        $kelompokA = \App\Models\KelompokMapel::where('nama', 'like', 'Kelompok A%')->first();
-        $kelompokB = \App\Models\KelompokMapel::where('nama', 'like', 'Kelompok B%')->first();
-        $kelompokC = \App\Models\KelompokMapel::where('nama', 'like', 'Kelompok C%')->first();
+        $kelompokA = KelompokMapel::where('nama', 'like', 'Kelompok A%')->first();
+        $kelompokB = KelompokMapel::where('nama', 'like', 'Kelompok B%')->first();
+        $kelompokC = KelompokMapel::where('nama', 'like', 'Kelompok C%')->first();
 
         $mapelData = [
             ['kode' => 'MTK', 'nama_mapel' => 'Matematika', 'kelompok_mapel_id' => $kelompokA->id, 'kkm' => 75],
@@ -155,7 +158,7 @@ class DemoDataSeeder extends Seeder
         return $mapels;
     }
 
-    private function seedKelas(): \Illuminate\Support\Collection
+    private function seedKelas(): Collection
     {
         $tingkats = Tingkat::orderBy('urutan')->get();
         $jurusans = KompetensiKeahlian::all();
@@ -176,7 +179,7 @@ class DemoDataSeeder extends Seeder
         return $kelasList;
     }
 
-    private function seedSiswa(\Illuminate\Support\Collection $kelasList): \Illuminate\Support\Collection
+    private function seedSiswa(Collection $kelasList): Collection
     {
         $siswas = Siswa::factory()->count(60)->create(['aktif' => 1]);
 
@@ -194,7 +197,7 @@ class DemoDataSeeder extends Seeder
         return $siswas;
     }
 
-    private function seedKelasWali(\Illuminate\Support\Collection $kelasList, \Illuminate\Support\Collection $allGuru): void
+    private function seedKelasWali(Collection $kelasList, Collection $allGuru): void
     {
         $guruWithKelas = User::whereIn('jabatan', [3, 4])->get();
 
@@ -209,7 +212,7 @@ class DemoDataSeeder extends Seeder
         }
     }
 
-    private function seedMapelKelas(\Illuminate\Support\Collection $kelasList, \Illuminate\Support\Collection $mapels, \Illuminate\Support\Collection $allGuru): \Illuminate\Support\Collection
+    private function seedMapelKelas(Collection $kelasList, Collection $mapels, Collection $allGuru): Collection
     {
         $mapelNasional = $mapels->take(6);
         $mapelKelasList = collect();
@@ -231,7 +234,7 @@ class DemoDataSeeder extends Seeder
         return $mapelKelasList;
     }
 
-    private function seedEskul(\Illuminate\Support\Collection $allGuru, \Illuminate\Support\Collection $siswas): void
+    private function seedEskul(Collection $allGuru, Collection $siswas): void
     {
         $sekolah = Sekolah::first();
         $eskulNames = [
@@ -324,7 +327,7 @@ class DemoDataSeeder extends Seeder
             }
         }
 
-        $dimensiKokurikulers = \App\Models\DimensiKokurikuler::all();
+        $dimensiKokurikulers = DimensiKokurikuler::all();
         $deskripsiTemplate = [
             'Nilai Karakter' => [
                 ['predikat' => 'SB', 'deskripsi' => 'Siswa menunjukkan karakter sangat baik, jujur, disiplin, dan bertanggung jawab.'],
@@ -371,7 +374,7 @@ class DemoDataSeeder extends Seeder
         }
     }
 
-    private function seedProyekKelas(\Illuminate\Support\Collection $kelasList): void
+    private function seedProyekKelas(Collection $kelasList): void
     {
         $temas = ProyekTema::all();
         $gurus = User::where('jabatan', 3)->get();
@@ -391,7 +394,7 @@ class DemoDataSeeder extends Seeder
         }
     }
 
-    private function seedPrakerin(\Illuminate\Support\Collection $siswas): void
+    private function seedPrakerin(Collection $siswas): void
     {
         $perusahaan = [
             ['nama_perusahaan' => 'PT Telkom Indonesia', 'PIC' => 'Budi Santoso', 'kontak' => '021-12345678', 'alamat' => 'Jl. Japati No. 1, Bandung'],
@@ -437,7 +440,7 @@ class DemoDataSeeder extends Seeder
         }
     }
 
-    private function seedPiketHarian(\Illuminate\Support\Collection $allGuru): void
+    private function seedPiketHarian(Collection $allGuru): void
     {
         $hari = RefHari::orderBy('urutan')->get();
         $guruList = $allGuru->merge(User::where('jabatan', 3)->whereNotIn('id', $allGuru->pluck('id'))->get());
@@ -453,7 +456,7 @@ class DemoDataSeeder extends Seeder
         }
     }
 
-    private function seedMutasi(\Illuminate\Support\Collection $siswas, \Illuminate\Support\Collection $kelasList): void
+    private function seedMutasi(Collection $siswas, Collection $kelasList): void
     {
         $mutasiMasuk = $siswas->random(2);
         foreach ($mutasiMasuk as $siswa) {
@@ -488,7 +491,7 @@ class DemoDataSeeder extends Seeder
         }
     }
 
-    private function seedLulusan(\Illuminate\Support\Collection $kelasList): void
+    private function seedLulusan(Collection $kelasList): void
     {
         $kelas12 = $kelasList->filter(fn (Kelas $k) => $k->tingkat->angka === 12);
 
@@ -513,7 +516,7 @@ class DemoDataSeeder extends Seeder
         }
     }
 
-    private function seedPrestasi(\Illuminate\Support\Collection $siswas): void
+    private function seedPrestasi(Collection $siswas): void
     {
         $sampleSiswa = $siswas->random(6);
         $templates = [
@@ -566,7 +569,7 @@ class DemoDataSeeder extends Seeder
         }
     }
 
-    private function seedCatatanWali(\Illuminate\Support\Collection $kelasList, \Illuminate\Support\Collection $allGuru): void
+    private function seedCatatanWali(Collection $kelasList, Collection $allGuru): void
     {
         $samples = SiswaKelas::where('tahun_pelajaran_id', $this->tahunAktif->id)
             ->where('semester_id', $this->semesterAktif->id)
@@ -597,7 +600,7 @@ class DemoDataSeeder extends Seeder
         }
     }
 
-    private function seedNilaiDetail(\Illuminate\Support\Collection $mapelKelasList): void
+    private function seedNilaiDetail(Collection $mapelKelasList): void
     {
         foreach ($mapelKelasList as $mk) {
             $tpList = collect();
@@ -658,7 +661,7 @@ class DemoDataSeeder extends Seeder
         }
     }
 
-    private function seedPresensi(\Illuminate\Support\Collection $siswas, \Illuminate\Support\Collection $kelasList): void
+    private function seedPresensi(Collection $siswas, Collection $kelasList): void
     {
         $sampleSiswa = $siswas->random(10);
         $batch = [];

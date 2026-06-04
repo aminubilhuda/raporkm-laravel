@@ -9,13 +9,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            RefDataSeeder::class,
-            TahunPelajaranSemesterSeeder::class,
+            // RefDataSeeder::class,
+            // TahunPelajaranSemesterSeeder::class,
             UserSeeder::class,
         ]);
 
-        if (app()->environment('local', 'testing')) {
-            $this->call(DemoDataSeeder::class);
-        }
+        // if (app()->environment('local', 'testing')) {
+        //     $this->call(DemoDataSeeder::class);
+        // }
     }
 }

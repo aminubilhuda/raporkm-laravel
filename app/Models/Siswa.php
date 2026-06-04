@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'pendidikan_ibu', 'pekerjaan_ibu', 'kontak_ibu', 'alamat',
     'alamat_orang_tua', 'nama_wali', 'alamat_wali', 'pekerjaan_wali',
     'kontak_wali', 'terima_tingkat', 'jurusan', 'sekolah_asal',
-    'terima_tanggal', 'terima_kelas', 'foto', 'jenis_siswa', 'aktif',
+    'terima_tanggal', 'terima_kelas', 'foto', 'dapodik_pd_id', 'jenis_siswa', 'aktif',
 ])]
 class Siswa extends Model
 {
@@ -42,6 +42,11 @@ class Siswa extends Model
     public function mapelSiswa()
     {
         return $this->hasMany(MapelSiswa::class);
+    }
+
+    public function kompetensiKeahlian()
+    {
+        return $this->belongsTo(KompetensiKeahlian::class, 'jurusan');
     }
 
     public function eskuls()

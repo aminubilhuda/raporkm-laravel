@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
-    'tingkat_id', 'kompetensi_keahlian_id', 'nama_kelas',
+    'dapodik_id', 'tingkat_id', 'kompetensi_keahlian_id', 'nama_kelas',
     'tahun_pelajaran_id', 'semester_id',
 ])]
 class Kelas extends Model

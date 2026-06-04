@@ -18,7 +18,7 @@ class StorePrestasiRequest extends FormRequest
             'nama_prestasi' => 'required|string|max:200',
             'tingkat' => 'nullable|string|max:50',
             'penyelenggara' => 'nullable|string|max:200',
-            'tahun' => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
+            'tahun' => 'nullable|integer|min:1900|max:'.(date('Y') + 1),
             'keterangan' => 'nullable|string',
         ];
     }

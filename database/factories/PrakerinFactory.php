@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Kelas;
 use App\Models\Prakerin;
 use App\Models\Semester;
 use App\Models\TahunPelajaran;
@@ -18,7 +17,7 @@ class PrakerinFactory extends Factory
     public function definition(): array
     {
         return [
-            'nama_perusahaan' => 'PT ' . fake()->company(),
+            'nama_perusahaan' => 'PT '.fake()->company(),
             'alamat' => fake()->address(),
             'kontak' => fake()->phoneNumber(),
             'PIC' => fake()->name(),

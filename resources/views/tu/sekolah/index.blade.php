@@ -10,9 +10,47 @@
         <p class="mt-1 text-sm text-gray-500">Kelola informasi dan identitas sekolah.</p>
     </div>
 
-    <form method="POST" action="{{ route('tu.sekolah.update') }}" class="space-y-6">
+    <form method="POST" action="{{ route('tu.sekolah.update') }}" enctype="multipart/form-data" class="space-y-6">
         @csrf @method('PUT')
 
+        {{-- Logo Sekolah --}}
+        <div class="bg-white rounded-card shadow-card p-5 md:p-6 border-l-[6px] border-l-teal-primary">
+            <h2 class="text-lg font-extrabold text-teal-primary-dark mb-4">Logo Sekolah</h2>
+            <div class="flex flex-col sm:flex-row gap-6 items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-36 h-36 rounded-card border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden bg-gray-50">
+                        @if($sekolah->logo)
+                            <img id="logo-preview" src="{{ asset('storage/'.$sekolah->logo) }}" alt="Logo" class="w-full h-full object-contain">
+                        @else
+                            <img id="logo-preview" src="" alt="" class="w-full h-full object-contain hidden">
+                            <div id="logo-placeholder" class="text-center">
+                                <x-heroicon-o-photo class="w-10 h-10 text-gray-300 mx-auto" />
+                                <p class="text-xs text-gray-400 mt-1">Belum ada logo</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="flex-1 space-y-3">
+                    <div>
+                        <x-input-label for="logo" value="Upload Logo Baru" />
+                        <input type="file" id="logo" name="logo" accept="image/jpeg,image/png"
+                            class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-teal-primary/10 file:text-teal-primary hover:file:bg-teal-primary/20"
+                            onchange="previewLogo(this)">
+                        <x-input-error :messages="$errors->get('logo')" class="mt-1" />
+                        <p class="text-xs text-gray-400 mt-1">Format: JPG/PNG, maks 5MB. Favicon akan otomatis dibuat dari logo.</p>
+                    </div>
+                    @if($sekolah->logo)
+                        <label class="flex items-center gap-2 text-sm text-coral cursor-pointer">
+                            <input type="checkbox" name="hapus_logo" value="1" class="rounded border-coral text-coral focus:ring-coral">
+                            Hapus logo saat ini
+                        </label>
+                        <p class="text-xs text-gray-400">File: {{ basename($sekolah->logo) }}</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        {{-- Identitas Sekolah --}}
         <div class="bg-white rounded-card shadow-card p-5 md:p-6 border-l-[6px] border-l-teal-primary">
             <h2 class="text-lg font-extrabold text-teal-primary-dark mb-4">Identitas Sekolah</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -44,6 +82,7 @@
             </div>
         </div>
 
+        {{-- Alamat --}}
         <div class="bg-white rounded-card shadow-card p-5 md:p-6 border-l-[6px] border-l-gold">
             <h2 class="text-lg font-extrabold text-teal-primary-dark mb-4">Alamat</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -71,6 +110,7 @@
             </div>
         </div>
 
+        {{-- Visi & Misi --}}
         <div class="bg-white rounded-card shadow-card p-5 md:p-6 border-l-[6px] border-l-sky">
             <h2 class="text-lg font-extrabold text-teal-primary-dark mb-4">Visi & Misi</h2>
             <div class="space-y-4">
@@ -92,4 +132,21 @@
         </div>
     </form>
 </div>
+
+<script>
+    function previewLogo(input) {
+        const preview = document.getElementById('logo-preview');
+        const placeholder = document.getElementById('logo-placeholder');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
+                if (placeholder) placeholder.classList.add('hidden');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 @endsection

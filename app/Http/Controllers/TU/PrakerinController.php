@@ -3,24 +3,47 @@
 namespace App\Http\Controllers\TU;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TU\Prakerin\ImportPrakerinRequest;
 use App\Http\Requests\TU\Prakerin\StorePrakerinRequest;
 use App\Http\Requests\TU\Prakerin\StoreSiswaPrakerinRequest;
 use App\Http\Requests\TU\Prakerin\UpdatePrakerinRequest;
 use App\Models\Kelas;
 use App\Models\Prakerin;
+use App\Models\Sekolah;
 use App\Models\Siswa;
 use App\Models\SiswaPrakerin;
 use App\Models\User;
+use App\Services\ImportService;
 use Illuminate\Http\Request;
 
 class PrakerinController extends Controller
 {
+    public function __construct(private ImportService $import) {}
+
     public function index()
     {
         $prakerins = Prakerin::latest()->paginate(15);
         $kelass = Kelas::orderBy('nama_kelas')->get();
 
         return view('tu.prakerin.index', compact('prakerins', 'kelass'));
+    }
+
+    public function import()
+    {
+        return view('tu.prakerin.import');
+    }
+
+    public function doImport(ImportPrakerinRequest $r)
+    {
+        $sekolah = Sekolah::first();
+        $result = $this->import->importPrakerin(
+            $r->file('file'),
+            $sekolah?->tahun_aktif,
+            $sekolah?->semester_aktif,
+        );
+
+        return redirect()->route('tu.prakerin.import')
+            ->with('import_result', $result);
     }
 
     public function store(StorePrakerinRequest $r)

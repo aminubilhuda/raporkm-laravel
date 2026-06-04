@@ -12,6 +12,7 @@ use App\Models\NilaiSumatifTs;
 use App\Models\Sekolah;
 use App\Models\SiswaKelas;
 use App\Models\TujuanPembelajaran;
+use Illuminate\Database\Eloquent\Model;
 
 class PenilaianController extends Controller
 {
@@ -108,7 +109,7 @@ class PenilaianController extends Controller
     }
 
     /**
-     * @param  class-string<\Illuminate\Database\Eloquent\Model>  $model
+     * @param  class-string<Model>  $model
      * @param  array<int, string>  $columns
      */
     private function batchStore(string $model, array $columns, bool $tpKeyed = false)

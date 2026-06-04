@@ -11,9 +11,7 @@ use Illuminate\Http\Request;
 
 class RaporController extends Controller
 {
-    public function __construct(private RaporService $rapor)
-    {
-    }
+    public function __construct(private RaporService $rapor) {}
 
     public function pilih()
     {

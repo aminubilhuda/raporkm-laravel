@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\NilaiMapel;
-use App\Models\NilaiMapelMid;
-use App\Models\NilaiSumatifTs;
 use App\Models\Presensi;
 use App\Models\Siswa;
 use App\Models\SiswaKelas;

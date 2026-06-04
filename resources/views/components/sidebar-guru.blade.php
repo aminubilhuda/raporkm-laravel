@@ -1,8 +1,13 @@
 <div class="flex flex-col h-full">
     <div class="p-4 border-b border-white/20 flex items-center justify-between">
-        <div>
-            <h1 class="text-lg font-extrabold tracking-wide">E-Rapor KM</h1>
-            <p class="text-xs text-coral-light mt-0.5 tracking-widest uppercase font-bold opacity-80">Panel Guru</p>
+        <div class="flex items-center gap-3">
+            @if($sekolah?->logo)
+                <img src="{{ asset('storage/'.$sekolah->logo) }}" alt="Logo" class="h-10 w-auto">
+            @endif
+            <div>
+                <h1 class="text-lg font-extrabold tracking-wide">{{ $sekolah?->nama_sekolah ?? 'E-Rapor KM' }}</h1>
+                <p class="text-xs text-coral-light mt-0.5 tracking-widest uppercase font-bold opacity-80">Panel Guru</p>
+            </div>
         </div>
         <button data-close-sidebar class="md:hidden p-1 rounded-lg hover:bg-white/10 transition-colors" aria-label="Close menu">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,7 +66,28 @@
             ['route' => 'guru.kokurikuler.index', 'icon' => 'o-sparkles', 'label' => 'Kokurikuler'],
             ['route' => 'guru.penilaian-kokurikuler.index', 'icon' => 'o-pencil-square', 'label' => 'Nilai Kokurikuler'],
             ['route' => 'guru.ekstra.index', 'icon' => 'o-trophy', 'label' => 'Ekstrakurikuler'],
-            ['route' => 'guru.presensi.rekap', 'icon' => 'o-clipboard-document-list', 'label' => 'Presensi'],
+            ['route' => 'guru.presensi.index', 'icon' => 'o-clipboard-document-check', 'label' => 'Presensi'],
+            ['route' => 'guru.presensi.rekap', 'icon' => 'o-clipboard-document-list', 'label' => 'Rekap Presensi'],
+            ['route' => 'guru.absensi-bk.index', 'icon' => 'o-clipboard-document', 'label' => 'Absensi BK'],
+        ] as $item)
+            <a href="{{ route($item['route']) }}" class="sidebar-link {{ request()->routeIs($item['route']) ? 'sidebar-link-active-coral' : 'hover:bg-white/10' }}">
+                <x-dynamic-component :component="'heroicon-'.$item['icon']" class="w-5 h-5" />
+                <span>{{ $item['label'] }}</span>
+            </a>
+        @endforeach
+
+        <div class="px-4 mt-5 mb-3">
+            <span class="sidebar-section-title border-coral-light/30 text-coral-light/70">
+                <x-heroicon-o-building-office class="w-4 h-4 inline-block mr-1" />
+                Lainnya
+            </span>
+        </div>
+
+        @foreach([
+            ['route' => 'guru.prakerin.index', 'icon' => 'o-building-office', 'label' => 'Prakerin'],
+            ['route' => 'guru.rapor-pkl.index', 'icon' => 'o-document-text', 'label' => 'Rapor PKL'],
+            ['route' => 'guru.piket-harian.index', 'icon' => 'o-calendar-days', 'label' => 'Piket Harian'],
+            ['route' => 'guru.organisasi.index', 'icon' => 'o-user-group', 'label' => 'Organisasi'],
         ] as $item)
             <a href="{{ route($item['route']) }}" class="sidebar-link {{ request()->routeIs($item['route']) ? 'sidebar-link-active-coral' : 'hover:bg-white/10' }}">
                 <x-dynamic-component :component="'heroicon-'.$item['icon']" class="w-5 h-5" />

@@ -3,22 +3,53 @@
 namespace App\Http\Controllers\TU;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TU\Kesiswaan\ImportSiswaRequest;
+use App\Models\Kelas;
+use App\Models\KompetensiKeahlian;
+use App\Models\Sekolah;
 use App\Models\Siswa;
+use App\Services\ImportService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class KesiswaanController extends Controller
 {
+    public function __construct(private ImportService $import) {}
+
     public function index()
     {
-        $siswa = Siswa::where('aktif', 1)->latest()->paginate(15);
+        $siswa = Siswa::with(['siswaKelas.kelas.tingkat', 'siswaKelas.kelas.kompetensiKeahlian'])
+            ->where('aktif', 1)->latest()->paginate(15);
 
         return view('tu.kesiswaan.index', compact('siswa'));
     }
 
+    public function import()
+    {
+        $kelass = Kelas::with('tingkat', 'kompetensiKeahlian')->orderBy('nama_kelas')->get();
+
+        return view('tu.kesiswaan.import', compact('kelass'));
+    }
+
+    public function doImport(ImportSiswaRequest $r)
+    {
+        $sekolah = Sekolah::first();
+        $result = $this->import->importSiswa(
+            $r->file('file'),
+            $r->integer('kelas_id'),
+            $sekolah?->tahun_aktif,
+            $sekolah?->semester_aktif,
+        );
+
+        return redirect()->route('tu.kesiswaan.import')
+            ->with('import_result', $result);
+    }
+
     public function create()
     {
-        return view('tu.kesiswaan.form', ['siswa' => new Siswa]);
+        $kompetensi = KompetensiKeahlian::orderBy('nama')->get();
+
+        return view('tu.kesiswaan.form', ['siswa' => new Siswa, 'kompetensi' => $kompetensi]);
     }
 
     public function store(Request $request)
@@ -49,6 +80,7 @@ class KesiswaanController extends Controller
             'kontak_wali' => ['nullable', 'string', 'max:14'],
             'sekolah_asal' => ['nullable', 'string'],
             'jenis_siswa' => ['nullable', 'integer'],
+            'jurusan' => ['nullable', 'integer', 'exists:kompetensi_keahlian,id'],
         ]);
 
         Siswa::create($validated);
@@ -58,12 +90,20 @@ class KesiswaanController extends Controller
 
     public function show(Siswa $kesiswaan)
     {
-        return view('tu.kesiswaan.show', ['siswa' => $kesiswaan]);
+        $kesiswaan->load(['siswaKelas.kelas.tingkat', 'siswaKelas.kelas.kompetensiKeahlian']);
+
+        return response()->json($kesiswaan);
     }
 
     public function edit(Siswa $kesiswaan)
     {
-        return view('tu.kesiswaan.form', ['siswa' => $kesiswaan]);
+        $kesiswaan->load(['siswaKelas.kelas']);
+        $kompetensi = KompetensiKeahlian::orderBy('nama')->get();
+
+        return response()->json([
+            'siswa' => $kesiswaan,
+            'kompetensi' => $kompetensi,
+        ]);
     }
 
     public function update(Request $request, Siswa $kesiswaan)
@@ -95,9 +135,14 @@ class KesiswaanController extends Controller
             'sekolah_asal' => ['nullable', 'string'],
             'jenis_siswa' => ['nullable', 'integer'],
             'aktif' => ['nullable', 'integer'],
+            'jurusan' => ['nullable', 'integer', 'exists:kompetensi_keahlian,id'],
         ]);
 
         $kesiswaan->update($validated);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Siswa berhasil diperbarui.']);
+        }
 
         return redirect()->route('tu.kesiswaan.index')->with('status', 'Siswa berhasil diperbarui.');
     }

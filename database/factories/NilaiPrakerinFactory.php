@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Mapel;
 use App\Models\NilaiPrakerin;
+use App\Models\SiswaPrakerin;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,8 +17,8 @@ class NilaiPrakerinFactory extends Factory
     public function definition(): array
     {
         return [
-            'siswa_prakerin_id' => \App\Models\SiswaPrakerin::factory(),
-            'mapel_id' => \App\Models\Mapel::factory(),
+            'siswa_prakerin_id' => SiswaPrakerin::factory(),
+            'mapel_id' => Mapel::factory(),
             'nilai' => fake()->numberBetween(60, 100),
             'deskripsi' => fake()->sentence(),
         ];

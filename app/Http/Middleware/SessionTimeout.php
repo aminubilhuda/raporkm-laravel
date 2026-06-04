@@ -10,6 +10,11 @@ class SessionTimeout
 {
     public function handle(Request $request, Closure $next): Response
     {
+        // Skip timeout check untuk PWA requests
+        if ($request->hasHeader('X-PWA-Token')) {
+            return $next($request);
+        }
+
         $user = $request->user();
 
         if (! $user) {

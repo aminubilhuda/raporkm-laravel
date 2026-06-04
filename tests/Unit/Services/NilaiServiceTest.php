@@ -141,31 +141,31 @@ class NilaiServiceTest extends TestCase
         $this->assertEquals(0, $hasil['nilaiAkhir']);
     }
 
-    public function test_get_predikat_SB_untuk_nilai_90_ke_atas(): void
+    public function test_get_predikat_s_b_untuk_nilai_90_ke_atas(): void
     {
         $this->assertEquals('SB', $this->service->getPredikat(90));
         $this->assertEquals('SB', $this->service->getPredikat(100));
     }
 
-    public function test_get_predikat_B_untuk_nilai_75_ke_atas(): void
+    public function test_get_predikat_b_untuk_nilai_75_ke_atas(): void
     {
         $this->assertEquals('B', $this->service->getPredikat(75));
         $this->assertEquals('B', $this->service->getPredikat(89));
     }
 
-    public function test_get_predikat_C_untuk_nilai_60_ke_atas(): void
+    public function test_get_predikat_c_untuk_nilai_60_ke_atas(): void
     {
         $this->assertEquals('C', $this->service->getPredikat(60));
         $this->assertEquals('C', $this->service->getPredikat(74));
     }
 
-    public function test_get_predikat_PB_dibawah_60(): void
+    public function test_get_predikat_p_b_dibawah_60(): void
     {
         $this->assertEquals('PB', $this->service->getPredikat(59));
         $this->assertEquals('PB', $this->service->getPredikat(0));
     }
 
-    public function test_generate_deskripsi_mengambil_template_SB(): void
+    public function test_generate_deskripsi_mengambil_template_sb(): void
     {
         DeskripsiRapor::factory()->predikat('SB')->create([
             'deskripsi' => 'Sangat Baik dalam menguasai materi.',
@@ -176,7 +176,7 @@ class NilaiServiceTest extends TestCase
         $this->assertStringContainsString('Sangat Baik', $hasil);
     }
 
-    public function test_generate_deskripsi_mengambil_template_PB(): void
+    public function test_generate_deskripsi_mengambil_template_pb(): void
     {
         DeskripsiRapor::factory()->predikat('PB')->create([
             'deskripsi' => 'Perlu bimbingan dalam materi.',

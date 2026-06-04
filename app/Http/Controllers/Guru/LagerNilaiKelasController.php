@@ -18,9 +18,7 @@ use Illuminate\Http\Request;
 
 class LagerNilaiKelasController extends Controller
 {
-    public function __construct(private RaporService $rapor)
-    {
-    }
+    public function __construct(private RaporService $rapor) {}
 
     public function index(?Kelas $kelas = null)
     {

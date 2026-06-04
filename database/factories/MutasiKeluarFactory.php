@@ -22,7 +22,7 @@ class MutasiKeluarFactory extends Factory
         return [
             'siswa_id' => Siswa::factory(),
             'kelas_id' => Kelas::factory(),
-            'tujuan_sekolah' => 'SMA ' . fake()->city(),
+            'tujuan_sekolah' => 'SMA '.fake()->city(),
             'tanggal_keluar' => fake()->dateTimeBetween('-1 year', 'now'),
             'alasan' => fake()->sentence(),
             'jenis_keluar_id' => RefJenisKeluar::factory(),

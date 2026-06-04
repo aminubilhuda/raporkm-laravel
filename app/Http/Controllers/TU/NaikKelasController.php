@@ -4,6 +4,7 @@ namespace App\Http\Controllers\TU;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kelas;
+use App\Models\Sekolah;
 use App\Models\SiswaKelas;
 use App\Models\Tingkat;
 use Illuminate\Http\Request;
@@ -32,11 +33,16 @@ class NaikKelasController extends Controller
             $siswaKelas = SiswaKelas::find($id);
             if ($siswaKelas) {
                 $siswaKelas->update(['status' => 'naik']);
+
+                $sekolah = Sekolah::first();
+                $tahunId = $siswaKelas->tahun_pelajaran_id ?? $sekolah?->tahun_aktif;
+                $semesterId = $siswaKelas->semester_id ?? $sekolah?->semester_aktif;
+
                 SiswaKelas::create([
                     'siswa_id' => $siswaKelas->siswa_id,
                     'kelas_id' => $validated['ke_kelas_id'],
-                    'tahun_pelajaran_id' => $siswaKelas->tahun_pelajaran_id ?? 2,
-                    'semester_id' => $siswaKelas->semester_id ?? 2,
+                    'tahun_pelajaran_id' => $tahunId,
+                    'semester_id' => $semesterId,
                     'status' => 'aktif',
                 ]);
                 $count++;

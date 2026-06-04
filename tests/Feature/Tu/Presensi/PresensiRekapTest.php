@@ -2,13 +2,6 @@
 
 namespace Tests\Feature\Tu\Presensi;
 
-use App\Models\Kelas;
-use App\Models\Presensi;
-use App\Models\Sekolah;
-use App\Models\Semester;
-use App\Models\Siswa;
-use App\Models\SiswaKelas;
-use App\Models\TahunPelajaran;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

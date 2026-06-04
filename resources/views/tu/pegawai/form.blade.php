@@ -86,7 +86,7 @@
                 </div>
                 <div>
                     <x-input-label for="password" value="Password {{ $isEdit ? '(kosongkan jika tidak diubah)' : '' }}" />
-                    <x-text-input id="password" name="password" type="password" class="block w-full mt-1" {{ $isEdit ? '' : 'required' }} />
+                    <input id="password" name="password" type="password" class="mt-1 block w-full border-teal-primary/20 bg-white rounded-card shadow-sm focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 transition-colors" {{ $isEdit ? '' : 'required' }} />
                     <x-input-error :messages="$errors->get('password')" class="mt-1" />
                 </div>
                 <div>

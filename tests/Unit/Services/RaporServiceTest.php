@@ -8,9 +8,9 @@ use App\Models\Kelas;
 use App\Models\KompetensiKeahlian;
 use App\Models\Mapel;
 use App\Models\NilaiMapel;
-use App\Models\NilaiMapelMid;
 use App\Models\NilaiPrakerin;
 use App\Models\NilaiSumatifTs;
+use App\Models\Prakerin;
 use App\Models\Presensi;
 use App\Models\Sekolah;
 use App\Models\Semester;
@@ -265,7 +265,7 @@ class RaporServiceTest extends TestCase
 
     public function test_data_rapor_pkl_mengandung_siswa_prakerin(): void
     {
-        $prakerin = \App\Models\Prakerin::factory()->create([
+        $prakerin = Prakerin::factory()->create([
             'tahun_pelajaran_id' => $this->tahun->id,
             'semester_id' => $this->semester->id,
         ]);

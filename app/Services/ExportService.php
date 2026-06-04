@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\JenisAbsen;
 use App\Models\NilaiMapel;
 use App\Models\Presensi;
 use App\Models\Siswa;
@@ -28,6 +29,12 @@ class ExportService
             $header = Row::fromValues(['No', 'NISN', 'NIS', 'Nama Siswa', 'Nilai', 'Predikat', 'KKM', 'Deskripsi']);
             $writer->addRow($header);
 
+            if ($nilai->isEmpty()) {
+                $writer->addRow(Row::fromValues(['-', '-', '-', 'Tidak ada data', '-', '-', '-', '-']));
+
+                return;
+            }
+
             foreach ($nilai as $i => $n) {
                 $writer->addRow(Row::fromValues([
                     $i + 1,
@@ -45,27 +52,40 @@ class ExportService
 
     public function exportPresensi(int $kelasId, int $tahunId, int $semesterId): StreamedResponse
     {
+        $jenisAbsen = JenisAbsen::pluck('id', 'nama')->toArray();
+        $idSakit = $jenisAbsen['Sakit'] ?? 2;
+        $idIzin = $jenisAbsen['Izin'] ?? 3;
+        $idAlpha = $jenisAbsen['Alpha'] ?? 4;
+
         $rows = Presensi::with('siswa')
             ->where('kelas_id', $kelasId)
             ->where('tahun_pelajaran_id', $tahunId)
             ->where('semester_id', $semesterId)
             ->get();
 
-        $bySiswa = $rows->groupBy('siswa_id')->map(function ($presensi) {
+        $bySiswa = $rows->groupBy('siswa_id')->map(function ($presensi) use ($idSakit, $idIzin, $idAlpha) {
             $byJenis = $presensi->groupBy('jenis_absen_id')->map->count();
+            $totalHari = $presensi->count();
 
             return [
                 'siswa' => $presensi->first()?->siswa,
-                'sakit' => $byJenis[2] ?? 0,
-                'izin' => $byJenis[3] ?? 0,
-                'alpha' => $byJenis[4] ?? 0,
+                'hadir' => $totalHari - ($byJenis[$idSakit] ?? 0) - ($byJenis[$idIzin] ?? 0) - ($byJenis[$idAlpha] ?? 0),
+                'sakit' => $byJenis[$idSakit] ?? 0,
+                'izin' => $byJenis[$idIzin] ?? 0,
+                'alpha' => $byJenis[$idAlpha] ?? 0,
             ];
         })->sortBy(fn ($r) => $r['siswa']?->nama_siswa ?? '');
 
         $filename = "Presensi-{$kelasId}-{$tahunId}-{$semesterId}.xlsx";
 
         return $this->stream($filename, function (Writer $writer) use ($bySiswa) {
-            $writer->addRow(Row::fromValues(['No', 'NISN', 'NIS', 'Nama Siswa', 'Sakit', 'Izin', 'Tanpa Keterangan']));
+            $writer->addRow(Row::fromValues(['No', 'NISN', 'NIS', 'Nama Siswa', 'Hadir', 'Sakit', 'Izin', 'Alpha']));
+
+            if ($bySiswa->isEmpty()) {
+                $writer->addRow(Row::fromValues(['-', '-', '-', 'Tidak ada data', '-', '-', '-', '-']));
+
+                return;
+            }
 
             $i = 1;
             foreach ($bySiswa as $r) {
@@ -74,6 +94,7 @@ class ExportService
                     $r['siswa']?->nisn ?? '-',
                     $r['siswa']?->nis ?? '-',
                     $r['siswa']?->nama_siswa ?? '-',
+                    $r['hadir'],
                     $r['sakit'],
                     $r['izin'],
                     $r['alpha'],
@@ -91,7 +112,7 @@ class ExportService
                 ->pluck('siswa_id');
             $query->whereIn('id', $siswaIds);
         }
-        $siswa = $query->orderBy('nama_siswa')->get();
+        $siswa = $query->with(['siswaKelas.kelas.kompetensiKeahlian'])->orderBy('nama_siswa')->get();
 
         $filename = $kelasId
             ? "Siswa-Kelas-{$kelasId}.xlsx"
@@ -99,10 +120,17 @@ class ExportService
 
         return $this->stream($filename, function (Writer $writer) use ($siswa) {
             $writer->addRow(Row::fromValues([
-                'No', 'NISN', 'NIS', 'Nama Siswa', 'Jenis Kelamin',
+                'No', 'NISN', 'NIS', 'Nama Siswa', 'Jenis Kelamin', 'Jurusan',
                 'Tempat Lahir', 'Tanggal Lahir', 'Agama', 'Kontak',
-                'Alamat', 'Sekolah Asal', 'Aktif',
+                'Alamat', 'Nama Ayah', 'Pekerjaan Ayah', 'Nama Ibu', 'Pekerjaan Ibu',
+                'Sekolah Asal', 'Status',
             ]));
+
+            if ($siswa->isEmpty()) {
+                $writer->addRow(Row::fromValues(['-', '-', '-', 'Tidak ada data', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']));
+
+                return;
+            }
 
             $i = 1;
             foreach ($siswa as $s) {
@@ -112,11 +140,16 @@ class ExportService
                     $s->nis,
                     $s->nama_siswa,
                     $s->kelamin == 1 ? 'L' : 'P',
+                    $s->siswaKelas->last()?->kelas?->kompetensiKeahlian?->nama ?? '-',
                     $s->tempat_lahir,
                     $s->tanggal_lahir,
                     $s->agama,
                     $s->kontak_siswa,
                     $s->alamat,
+                    $s->nama_ayah ?? '-',
+                    $s->pekerjaan_ayah ?? '-',
+                    $s->nama_ibu ?? '-',
+                    $s->pekerjaan_ibu ?? '-',
                     $s->sekolah_asal,
                     $s->aktif == 1 ? 'Aktif' : 'Non-aktif',
                 ]));
@@ -126,13 +159,19 @@ class ExportService
 
     private function stream(string $filename, \Closure $callback): StreamedResponse
     {
-        return new StreamedResponse(function () use ($callback) {
+        $tempFile = storage_path('app/'.uniqid('export_', true).'.xlsx');
+
+        return new StreamedResponse(function () use ($callback, $tempFile) {
             $writer = new Writer;
-            $writer->openToStream('php://output');
+            $writer->openToFile($tempFile);
 
             $callback($writer);
 
             $writer->close();
+
+            readfile($tempFile);
+
+            @unlink($tempFile);
         }, 200, [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'Content-Disposition' => 'attachment; filename="'.$filename.'"',

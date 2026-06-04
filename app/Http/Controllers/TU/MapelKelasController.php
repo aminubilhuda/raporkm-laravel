@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\MapelKelas as MapelKelasModel;
+use App\Models\Sekolah;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,8 @@ class MapelKelasController extends Controller
         $validated = $request->validate([
             'kelas_id' => ['required', 'exists:kelas,id'],
             'mapel_id' => ['required', 'exists:mapel,id'],
-            'user_id' => ['required', 'exists:users,id'],
+            'user_id' => ['nullable', 'exists:users,id'],
+            'kkm' => ['nullable', 'integer', 'min:0', 'max:100'],
         ]);
 
         $exists = MapelKelasModel::where('kelas_id', $validated['kelas_id'])
@@ -46,12 +48,15 @@ class MapelKelasController extends Controller
             return back()->with('error', 'Mapel ini sudah di-assign ke kelas tersebut.');
         }
 
+        $sekolah = Sekolah::first();
+
         MapelKelasModel::create([
             'kelas_id' => $validated['kelas_id'],
             'mapel_id' => $validated['mapel_id'],
-            'user_id' => $validated['user_id'],
-            'tahun_pelajaran_id' => $request->tahun_pelajaran_id ?? 2,
-            'semester_id' => $request->semester_id ?? 2,
+            'user_id' => $validated['user_id'] ?? null,
+            'kkm' => $validated['kkm'] ?? 75,
+            'tahun_pelajaran_id' => $request->tahun_pelajaran_id ?? $sekolah?->tahun_aktif,
+            'semester_id' => $request->semester_id ?? $sekolah?->semester_aktif,
         ]);
 
         return back()->with('status', 'Mapel berhasil di-assign ke kelas.');
@@ -62,5 +67,46 @@ class MapelKelasController extends Controller
         MapelKelasModel::findOrFail($id)->delete();
 
         return back()->with('status', 'Assign mapel berhasil dihapus.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $mapelKelas = MapelKelasModel::findOrFail($id);
+
+        $validated = $request->validate([
+            'mapel_id' => ['required', 'exists:mapel,id'],
+            'user_id' => ['nullable', 'exists:users,id'],
+            'kkm' => ['nullable', 'integer', 'min:0', 'max:100'],
+        ]);
+
+        $mapelKelas->update($validated);
+
+        return back()->with('status', 'Mapel berhasil diperbarui.');
+    }
+
+    public function updateBatch(Request $request)
+    {
+        $data = $request->validate([
+            'kelas_id' => ['required', 'exists:kelas,id'],
+            'assignments' => ['required', 'array'],
+            'assignments.*.id' => ['required', 'exists:mapel_kelas,id'],
+            'assignments.*.user_id' => ['nullable', 'exists:users,id'],
+            'assignments.*.kkm' => ['nullable', 'integer', 'min:0', 'max:100'],
+            'assignments.*.urutan' => ['nullable', 'integer', 'min:0'],
+        ]);
+
+        $updated = 0;
+        foreach ($data['assignments'] as $item) {
+            $mk = MapelKelasModel::find($item['id']);
+            if ($mk && (int) $mk->kelas_id === (int) $data['kelas_id']) {
+                $mk->update([
+                    'user_id' => $item['user_id'] ?? null,
+                    'kkm' => $item['kkm'] ?? $mk->kkm,
+                ]);
+                $updated++;
+            }
+        }
+
+        return back()->with('status', "{$updated} data berhasil disimpan.");
     }
 }

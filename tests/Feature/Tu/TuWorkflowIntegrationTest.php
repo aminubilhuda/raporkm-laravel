@@ -3,14 +3,9 @@
 namespace Tests\Feature\Tu;
 
 use App\Models\Kelas;
-use App\Models\MutasiMasuk;
-use App\Models\Organisasi;
-use App\Models\PiketHarian;
-use App\Models\Presensi;
-use App\Models\Sekolah;
+use App\Models\Lulusan;
 use App\Models\Semester;
 use App\Models\Siswa;
-use App\Models\SiswaKelas;
 use App\Models\TahunPelajaran;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -73,7 +68,7 @@ class TuWorkflowIntegrationTest extends TestCase
         $siswa = Siswa::factory()->create();
         $tu = User::factory()->tataUsaha()->create();
 
-        \App\Models\Lulusan::factory()->create(['no_ijazah' => 'IJZ-UNIQUE-1']);
+        Lulusan::factory()->create(['no_ijazah' => 'IJZ-UNIQUE-1']);
 
         $response = $this->actingAs($tu)->post(route('tu.lulusan.store'), [
             'siswa_id' => $siswa->id,
@@ -90,7 +85,7 @@ class TuWorkflowIntegrationTest extends TestCase
         $tahun = TahunPelajaran::factory()->create();
         $kelas = Kelas::factory()->create();
         $tu = User::factory()->tataUsaha()->create();
-        $lulusan = \App\Models\Lulusan::factory()->create(['no_ijazah' => 'IJZ-UNIQUE-2']);
+        $lulusan = Lulusan::factory()->create(['no_ijazah' => 'IJZ-UNIQUE-2']);
 
         $this->actingAs($tu)->put(route('tu.lulusan.update', $lulusan), [
             'no_ijazah' => 'IJZ-UNIQUE-2',

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['user_id', 'token', 'expires_at'])]
 class PwaToken extends Model
 {
-    protected $table = 'pwa_token';
+    protected $table = 'pwa_tokens';
 
     protected function casts(): array
     {

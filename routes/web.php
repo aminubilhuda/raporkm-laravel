@@ -1,17 +1,26 @@
 <?php
 
+use App\Http\Controllers\Guru\AbsensiBkController;
 use App\Http\Controllers\Guru\AnggotaKelasController as GuruAnggotaKelasController;
 use App\Http\Controllers\Guru\CatatanRaporController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
+use App\Http\Controllers\Guru\EkstraController as GuruEkstraController;
 use App\Http\Controllers\Guru\KelasKuController;
 use App\Http\Controllers\Guru\LagerNilaiKelasController;
+use App\Http\Controllers\Guru\OrganisasiController as GuruOrganisasiController;
 use App\Http\Controllers\Guru\PenilaianController;
 use App\Http\Controllers\Guru\PenilaianKokurikulerController;
+use App\Http\Controllers\Guru\PiketHarianController as GuruPiketHarianController;
+use App\Http\Controllers\Guru\PrakerinController as GuruPrakerinController;
+use App\Http\Controllers\Guru\PresensiController as GuruPresensiController;
 use App\Http\Controllers\Guru\ProjectKelasController;
+use App\Http\Controllers\Guru\RaporPklController;
 use App\Http\Controllers\Guru\TujuanPembelajaranController;
 use App\Http\Controllers\TU\AnggotaKelasController;
+use App\Http\Controllers\TU\DapodikController;
 use App\Http\Controllers\TU\DashboardController;
 use App\Http\Controllers\TU\DeskripsiRaporController;
+use App\Http\Controllers\TU\EksporController;
 use App\Http\Controllers\TU\EkstraController;
 use App\Http\Controllers\TU\KelompokMapelController;
 use App\Http\Controllers\TU\KesiswaanController;
@@ -26,8 +35,6 @@ use App\Http\Controllers\TU\MutasiController;
 use App\Http\Controllers\TU\NaikKelasController;
 use App\Http\Controllers\TU\OrganisasiController;
 use App\Http\Controllers\TU\P5bkController;
-use App\Http\Controllers\TU\RaporController;
-use App\Http\Controllers\TU\EksporController;
 use App\Http\Controllers\TU\PegawaiController;
 use App\Http\Controllers\TU\PengaturanController;
 use App\Http\Controllers\TU\PengingatController;
@@ -35,6 +42,7 @@ use App\Http\Controllers\TU\PiketHarianController;
 use App\Http\Controllers\TU\PrakerinController;
 use App\Http\Controllers\TU\PresensiController;
 use App\Http\Controllers\TU\PrestasiController;
+use App\Http\Controllers\TU\RaporController;
 use App\Http\Controllers\TU\RombelController;
 use App\Http\Controllers\TU\SekolahController;
 use App\Http\Controllers\TU\TingkatController;
@@ -84,10 +92,18 @@ Route::middleware(['auth', 'role:2'])->prefix('tu')->name('tu.')->group(function
     Route::put('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
     Route::resource('deskripsi-rapor', DeskripsiRaporController::class)->only(['index', 'store', 'update', 'destroy']);
 
+    Route::get('/mapel', [MapelController::class, 'index'])->name('mapel.index');
+    Route::get('/mapel/create', [MapelController::class, 'create'])->name('mapel.create');
+    Route::post('/mapel', [MapelController::class, 'store'])->name('mapel.store');
+    Route::get('/mapel/{mapel}/edit', [MapelController::class, 'edit'])->name('mapel.edit');
+    Route::put('/mapel/{mapel}', [MapelController::class, 'update'])->name('mapel.update');
+    Route::delete('/mapel/{mapel}', [MapelController::class, 'destroy'])->name('mapel.destroy');
+    Route::post('/mapel/batch-update', [MapelController::class, 'updateBatch'])->name('mapel.batch-update');
     Route::resource('tingkat', TingkatController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('kompetensi', KompetensiKeahlianController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('kelompok-mapel', KelompokMapelController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::resource('mapel', MapelController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::get('/kesiswaan/import', [KesiswaanController::class, 'import'])->name('kesiswaan.import');
+    Route::post('/kesiswaan/import', [KesiswaanController::class, 'doImport'])->name('kesiswaan.do-import');
     Route::resource('kesiswaan', KesiswaanController::class);
     Route::resource('rombel', RombelController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/anggota-kelas', [AnggotaKelasController::class, 'index'])->name('anggota-kelas.index');
@@ -95,6 +111,8 @@ Route::middleware(['auth', 'role:2'])->prefix('tu')->name('tu.')->group(function
     Route::delete('/anggota-kelas/{id}', [AnggotaKelasController::class, 'destroy'])->name('anggota-kelas.destroy');
     Route::get('/mapel-kelas', [MapelKelasController::class, 'index'])->name('mapel-kelas.index');
     Route::post('/mapel-kelas', [MapelKelasController::class, 'store'])->name('mapel-kelas.store');
+    Route::put('/mapel-kelas/{id}', [MapelKelasController::class, 'update'])->name('mapel-kelas.update');
+    Route::post('/mapel-kelas/batch-update', [MapelKelasController::class, 'updateBatch'])->name('mapel-kelas.batch-update');
     Route::delete('/mapel-kelas/{id}', [MapelKelasController::class, 'destroy'])->name('mapel-kelas.destroy');
     Route::get('/mapel-siswa', [MapelSiswaController::class, 'index'])->name('mapel-siswa.index');
     Route::post('/mapel-siswa', [MapelSiswaController::class, 'store'])->name('mapel-siswa.store');
@@ -136,6 +154,8 @@ Route::middleware(['auth', 'role:2'])->prefix('tu')->name('tu.')->group(function
     Route::post('/ekstra/pembina', [EkstraController::class, 'pembinaStore'])->name('ekstra.pembina.store');
     Route::delete('/ekstra/pembina/{pembinaEskul}', [EkstraController::class, 'pembinaDestroy'])->name('ekstra.pembina.destroy');
 
+    Route::get('/prakerin/import', [PrakerinController::class, 'import'])->name('prakerin.import');
+    Route::post('/prakerin/import', [PrakerinController::class, 'doImport'])->name('prakerin.do-import');
     Route::get('/prakerin', [PrakerinController::class, 'index'])->name('prakerin.index');
     Route::post('/prakerin', [PrakerinController::class, 'store'])->name('prakerin.store');
     Route::put('/prakerin/{prakerin}', [PrakerinController::class, 'update'])->name('prakerin.update');
@@ -189,6 +209,11 @@ Route::middleware(['auth', 'role:2'])->prefix('tu')->name('tu.')->group(function
     Route::get('/ekspor/nilai', [EksporController::class, 'nilai'])->name('ekspor.nilai');
     Route::get('/ekspor/presensi', [EksporController::class, 'presensi'])->name('ekspor.presensi');
     Route::get('/ekspor/siswa', [EksporController::class, 'siswa'])->name('ekspor.siswa');
+
+    Route::get('/dapodik', [DapodikController::class, 'index'])->name('dapodik.index');
+    Route::post('/dapodik/config', [DapodikController::class, 'updateConfig'])->name('dapodik.config');
+    Route::post('/dapodik/sync/{endpoint}', [DapodikController::class, 'sync'])->name('dapodik.sync');
+    Route::get('/dapodik/log', [DapodikController::class, 'log'])->name('dapodik.log');
 });
 
 // === Panel Guru ===
@@ -220,13 +245,17 @@ Route::middleware(['auth', 'role:3,4'])->prefix('guru')->name('guru.')->group(fu
     Route::get('/kokurikuler', fn () => view('guru.kokurikuler.index'))->name('kokurikuler.index');
     Route::get('/penilaian-kokurikuler/{kelas?}', [PenilaianKokurikulerController::class, 'index'])->name('penilaian-kokurikuler.index');
     Route::post('/penilaian-kokurikuler', [PenilaianKokurikulerController::class, 'store'])->name('penilaian-kokurikuler.store');
-    Route::get('/ekstra', fn () => view('guru.datang-soon', ['title' => 'Ekstrakurikuler']))->name('ekstra.index');
-    Route::get('/prakerin', fn () => view('guru.datang-soon', ['title' => 'Prakerin']))->name('prakerin.index');
-    Route::get('/rapor-pkl/{siswa?}', fn () => view('guru.datang-soon', ['title' => 'Rapor PKL']))->name('rapor-pkl.index');
-    Route::get('/rekap-presensi', fn () => view('guru.datang-soon', ['title' => 'Rekap Presensi']))->name('presensi.rekap');
-    Route::get('/absensi-bk', fn () => view('guru.datang-soon', ['title' => 'Absensi BK']))->name('absensi-bk.index');
-    Route::get('/piket-harian', fn () => view('guru.datang-soon', ['title' => 'Piket Harian']))->name('piket-harian.index');
-    Route::get('/organisasi', fn () => view('guru.datang-soon', ['title' => 'Organisasi']))->name('organisasi.index');
+    Route::get('/ekstra', [GuruEkstraController::class, 'index'])->name('ekstra.index');
+    Route::get('/prakerin', [GuruPrakerinController::class, 'index'])->name('prakerin.index');
+    Route::get('/piket-harian', [GuruPiketHarianController::class, 'index'])->name('piket-harian.index');
+    Route::get('/organisasi', [GuruOrganisasiController::class, 'index'])->name('organisasi.index');
+    Route::get('/presensi', [GuruPresensiController::class, 'index'])->name('presensi.index');
+    Route::post('/presensi', [GuruPresensiController::class, 'store'])->name('presensi.store');
+    Route::get('/rekap-presensi', [GuruPresensiController::class, 'rekap'])->name('presensi.rekap');
+    Route::get('/absensi-bk', [AbsensiBkController::class, 'index'])->name('absensi-bk.index');
+    Route::post('/absensi-bk', [AbsensiBkController::class, 'store'])->name('absensi-bk.store');
+    Route::get('/rapor-pkl', [RaporPklController::class, 'index'])->name('rapor-pkl.index');
+    Route::get('/rapor-pkl/{siswaPrakerin}/pdf', [RaporPklController::class, 'pdf'])->name('rapor-pkl.pdf');
 });
 
 require __DIR__.'/auth.php';

@@ -52,6 +52,7 @@ class NilaiService
     public function generateDeskripsi(int $nilai, int $kktp): string
     {
         $deskripsi = DeskripsiRapor::where('predikat', $this->getPredikat($nilai))->first();
+
         return $deskripsi?->deskripsi ?? '-';
     }
 

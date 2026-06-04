@@ -22,7 +22,7 @@ class LulusanFactory extends Factory
             'kelas_id' => Kelas::factory(),
             'tahun_pelajaran_id' => TahunPelajaran::factory(),
             'tanggal_lulus' => fake()->dateTimeBetween('-1 year', 'now'),
-            'no_ijazah' => 'IJZ-' . fake()->unique()->numerify('####/####'),
+            'no_ijazah' => 'IJZ-'.fake()->unique()->numerify('####/####'),
             'lanjut_ke' => fake()->randomElement(['SMA', 'SMK', 'Kerja', 'Kuliah']),
             'keterangan' => fake()->sentence(),
         ];

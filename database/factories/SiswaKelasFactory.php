@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Kelas;
+use App\Models\Siswa;
 use App\Models\SiswaKelas;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -15,8 +17,8 @@ class SiswaKelasFactory extends Factory
     public function definition(): array
     {
         return [
-            'siswa_id' => \App\Models\Siswa::factory(),
-            'kelas_id' => \App\Models\Kelas::factory(),
+            'siswa_id' => Siswa::factory(),
+            'kelas_id' => Kelas::factory(),
             'tahun_pelajaran_id' => null,
             'semester_id' => null,
             'status' => 'aktif',

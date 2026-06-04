@@ -5,6 +5,8 @@ namespace Tests\Feature\Tu\P5bk;
 use App\Models\Kelas;
 use App\Models\ProyekKelas;
 use App\Models\ProyekTema;
+use App\Models\Semester;
+use App\Models\TahunPelajaran;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -17,15 +19,15 @@ class P5bkProyekTest extends TestCase
 
     private User $guru;
 
-    private \App\Models\TahunPelajaran $tahun;
+    private TahunPelajaran $tahun;
 
-    private \App\Models\Semester $semester;
+    private Semester $semester;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->tahun = \App\Models\TahunPelajaran::factory()->create();
-        $this->semester = \App\Models\Semester::factory()->create();
+        $this->tahun = TahunPelajaran::factory()->create();
+        $this->semester = Semester::factory()->create();
         $this->tu = User::factory()->tataUsaha()->create();
         $this->guru = User::factory()->guru()->create();
     }

@@ -32,6 +32,9 @@ class RaporService
             ->where('siswa_id', $siswaId)
             ->where('tahun_pelajaran_id', $tahunId)
             ->where('semester_id', $semesterId)
+            ->join('mapel', 'mapel.id', '=', 'nilai_mapel.mapel_id')
+            ->orderBy('mapel.urutan')
+            ->select('nilai_mapel.*')
             ->get()
             ->groupBy('mapel_id');
 

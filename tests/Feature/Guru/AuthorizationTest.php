@@ -3,18 +3,15 @@
 namespace Tests\Feature\Guru;
 
 use App\Models\Kelas;
-use App\Models\KelasWali;
 use App\Models\KompetensiKeahlian;
 use App\Models\Mapel;
 use App\Models\MapelKelas;
-use App\Models\NilaiFormatif;
 use App\Models\Sekolah;
 use App\Models\Semester;
 use App\Models\Siswa;
 use App\Models\SiswaKelas;
 use App\Models\TahunPelajaran;
 use App\Models\Tingkat;
-use App\Models\TujuanPembelajaran;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

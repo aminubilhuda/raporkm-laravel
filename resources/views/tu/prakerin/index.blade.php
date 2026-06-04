@@ -1,7 +1,7 @@
 @extends('layouts.tu')
 @section('content')
 <div class="space-y-6">
-<div><h1 class="text-2xl md:text-3xl font-extrabold text-teal-primary-dark flex items-center gap-2"><x-heroicon-o-building-office class="w-7 h-7"/> Prakerin</h1><p class="mt-1 text-sm text-gray-500">Kelola data praktik kerja industri.</p></div>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"><div><h1 class="text-2xl md:text-3xl font-extrabold text-teal-primary-dark flex items-center gap-2"><x-heroicon-o-building-office class="w-7 h-7"/> Prakerin</h1><p class="mt-1 text-sm text-gray-500">Kelola data praktik kerja industri.</p></div><a href="{{ route('tu.prakerin.import') }}" class="btn-primary inline-flex items-center gap-2 whitespace-nowrap bg-sky hover:bg-sky/90"><x-heroicon-o-arrow-up-tray class="w-5 h-5" /> Import</a></div>
 <div class="bg-white rounded-card shadow-card p-5 md:p-6 border-l-[6px] border-l-teal-primary">
     <h2 class="text-lg font-extrabold text-teal-primary-dark mb-4">Tambah Prakerin</h2>
     <form method="POST" action="{{route('tu.prakerin.store')}}" class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">@csrf
