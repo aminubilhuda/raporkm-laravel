@@ -22,7 +22,13 @@ class EkstraController extends Controller
 
     public function store(StoreEskulRequest $r)
     {
-        Eskul::create($r->validated());
+        $eskul = Eskul::create($r->validated());
+
+        activity()
+            ->performedOn($eskul)
+            ->event('created')
+            ->withProperties(['nama' => $eskul->nama ?? ''])
+            ->log('Eskul ditambahkan');
 
         return back()->with('status', 'Eskul ditambahkan.');
     }
@@ -31,12 +37,25 @@ class EkstraController extends Controller
     {
         $eskul->update($r->validated());
 
+        activity()
+            ->performedOn($eskul)
+            ->event('updated')
+            ->withProperties(['nama' => $eskul->nama ?? ''])
+            ->log('Eskul diperbarui');
+
         return back()->with('status', 'Eskul diperbarui.');
     }
 
     public function destroy(Eskul $eskul)
     {
+        $nama = $eskul->nama ?? '';
         $eskul->delete();
+
+        activity()
+            ->performedOn($eskul)
+            ->event('deleted')
+            ->withProperties(['nama' => $nama])
+            ->log('Eskul dihapus');
 
         return back()->with('status', 'Eskul dihapus.');
     }
@@ -47,14 +66,30 @@ class EkstraController extends Controller
         if (PembinaEskul::where('eskul_id', $d['eskul_id'])->where('user_id', $d['user_id'])->exists()) {
             return back()->with('error', 'Guru sudah menjadi pembina eskul ini.');
         }
-        PembinaEskul::create($d);
+        $pe = PembinaEskul::create($d);
+
+        activity()->performedOn($pe)->event('created')
+            ->withProperties([
+                'eskul' => $pe->eskul->nama_eskul ?? '',
+                'pembina' => $pe->user->nama ?? '',
+            ])
+            ->log('Pembina eskul ditambahkan');
 
         return back()->with('status', 'Pembina ditambahkan.');
     }
 
     public function pembinaDestroy(PembinaEskul $pembinaEskul)
     {
+        $eskul = $pembinaEskul->eskul->nama_eskul ?? '';
+        $pembina = $pembinaEskul->user->nama ?? '';
         $pembinaEskul->delete();
+
+        activity()->performedOn($pembinaEskul)->event('deleted')
+            ->withProperties([
+                'eskul' => $eskul,
+                'pembina' => $pembina,
+            ])
+            ->log('Pembina eskul dihapus');
 
         return back()->with('status', 'Pembina dihapus.');
     }

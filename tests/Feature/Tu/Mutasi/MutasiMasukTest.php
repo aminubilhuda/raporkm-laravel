@@ -75,7 +75,8 @@ class MutasiMasukTest extends TestCase
             ->delete(route('tu.mutasi-masuk.destroy', $m))
             ->assertRedirect();
 
-        $this->assertDatabaseMissing('mutasi_masuk', ['id' => $m->id]);
+        $this->assertDatabaseHas('mutasi_masuk', ['id' => $m->id]);
+        $this->assertNotNull($m->fresh()->deleted_at);
     }
 
     public function test_guru_cannot_access_mutasi_masuk(): void

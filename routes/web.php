@@ -1,22 +1,29 @@
 <?php
 
 use App\Http\Controllers\Guru\AbsensiBkController;
+use App\Http\Controllers\Guru\AbsensiGuruController;
 use App\Http\Controllers\Guru\AnggotaKelasController as GuruAnggotaKelasController;
 use App\Http\Controllers\Guru\CatatanRaporController;
+use App\Http\Controllers\Guru\CetakRaporController as GuruCetakRaporController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Guru\EkstraController as GuruEkstraController;
 use App\Http\Controllers\Guru\KelasKuController;
+use App\Http\Controllers\Guru\KokurikulerController as GuruKokurikulerController;
 use App\Http\Controllers\Guru\LagerNilaiKelasController;
+use App\Http\Controllers\Guru\NilaiPrakerinController as GuruNilaiPrakerinController;
 use App\Http\Controllers\Guru\OrganisasiController as GuruOrganisasiController;
 use App\Http\Controllers\Guru\PenilaianController;
 use App\Http\Controllers\Guru\PenilaianKokurikulerController;
+use App\Http\Controllers\Guru\PenilaianProfilPancasilaController;
 use App\Http\Controllers\Guru\PiketHarianController as GuruPiketHarianController;
 use App\Http\Controllers\Guru\PrakerinController as GuruPrakerinController;
 use App\Http\Controllers\Guru\PresensiController as GuruPresensiController;
 use App\Http\Controllers\Guru\ProjectKelasController;
 use App\Http\Controllers\Guru\RaporPklController;
 use App\Http\Controllers\Guru\TujuanPembelajaranController;
+use App\Http\Controllers\TU\AbsensiGuruController as TuAbsensiGuruController;
 use App\Http\Controllers\TU\AnggotaKelasController;
+use App\Http\Controllers\TU\BukuIndukController;
 use App\Http\Controllers\TU\DapodikController;
 use App\Http\Controllers\TU\DashboardController;
 use App\Http\Controllers\TU\DeskripsiRaporController;
@@ -49,8 +56,6 @@ use App\Http\Controllers\TU\TingkatController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
-$comingSoon = fn (string $title, string $panel = 'TU') => view('coming-soon', ['title' => $title, 'panel' => $panel]);
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -90,6 +95,8 @@ Route::middleware(['auth', 'role:2'])->prefix('tu')->name('tu.')->group(function
     Route::post('pegawai/{pegawai}/restore', [PegawaiController::class, 'restore'])->withTrashed()->name('pegawai.restore');
     Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
     Route::put('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
+    Route::post('/pengaturan/push', [PengaturanController::class, 'sendPush'])->name('pengaturan.push');
+    Route::post('/set-semester', [PengaturanController::class, 'setSemester'])->name('set-semester');
     Route::resource('deskripsi-rapor', DeskripsiRaporController::class)->only(['index', 'store', 'update', 'destroy']);
 
     Route::get('/mapel', [MapelController::class, 'index'])->name('mapel.index');
@@ -115,6 +122,7 @@ Route::middleware(['auth', 'role:2'])->prefix('tu')->name('tu.')->group(function
     Route::post('/mapel-kelas/batch-update', [MapelKelasController::class, 'updateBatch'])->name('mapel-kelas.batch-update');
     Route::delete('/mapel-kelas/{id}', [MapelKelasController::class, 'destroy'])->name('mapel-kelas.destroy');
     Route::get('/mapel-siswa', [MapelSiswaController::class, 'index'])->name('mapel-siswa.index');
+    Route::post('/mapel-siswa/batch-update', [MapelSiswaController::class, 'batchUpdate'])->name('mapel-siswa.batch-update');
     Route::post('/mapel-siswa', [MapelSiswaController::class, 'store'])->name('mapel-siswa.store');
     Route::delete('/mapel-siswa/{id}', [MapelSiswaController::class, 'destroy'])->name('mapel-siswa.destroy');
     Route::get('/naik-kelas', [NaikKelasController::class, 'index'])->name('naik-kelas.index');
@@ -191,11 +199,20 @@ Route::middleware(['auth', 'role:2'])->prefix('tu')->name('tu.')->group(function
     Route::put('/prestasi/{prestasi}', [PrestasiController::class, 'update'])->name('prestasi.update');
     Route::delete('/prestasi/{prestasi}', [PrestasiController::class, 'destroy'])->name('prestasi.destroy');
 
+    Route::get('/buku-induk', [BukuIndukController::class, 'index'])->name('buku-induk.index');
+    Route::get('/buku-induk/{bukuInduk}', [BukuIndukController::class, 'show'])->name('buku-induk.show');
+    Route::get('/buku-induk-pdf', [BukuIndukController::class, 'pdf'])->name('buku-induk.pdf');
+
     Route::get('/pengingat', [PengingatController::class, 'index'])->name('pengingat.index');
     Route::post('/pengingat', [PengingatController::class, 'store'])->name('pengingat.store');
     Route::delete('/pengingat/{pengingat}', [PengingatController::class, 'destroy'])->name('pengingat.destroy');
 
     Route::get('/rekap-presensi', [PresensiController::class, 'rekap'])->name('presensi.rekap');
+
+    Route::get('/absensi-guru', [TuAbsensiGuruController::class, 'index'])->name('absensi-guru.index');
+    Route::post('/absensi-guru/check-in', [TuAbsensiGuruController::class, 'checkIn'])->name('absensi-guru.check-in');
+    Route::post('/absensi-guru/check-out', [TuAbsensiGuruController::class, 'checkOut'])->name('absensi-guru.check-out');
+    Route::get('/absensi-guru/rekap', [TuAbsensiGuruController::class, 'rekap'])->name('absensi-guru.rekap');
 
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan-pendidikan');
 
@@ -214,11 +231,14 @@ Route::middleware(['auth', 'role:2'])->prefix('tu')->name('tu.')->group(function
     Route::post('/dapodik/config', [DapodikController::class, 'updateConfig'])->name('dapodik.config');
     Route::post('/dapodik/sync/{endpoint}', [DapodikController::class, 'sync'])->name('dapodik.sync');
     Route::get('/dapodik/log', [DapodikController::class, 'log'])->name('dapodik.log');
+    Route::get('/dapodik/status', [DapodikController::class, 'status'])->name('dapodik.status');
+    Route::post('/dapodik/cancel', [DapodikController::class, 'cancel'])->name('dapodik.cancel');
 });
 
 // === Panel Guru ===
 Route::middleware(['auth', 'role:3,4'])->prefix('guru')->name('guru.')->group(function () {
     Route::get('/dashboard', [GuruDashboardController::class, 'index'])->name('dashboard');
+    Route::post('/set-semester', [GuruDashboardController::class, 'setSemester'])->name('set-semester');
 
     Route::get('/kelas-ku', [KelasKuController::class, 'index'])->name('kelas-ku.index');
     Route::get('/anggota-kelas/{kelas?}', [GuruAnggotaKelasController::class, 'index'])->name('anggota-kelas.index');
@@ -241,12 +261,17 @@ Route::middleware(['auth', 'role:3,4'])->prefix('guru')->name('guru.')->group(fu
     Route::get('/project-kelas/{proyekKelas}/penilaian', [ProjectKelasController::class, 'penilaian'])->name('project-kelas.penilaian');
     Route::post('/project-kelas/{proyekKelas}/penilaian', [ProjectKelasController::class, 'storePenilaian'])->name('project-kelas.penilaian.store');
     Route::get('/p5bk', fn () => view('guru.p5bk.index'))->name('p5bk.index');
-    Route::get('/penilaian-profil-pancasila', fn () => view('guru.penilaian-profil-pancasila.index'))->name('penilaian-profil-pancasila.index');
-    Route::get('/kokurikuler', fn () => view('guru.kokurikuler.index'))->name('kokurikuler.index');
+    Route::get('/penilaian-profil-pancasila/{kelas?}', [PenilaianProfilPancasilaController::class, 'index'])->name('penilaian-profil-pancasila.index');
+    Route::get('/penilaian-profil-pancasila/{proyekKelas}/penilaian', [PenilaianProfilPancasilaController::class, 'penilaian'])->name('penilaian-profil-pancasila.penilaian');
+    Route::post('/penilaian-profil-pancasila/{proyekKelas}/penilaian', [PenilaianProfilPancasilaController::class, 'storePenilaian'])->name('penilaian-profil-pancasila.store');
+    Route::get('/kokurikuler', [GuruKokurikulerController::class, 'index'])->name('kokurikuler.index');
     Route::get('/penilaian-kokurikuler/{kelas?}', [PenilaianKokurikulerController::class, 'index'])->name('penilaian-kokurikuler.index');
     Route::post('/penilaian-kokurikuler', [PenilaianKokurikulerController::class, 'store'])->name('penilaian-kokurikuler.store');
     Route::get('/ekstra', [GuruEkstraController::class, 'index'])->name('ekstra.index');
     Route::get('/prakerin', [GuruPrakerinController::class, 'index'])->name('prakerin.index');
+    Route::get('/nilai-prakerin', [GuruNilaiPrakerinController::class, 'index'])->name('nilai-prakerin.index');
+    Route::get('/nilai-prakerin/{siswaPrakerin}/edit', [GuruNilaiPrakerinController::class, 'edit'])->name('nilai-prakerin.edit');
+    Route::post('/nilai-prakerin/{siswaPrakerin}', [GuruNilaiPrakerinController::class, 'store'])->name('nilai-prakerin.store');
     Route::get('/piket-harian', [GuruPiketHarianController::class, 'index'])->name('piket-harian.index');
     Route::get('/organisasi', [GuruOrganisasiController::class, 'index'])->name('organisasi.index');
     Route::get('/presensi', [GuruPresensiController::class, 'index'])->name('presensi.index');
@@ -254,8 +279,13 @@ Route::middleware(['auth', 'role:3,4'])->prefix('guru')->name('guru.')->group(fu
     Route::get('/rekap-presensi', [GuruPresensiController::class, 'rekap'])->name('presensi.rekap');
     Route::get('/absensi-bk', [AbsensiBkController::class, 'index'])->name('absensi-bk.index');
     Route::post('/absensi-bk', [AbsensiBkController::class, 'store'])->name('absensi-bk.store');
+    Route::get('/absensi-guru', [AbsensiGuruController::class, 'index'])->name('absensi-guru.index');
+    Route::post('/absensi-guru/check-in', [AbsensiGuruController::class, 'checkIn'])->name('absensi-guru.check-in');
+    Route::post('/absensi-guru/check-out', [AbsensiGuruController::class, 'checkOut'])->name('absensi-guru.check-out');
     Route::get('/rapor-pkl', [RaporPklController::class, 'index'])->name('rapor-pkl.index');
     Route::get('/rapor-pkl/{siswaPrakerin}/pdf', [RaporPklController::class, 'pdf'])->name('rapor-pkl.pdf');
+    Route::get('/cetak-rapor/{kelas?}', [GuruCetakRaporController::class, 'index'])->name('cetak-rapor.index');
+    Route::post('/cetak-rapor/{kelas}/cetak', [GuruCetakRaporController::class, 'cetak'])->name('cetak-rapor.cetak');
 });
 
 require __DIR__.'/auth.php';

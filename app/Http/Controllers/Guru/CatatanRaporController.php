@@ -15,8 +15,8 @@ class CatatanRaporController extends Controller
     {
         $user = auth()->user();
         $sekolah = Sekolah::first();
-        $taId = $sekolah?->tahun_aktif;
-        $semesterId = $sekolah?->semester_aktif;
+        $taId = session('selected_tahun', $sekolah?->tahun_aktif);
+        $semesterId = session('selected_semester', $sekolah?->semester_aktif);
 
         $kelasWali = $user->kelasWali()
             ->when($taId, fn ($q) => $q->where('kelas_wali.tahun_pelajaran_id', $taId))
@@ -54,8 +54,8 @@ class CatatanRaporController extends Controller
 
         abort_unless(
             $user->kelasWali()
-                ->where('kelas_wali.tahun_pelajaran_id', $sekolah?->tahun_aktif)
-                ->where('kelas_wali.semester_id', $sekolah?->semester_aktif)
+                ->where('kelas_wali.tahun_pelajaran_id', session('selected_tahun', $sekolah?->tahun_aktif))
+                ->where('kelas_wali.semester_id', session('selected_semester', $sekolah?->semester_aktif))
                 ->where('kelas_wali.kelas_id', $request->kelas_id)->exists(),
             403
         );
@@ -65,8 +65,8 @@ class CatatanRaporController extends Controller
                 'siswa_id' => $request->siswa_id,
                 'kelas_id' => $request->kelas_id,
                 'user_id' => $user->id,
-                'tahun_pelajaran_id' => $sekolah?->tahun_aktif,
-                'semester_id' => $sekolah?->semester_aktif,
+                'tahun_pelajaran_id' => session('selected_tahun', $sekolah?->tahun_aktif),
+                'semester_id' => session('selected_semester', $sekolah?->semester_aktif),
             ],
             ['catatan' => $request->catatan]
         );

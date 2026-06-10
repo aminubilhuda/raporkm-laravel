@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreign('tahun_pelajaran_id')->references('id')->on('tahun_pelajaran')->onDelete('cascade');
             $table->foreign('semester_id')->references('id')->on('semester')->onDelete('cascade');
 
-            $table->index(['mapel_id', 'kelas_id', 'tahun_pelajaran_id', 'semester_id']);
+            $table->index(['mapel_id', 'kelas_id', 'tahun_pelajaran_id', 'semester_id'], 'mk_mapel_kelas_tp_smt_idx');
 
             $table->timestamps();
             $table->softDeletes();

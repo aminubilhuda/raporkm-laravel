@@ -17,14 +17,23 @@ class PengingatController extends Controller
 
     public function store(StorePengingatRequest $r)
     {
-        Pengingat::create($r->validated());
+        $p = Pengingat::create($r->validated());
+
+        activity()->performedOn($p)->event('created')
+            ->withProperties(['judul' => $p->judul])
+            ->log('Pengingat ditambahkan');
 
         return back()->with('status', 'Pengingat ditambahkan.');
     }
 
     public function destroy(Pengingat $pengingat)
     {
+        $judul = $pengingat->judul;
         $pengingat->delete();
+
+        activity()->performedOn($pengingat)->event('deleted')
+            ->withProperties(['judul' => $judul])
+            ->log('Pengingat dihapus');
 
         return back()->with('status', 'Pengingat dihapus.');
     }

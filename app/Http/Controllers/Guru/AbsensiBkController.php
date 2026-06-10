@@ -23,8 +23,8 @@ class AbsensiBkController extends Controller
 
         if ($kelasId) {
             $sekolah = Sekolah::first();
-            $taId = $sekolah?->tahun_aktif;
-            $semesterId = $sekolah?->semester_aktif;
+            $taId = session('selected_tahun', $sekolah?->tahun_aktif);
+            $semesterId = session('selected_semester', $sekolah?->semester_aktif);
 
             $siswa = SiswaKelas::where('kelas_id', $kelasId)
                 ->when($taId, fn ($q) => $q->where('tahun_pelajaran_id', $taId))
@@ -45,8 +45,8 @@ class AbsensiBkController extends Controller
     public function store(Request $r)
     {
         $sekolah = Sekolah::first();
-        $taId = $sekolah?->tahun_aktif;
-        $semesterId = $sekolah?->semester_aktif;
+        $taId = session('selected_tahun', $sekolah?->tahun_aktif);
+        $semesterId = session('selected_semester', $sekolah?->semester_aktif);
 
         $validated = $r->validate([
             'kelas_id' => 'required|exists:kelas,id',

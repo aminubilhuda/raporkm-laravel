@@ -1,0 +1,168 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  phpunit:
+    name: PHPUnit Tests
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: raporkm_test
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --h localhost"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: mbstring, xml, curl, mysql, zip, gd, bcmath
+          coverage: none
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-php-
+
+      - name: Install Dependencies
+        run: composer install --no-progress --prefer-dist
+
+      - name: Prepare Environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run Migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: raporkm_test
+          DB_USERNAME: test_user
+          DB_PASSWORD: test_password
+        run: php artisan migrate --force
+
+      - name: Run Tests
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: raporkm_test
+          DB_USERNAME: test_user
+          DB_PASSWORD: test_password
+        run: php artisan test
+
+  dusk:
+    name: Laravel Dusk (Browser Tests)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: raporkm_dusk
+          MYSQL_USER: dusk_user
+          MYSQL_PASSWORD: dusk_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --h localhost"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: mbstring, xml, curl, mysql, zip, gd, bcmath
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Install Chrome & ChromeDriver
+        run: |
+          google-chrome-stable --version
+          CHROME_VERSION=$(google-chrome-stable --version | grep -oP '\d+\.\d+\.\d+\.\d+')
+          echo "Chrome version: $CHROME_VERSION"
+          composer require --dev laravel/dusk
+          php artisan dusk:chrome-driver
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-php-
+
+      - name: Install Dependencies
+        run: composer install --no-progress --prefer-dist
+
+      - name: Prepare Environment
+        run: |
+          cp .env .env.dusk.local
+
+      - name: Run Migrations & Seed
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: raporkm_dusk
+          DB_USERNAME: dusk_user
+          DB_PASSWORD: dusk_password
+        run: |
+          php artisan migrate --force
+          php artisan db:seed --class=UatDataSeeder
+
+      - name: Run Dusk Tests
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: raporkm_dusk
+          DB_USERNAME: dusk_user
+          DB_PASSWORD: dusk_password
+        run: php artisan dusk --no-tty
+
+      - name: Upload Dusk Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dusk-screenshots
+          path: tests/Browser/screenshots
+          retention-days: 7

@@ -17,7 +17,7 @@ class MapelKelasController extends Controller
         $kelasId = $request->get('kelas_id');
 
         $kelass = Kelas::with('tingkat', 'kompetensiKeahlian')->orderBy('nama_kelas')->get();
-        $mapels = Mapel::orderBy('nama_mapel')->get();
+        $mapels = Mapel::orderBy('urutan')->get();
         $gurus = User::where('jabatan', 3)->orderBy('nama')->get();
         $assignments = collect();
 
@@ -25,7 +25,8 @@ class MapelKelasController extends Controller
             $assignments = MapelKelasModel::with(['mapel', 'user'])
                 ->where('kelas_id', $kelasId)
                 ->whereNull('deleted_at')
-                ->get();
+                ->get()
+                ->sortBy(fn ($mk) => $mk->mapel?->urutan ?? 0);
         }
 
         return view('tu.mapel-kelas.index', compact('kelass', 'mapels', 'gurus', 'assignments', 'kelasId'));
@@ -50,21 +51,35 @@ class MapelKelasController extends Controller
 
         $sekolah = Sekolah::first();
 
-        MapelKelasModel::create([
+        $mapelKelas = MapelKelasModel::create([
             'kelas_id' => $validated['kelas_id'],
             'mapel_id' => $validated['mapel_id'],
             'user_id' => $validated['user_id'] ?? null,
             'kkm' => $validated['kkm'] ?? 75,
-            'tahun_pelajaran_id' => $request->tahun_pelajaran_id ?? $sekolah?->tahun_aktif,
-            'semester_id' => $request->semester_id ?? $sekolah?->semester_aktif,
+            'tahun_pelajaran_id' => $request->tahun_pelajaran_id ?? session('selected_tahun', $sekolah?->tahun_aktif),
+            'semester_id' => $request->semester_id ?? session('selected_semester', $sekolah?->semester_aktif),
         ]);
+
+        activity()
+            ->performedOn($mapelKelas)
+            ->event('created')
+            ->withProperties(['nama' => $mapelKelas->mapel->nama_mapel ?? ''])
+            ->log('Mapel kelas ditambahkan');
 
         return back()->with('status', 'Mapel berhasil di-assign ke kelas.');
     }
 
     public function destroy($id)
     {
-        MapelKelasModel::findOrFail($id)->delete();
+        $mapelKelas = MapelKelasModel::findOrFail($id);
+        $nama = $mapelKelas->mapel->nama_mapel ?? '';
+        $mapelKelas->delete();
+
+        activity()
+            ->performedOn($mapelKelas)
+            ->event('deleted')
+            ->withProperties(['nama' => $nama])
+            ->log('Mapel kelas dihapus');
 
         return back()->with('status', 'Assign mapel berhasil dihapus.');
     }

@@ -1,6 +1,6 @@
 # Progres Pengerjaan — Migrasi E-Rapor KM ke Laravel 13
 
->> Terakhir diperbarui: 02 Juni 2026 (Fase 3 selesai + DemoDataSeeder — 162/162 test hijau, ~3650 record demo)
+>> Terakhir diperbarui: 08 Juni 2026 (Dynamic Guru Menu — 235/235 test hijau, 580 assertions)
 
 ---
 
@@ -419,4 +419,273 @@
 - 4 route baru
 - 26 tests hijau (Fase 5: 6 unit RaporService + 4 unit ExportService + 3+7+3 feature = 23 Fase 5-spesifik + 7 Breeze fix)
 - **Total semua fase: 162/162 tests hijau (397 assertions)**
+- Pint format clean
+
+---
+
+## Buku Induk Siswa ✅ SELESAI
+
+### F-BI-01: BukuIndukController ✅
+- **`app/Http/Controllers/TU/BukuIndukController.php`** — 3 methods: `index()` (list + filter + search + paginate), `show()` (JSON detail), `pdf()` (DomPDF download)
+- Filter: kelas_id, status (aktif/non-aktif), search (NISN/NIS/nama)
+- Eager load: `siswaKelas.kelas.tingkat`, `siswaKelas.kelas.kompetensiKeahlian`
+
+### F-BI-02: View Index ✅
+- **`resources/views/tu/buku-induk/index.blade.php`** — tabel komprehensif (No, NISN, NIS, Nama, JK, TTL, Agama, Alamat, Ayah, Ibu, Kelas, Status)
+- Filter panel: search + dropdown kelas + tombol Filter/Reset
+- Action buttons: PDF download + Print (window.print())
+- Modal detail: data pribadi, orang tua, wali, riwayat kelas (reusing pattern dari kesiswaan)
+- Responsive: column visibility per breakpoint (md/lg/xl/2xl)
+- Empty state: `@forelse/@empty`
+
+### F-BI-03: View PDF ✅
+- **`resources/views/tu/buku-induk/pdf.blade.php`** — A4 landscape, font 7.5-8pt
+- Kop sekolah: logo + nama + NPSN + alamat + logo prov (reusing pattern dari rapor.header)
+- Tabel 12 kolom dengan data komprehensif
+- Timestamp cetak di footer
+
+### F-BI-04: Routes + Sidebar ✅
+- 3 routes baru: `tu.buku-induk.index`, `tu.buku-induk.show`, `tu.buku-induk.pdf`
+- Sidebar: section terpisah "Buku Induk & Cetak" dengan icon `heroicon-o-book-open`
+
+### F-BI-05: Feature Tests ✅
+- `tests/Feature/Tu/BukuInduk/BukuIndukTest.php` — 5 tests, 14 assertions, semua hijau:
+  1. `test_tu_can_view_buku_induk`
+  2. `test_guru_cannot_access_buku_induk`
+  3. `test_buku_induk_filter_by_kelas`
+  4. `test_buku_induk_search`
+  5. `test_buku_induk_pdf_download`
+
+### Cleanup ✅
+- Hapus `$comingSoon` closure dari `routes/web.php` (dead code)
+- Hapus `resources/views/coming-soon.blade.php` + compiled cache
+
+### Total Buku Induk
+- 1 controller baru
+- 2 views baru (index + pdf)
+- 3 routes baru
+- 5 feature tests baru
+- **Total semua fase + Buku Induk: 205/205 tests hijau (517 assertions)**
+- Pint format clean
+
+---
+
+## Redesign Mapel-Siswa (Matrix/Checkbox) ✅ SELESAI
+
+### Konsep
+Tampilan matrix/grid: baris = siswa, kolom = mapel (dari `mapel_kelas`). Checkbox per cell untuk assign/unassign. Select-all per kolom. Filter by Kelas + Tahun Pelajaran + Semester.
+
+### F-MS-01: MapelSiswaController Rewrite ✅
+- **`app/Http/Controllers/TU/MapelSiswaController.php`** — di-rewrite total:
+  - `index()` — load matrix: `MapelKelas` (filtered by kelas/TP/semester), `SiswaKelas` (active siswa), existing `MapelSiswa` assignments → lookup `[$siswaId][$mapelKelasId]`
+  - `batchUpdate()` — validate kelas/TP/semester → `forceDelete()` existing → bulk `insert()` from checked checkboxes
+  - `store()` — backward compatible (single assign)
+  - `destroy()` — backward compatible (single remove)
+
+### F-MS-02: View Rewrite ✅
+- **`resources/views/tu/mapel-siswa/index.blade.php`** — di-rewrite total:
+  - Filter panel: Tahun Pelajaran + Semester + Kelas + tombol Terapkan/Reset
+  - Matrix table: `bg-teal-primary-dark` header dengan kolom No + Nama + Agama + mapel columns
+  - Setiap kolom mapel: kode (`mapel.kode`) + full name sebagai `title` tooltip + checkbox select-all
+  - Checkbox per cell: `name="mapel[siswaId][mapelKelasId]"`, `checked` jika sudah terdaftar
+  - JavaScript select-all: toggle semua checkbox di kolom berdasarkan `cellIndex`
+  - Footer: info count siswa/mapel + tombol "Simpan Semua" dengan confirm dialog
+  - Empty states: belum pilih filter / tidak ada mapel / tidak ada siswa
+
+### F-MS-03: Routes ✅
+- Route baru: `POST /mapel-siswa/batch-update` → `MapelSiswaController@batchUpdate`
+- Route lama dipertahankan: `GET /mapel-siswa`, `POST /mapel-siswa`, `DELETE /mapel-siswa/{id}`
+
+### F-MS-04: Feature Tests ✅
+- `tests/Feature/Tu/MapelSiswa/MapelSiswaTest.php` — 6 tests, 17 assertions, semua hijau:
+  1. `test_tu_can_view_mapel_siswa_page`
+  2. `test_guru_cannot_access_mapel_siswa`
+  3. `test_mapel_siswa_displays_matrix_with_correct_checkboxes`
+  4. `test_mapel_siswa_batch_update_saves_correctly`
+  5. `test_mapel_siswa_batch_update_removes_unchecked`
+  6. `test_mapel_siswa_filter_by_kelas_and_semester`
+
+### Bug Fix
+- `forceDelete()` di `batchUpdate()` — `MapelSiswa` menggunakan `SoftDeletes`, `delete()` hanya set `deleted_at` (tidak menghapus row). `assertDatabaseCount` menghitung semua row termasuk soft-deleted. Fix: gunakan `forceDelete()` untuk truly remove sebelum re-insert.
+
+### Total Redesign Mapel-Siswa
+- 1 controller di-rewrite
+- 1 view di-rewrite total
+- 1 route baru
+- 6 feature tests baru
+- **Total semua fase + Buku Induk + Mapel-Siswa: 211/211 tests hijau (534 assertions)**
+- Pint format clean
+
+---
+
+## Session-Based TP/Semester Switcher ✅ SELESAI
+
+### Konsep
+TP/semester dipilih di sidebar via dropdown tunggal ("Semester 2 (2025/2026) *(Aktif)"). Disimpan di **session** (per-user), bukan database. Semua halaman otomatis menampilkan data sesuai session. Tidak mempengaruhi user lain.
+
+### F-SS-01: Infrastructure ✅
+- **`app/View/Composers/SekolahComposer.php`** — di-update: provide `$semesterOptions`, `$activeTpId`, `$activeSemesterId`, `$tpList`, `$semesterList` ke semua views via view composer
+- **`routes/web.php`** — 2 routes baru: `POST /tu/set-semester` + `POST /guru/set-semester`
+- **`TU/PengaturanController.php`** — tambah `setSemester()` method: validate → session()
+- **`Guru/DashboardController.php`** — tambah `setSemester()` method: validate → session()
+
+### F-SS-02: Shared Component ✅
+- **`components/semester-switcher.blade.php`** — reusable component: 1 dropdown gabungan (Semester X (TP/TT)), hidden fields untuk `tahun_pelajaran_id` + `semester_id`, JavaScript auto-submit on change
+
+### F-SS-03: Sidebar Integration ✅
+- **`components/sidebar-tu.blade.php`** — tambah `<x-semester-switcher route="tu.set-semester" />` di bawah logo sekolah
+- **`components/sidebar-guru.blade.php`** — tambah `<x-semester-switcher route="guru.set-semester" />` di bawah logo sekolah
+
+### F-SS-04: Controller Updates (20 controllers) ✅
+- **Batch replace** `$sekolah?->tahun_aktif` → `session('selected_tahun', $sekolah?->tahun_aktif)` di 20 controllers
+- TU: DashboardController, MapelSiswaController, MapelKelasController, AnggotaKelasController, NaikKelasController, KesiswaanController, PrakerinController, LaporanController
+- Guru: DashboardController, KelasKuController, AnggotaKelasController, TujuanPembelajaranController, PenilaianController, LagerNilaiKelasController, CatatanRaporController, ProjectKelasController, PenilaianKokurikulerController, EkstraController, PresensiController, AbsensiBkController, RaporPklController
+
+### F-SS-05: View Fixes ✅
+- **`tu/dashboard.blade.php`** — hapus hardcode `tahun="2025/2026"` `semester="Genap"` → dynamic dari controller
+- **`TU/DashboardController.php`** — tambah query `TahunPelajaran::find()` + `Semester::find()` → pass `tahunLabel` + `semesterLabel` ke view
+- **`tu/mapel-siswa/index.blade.php`** — auto-default TP/semester dari session (bukan kosong)
+
+### F-SS-06: Bug Fix ✅
+- Fix double-wrapped `session('selected_tahun', session(...))` di Guru DashboardController
+
+### Alur Kerja
+1. User login → session kosong → fallback ke `Sekolah.tahun_aktif/semester_aktif`
+2. User ganti dropdown semester di sidebar → `POST /set-semester` → session updated
+3. SEMUA halaman sekarang tampil data sesuai session
+4. User lain tidak terpengaruh (session per-user)
+
+### Total
+- 1 view composer di-update
+- 1 shared component baru
+- 2 routes baru
+- 20 controllers di-update (baca session)
+- 2 sidebars di-update (dropdown)
+- 1 view fix (dashboard hardcode)
+- **Total semua fase: 211/211 tests hijau (534 assertions)**
+- Pint format clean
+
+---
+
+## Guru Panel Improvements ✅ SELESAI
+
+### F-GP-01: Kokurikuler Controller Upgrade ✅
+- **`app/Http/Controllers/Guru/KokurikulerController.php`** — controller baru, `index()` memuat `DimensiKokurikuler::orderBy('nama')->get()`
+- Route `/guru/kokurikuler` diubah dari closure ke controller
+- View `guru/kokurikuler/index.blade.php` — hapus inline `@php`, gunakan data dari controller
+
+### F-GP-02: Cetak Rapor Guru (Per Siswa & Serentak) ✅
+- **`app/Http/Controllers/Guru/CetakRaporController.php`** — 3 methods:
+  - `index()` — pilih kelas wali, tampilkan daftar siswa dengan checkbox
+  - `cetak()` — single siswa → PDF langsung, multi siswa → ZIP download
+  - `generateSinglePdf()` — render DomPDF pakai view `tu.rapor.semester-pdf` atau `mid-pdf`
+  - `generateZipBatch()` — loop semua siswa, render PDF per siswa, masukkan ke `ZipArchive`, stream ZIP
+- View `guru/cetak-rapor/index.blade.php` — filter kelas wali, checklist siswa, pilih jenis rapor (Semester/Mid), tombol Cetak
+- 2 routes baru: `GET /guru/cetak-rapor/{kelas?}`, `POST /guru/cetak-rapor/{kelas}/cetak`
+- Sidebar: tambah menu "Cetak Rapor" di section "Penilaian"
+- Authorization: hanya wali kelas yang bisa cetak
+
+### F-GP-03: Nilai Prakerin (Guru Pembimbing) ✅
+- **`app/Http/Controllers/Guru/NilaiPrakerinController.php`** — 3 methods:
+  - `index()` — daftar siswa prakerin yang dibimbing (filter `user_id`)
+  - `edit()` — form input nilai per mapel di kelas siswa
+  - `store()` — `updateOrCreate` ke tabel `nilai_prakerin`
+- **`app/Http/Requests/Guru/StoreNilaiPrakerinRequest.php`** — validasi: mapel_id required, nilai 0-100, deskripsi optional
+- View `guru/nilai-prakerin/index.blade.php` — table daftar siswa bimbingan + tombol "Input Nilai"
+- View `guru/nilai-prakerin/edit.blade.php` — table mapel dengan input nilai + deskripsi
+- 3 routes baru: `GET /guru/nilai-prakerin`, `GET /guru/nilai-prakerin/{siswaPrakerin}/edit`, `POST /guru/nilai-prakerin/{siswaPrakerin}`
+- Sidebar: tambah menu "Nilai Prakerin" di section "Lainnya"
+
+### Tests ✅
+- `tests/Feature/Guru/CetakRapor/CetakRaporTest.php` — 8 tests, 19 assertions:
+  1. `test_wali_kelas_bisa_lihat_cetak_rapor_index`
+  2. `test_bukan_wali_tidak_bisa_lihat_cetak_rapor_kelas`
+  3. `test_wali_kelas_bisa_lihat_daftar_siswa`
+  4. `test_guru_tidak_bisa_cetak_rapor_kelas_bukan_walianya`
+  5. `test_guru_bisa_cetak_rapor_single_siswa`
+  6. `test_guru_bisa_cetak_rapor_mid_siswa`
+  7. `test_cetak_rapor_batch_siswa_menghasilkan_zip`
+  8. `test_cetak_rapor_jenis_wajib_dipilih`
+- `tests/Feature/Guru/NilaiPrakerin/NilaiPrakerinTest.php` — 8 tests, 8 assertions:
+  1. `test_guru_bisa_lihat_daftar_siswa_bimbingan`
+  2. `test_guru_bisa_lihat_form_edit_nilai_prakerin`
+  3. `test_guru_lain_tidak_bisa_edit_nilai_prakerin`
+  4. `test_guru_bisa_simpan_nilai_prakerin`
+  5. `test_guru_lain_tidak_bisa_simpan_nilai_prakerin`
+  6. `test_nilai_prakerin_wajib_diantara_0_dan_100`
+  7. `test_guru_bisa_update_nilai_prakerin`
+  8. `test_siswa_tidak_aktif_tidak_bisa_diinput_nilai`
+
+### Total Guru Panel Improvements
+- 3 controllers baru (KokurikulerController, CetakRaporController, NilaiPrakerinController)
+- 1 FormRequest baru (StoreNilaiPrakerinRequest)
+- 4 views baru (cetak-rapor/index, nilai-prakerin/index, nilai-prakerin/edit, kokurikuler upgrade)
+- 5 routes baru
+- 2 sidebar updates
+- 16 feature tests baru
+- **Total semua fase + Guru Panel: 227/227 tests hijau (566 assertions)**
+- Pint format clean
+
+---
+
+## Dynamic Guru Menu (Auto-detect + Admin Override) ✅ SELESAI
+
+### Konsep
+Setiap menu di sidebar guru punya **slug** unik. Menu tampil berdasarkan 2 kombinasi:
+1. **Auto-detect** — cek apakah guru punya relasi data (mapel_kelas, kelas_wali, pembina_eskul, siswa_prakerin, piket_harian)
+2. **Admin override** — TU bisa grant/revoke menu per guru lewat halaman Pegawai
+
+### F-DM-01: Migration ✅
+- `database/migrations/2026_06_04_130000_create_guru_menu_akses_table.php`
+- Kolom: `user_id`, `menu_slug` (50), `tipe` (grant/revoke)
+- Unique: `(user_id, menu_slug)`
+
+### F-DM-02: Model + Service ✅
+- `app/Models/GuruMenuAkses.php` — model dengan relasi `belongsTo(User)`
+- `app/Services/GuruMenuService.php` — logic auto-detect + override:
+  - 20 menu slugs terdefinisi
+  - 5 kategori: Always visible, MapelKelas, WaliKelas, PembinaEskul, Piket, PembimbingPkl
+  - Override `revoke` → paksa sembunyikan, `grant` → paksa tampilkan
+
+### F-DM-03: ViewComposer Update ✅
+- `app/View/Composers/SekolahComposer.php` — tambah `getGuruMenus()` method
+- Pass `$guruMenus` (array slug) ke semua views
+- Hanya aktif untuk user dengan `jabatan` Guru/Kepsek
+
+### F-DM-04: Sidebar Dinamis ✅
+- `resources/views/components/sidebar-guru.blade.php` — rewrite total:
+  - Setiap menu item punya `slug` attribute
+  - Setiap section header di-wrap `@if(visiblePenilaian->isNotEmpty())`
+  - Menu hanya muncul jika slug ada di `$guruMenus`
+
+### F-DM-05: Admin Override UI ✅
+- `app/Http/Controllers/TU/PegawaiController.php` — tambah `syncMenuAkses()` method
+- `resources/views/tu/pegawai/form.blade.php` — section "Hak Akses Menu":
+  - Tabel daftar semua menu per kategori
+  - Radio button: Auto | Grant | Revoke per menu
+  - Hanya muncul untuk jabatan Guru/Kepsek di mode edit
+
+### F-DM-06: Tests ✅
+- `tests/Feature/Guru/MenuAkses/MenuAksesTest.php` — 8 tests, 15 assertions:
+  1. `test_guru_tanpa_apapun_hanya_lihat_menu_universal`
+  2. `test_guru_yang_mengajar_mapel_lihat_menu_penilaian`
+  3. `test_guru_wali_kelas_lihat_menu_wali`
+  4. `test_revoke_override_sembunyikan_menu`
+  5. `test_grant_override_tampilkan_menu`
+  6. `test_revoke_beats_grant`
+  7. `test_sidebar_menampilkan_menu_berdasarkan_hak_akses`
+  8. `test_pegawai_form_menampilkan_menu_access_section`
+- Test Auth diupdate: `test_navigation_menu_can_be_rendered` tidak lagi assert menu dinamis
+
+### Total Dynamic Guru Menu
+- 1 migration baru
+- 1 model baru (GuruMenuAkses)
+- 1 service baru (GuruMenuService)
+- 1 viewcomposer update (SekolahComposer)
+- 1 sidebar rewrite
+- 1 controller update (PegawaiController)
+- 1 view update (pegawai/form)
+- 1 test baru (8 tests)
+- 1 test fix (AuthenticationTest)
+- **Total semua fase + Guru Panel + Dynamic Menu: 235/235 tests hijau (580 assertions)**
 - Pint format clean

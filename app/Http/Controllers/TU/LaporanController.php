@@ -24,8 +24,8 @@ class LaporanController extends Controller
     public function pendidikan(Request $request)
     {
         $sekolah = Sekolah::first();
-        $tahunId = $request->integer('tahun') ?: ($sekolah?->tahun_aktif);
-        $semesterId = $request->integer('semester') ?: ($sekolah?->semester_aktif);
+        $tahunId = $request->integer('tahun') ?: (session('selected_tahun', $sekolah?->tahun_aktif));
+        $semesterId = $request->integer('semester') ?: (session('selected_semester', $sekolah?->semester_aktif));
 
         $data = $tahunId && $semesterId
             ? $this->pendidikan->aggregate($tahunId, $semesterId)

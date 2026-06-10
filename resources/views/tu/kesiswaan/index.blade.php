@@ -20,6 +20,34 @@
         </div>
     </div>
 
+    <form method="GET" class="bg-cream rounded-field shadow-card p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <div class="sm:col-span-2">
+                <label class="block text-xs font-bold text-gray-500 mb-1">Pencarian</label>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="NISN, NIS, atau nama siswa..." class="w-full border-teal-primary/20 rounded-field text-sm py-2 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 mb-1">Kelas</label>
+                <select name="kelas_id" onchange="this.form.submit()" class="w-full border-teal-primary/20 rounded-field text-sm py-2 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
+                    <option value="">-- Semua Kelas --</option>
+                    @foreach($kelass as $k)
+                        <option value="{{ $k->id }}" {{ request('kelas_id') == $k->id ? 'selected' : '' }}>
+                            {{ $k->nama_kelas }} ({{ $k->tingkat->nama ?? '-' }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="flex items-end gap-2">
+                <button type="submit" class="btn-primary px-4 py-2 text-sm inline-flex items-center gap-1">
+                    <x-heroicon-o-magnifying-glass class="w-4 h-4" /> Cari
+                </button>
+                <a href="{{ route('tu.kesiswaan.index') }}" class="px-4 py-2 text-sm font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-field transition-colors">
+                    Reset
+                </a>
+            </div>
+        </div>
+    </form>
+
     <div class="bg-white rounded-card shadow-card overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
@@ -40,8 +68,23 @@
                         <td class="px-4 py-3 font-bold text-gray-800">{{ $s->nama_siswa }}</td>
                         <td class="px-4 py-3 text-teal-primary font-bold">{{ $s->nisn }}</td>
                         <td class="px-4 py-3 text-gray-500 hidden md:table-cell">{{ $s->nis }}</td>
-                        <td class="px-4 py-3 text-gray-500 hidden sm:table-cell">{{ $s->kelamin == 1 ? 'L' : ($s->kelamin == 2 ? 'P' : '-') }}</td>
-                        <td class="px-4 py-3 text-gray-500 hidden md:table-cell">{{ $s->siswaKelas->last()?->kelas?->nama_kelas ?? '-' }}</td>
+                        <td class="px-4 py-3 hidden sm:table-cell">
+                            @if($s->kelamin == 1)
+                                <span class="text-sky font-bold">L</span>
+                            @elseif($s->kelamin == 2)
+                                <span class="text-coral font-bold">P</span>
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td class="px-4 py-3 hidden md:table-cell">
+                            @php $kelasAktif = $s->siswaKelas->firstWhere('status', 'aktif'); @endphp
+                            @if($kelasAktif)
+                                <span class="px-2 py-0.5 rounded-field bg-teal-primary/10 text-teal-primary font-bold text-xs">{{ $kelasAktif->kelas?->nama_kelas ?? '-' }}</span>
+                            @else
+                                <span class="text-gray-400">-</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-3 text-gray-500 hidden lg:table-cell">{{ $s->siswaKelas->last()?->kelas?->kompetensiKeahlian?->nama ?? '-' }}</td>
                         <td class="px-4 py-3 text-right">
                             <div class="flex items-center justify-end gap-1">
@@ -57,12 +100,32 @@
                         </td>
                     </tr>
                     @empty
-                    <tr><td colspan="7" class="px-4 py-12 text-center text-gray-400">Belum ada data siswa.</td></tr>
+                    <tr>
+                        <td colspan="7" class="px-4 py-12 text-center text-gray-400">
+                            <x-heroicon-o-academic-cap class="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                            @if(request('search') || request('kelas_id'))
+                                Tidak ada siswa ditemukan untuk pencarian ini.
+                            @else
+                                Belum ada data siswa.
+                            @endif
+                        </td>
+                    </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
-        <div class="px-4 py-3 border-t border-gray-100">{{ $siswa->links() }}</div>
+        <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
+            <p class="text-xs text-gray-400">
+                @if($siswa instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                    Menampilkan {{ $siswa->firstItem() ?? 0 }}–{{ $siswa->lastItem() ?? 0 }} dari {{ $siswa->total() }} siswa
+                @else
+                    Total {{ $siswa->count() }} siswa
+                @endif
+            </p>
+            @if($siswa instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                {{ $siswa->links() }}
+            @endif
+        </div>
     </div>
 </div>
 
@@ -224,31 +287,31 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Nama Lengkap *</label>
-                                <input type="text" id="edit-nama_siswa" name="nama_siswa" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20" required>
+                                <input type="text" id="edit-nama_siswa" name="nama_siswa" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream" required>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">NISN *</label>
-                                <input type="text" id="edit-nisn" name="nisn" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20" required>
+                                <input type="text" id="edit-nisn" name="nisn" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream" required>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">NIS *</label>
-                                <input type="text" id="edit-nis" name="nis" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20" required>
+                                <input type="text" id="edit-nis" name="nis" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream" required>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">NIK PD</label>
-                                <input type="text" id="edit-nik_pd" name="nik_pd" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-nik_pd" name="nik_pd" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Tempat Lahir</label>
-                                <input type="text" id="edit-tempat_lahir" name="tempat_lahir" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-tempat_lahir" name="tempat_lahir" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Tanggal Lahir</label>
-                                <input type="date" id="edit-tanggal_lahir" name="tanggal_lahir" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="date" id="edit-tanggal_lahir" name="tanggal_lahir" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Jenis Kelamin</label>
-                                <select id="edit-kelamin" name="kelamin" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <select id="edit-kelamin" name="kelamin" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                                     <option value="">-- Pilih --</option>
                                     <option value="1">Laki-laki</option>
                                     <option value="2">Perempuan</option>
@@ -256,7 +319,7 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Agama</label>
-                                <select id="edit-agama" name="agama" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <select id="edit-agama" name="agama" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                                     <option value="">-- Pilih --</option>
                                     <option value="1">Islam</option>
                                     <option value="2">Kristen</option>
@@ -267,17 +330,17 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Jurusan</label>
-                                <select id="edit-jurusan" name="jurusan" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <select id="edit-jurusan" name="jurusan" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                                     <option value="">-- Pilih Jurusan --</option>
                                 </select>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Kontak</label>
-                                <input type="text" id="edit-kontak_siswa" name="kontak_siswa" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-kontak_siswa" name="kontak_siswa" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                             <div class="md:col-span-3">
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Alamat</label>
-                                <textarea id="edit-alamat" name="alamat" rows="2" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20"></textarea>
+                                <textarea id="edit-alamat" name="alamat" rows="2" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream"></textarea>
                             </div>
                         </div>
                     </div>
@@ -288,19 +351,19 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Nama Ayah</label>
-                                <input type="text" id="edit-nama_ayah" name="nama_ayah" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-nama_ayah" name="nama_ayah" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">NIK Ayah</label>
-                                <input type="text" id="edit-nik_ayah" name="nik_ayah" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-nik_ayah" name="nik_ayah" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Pekerjaan</label>
-                                <input type="text" id="edit-pekerjaan_ayah" name="pekerjaan_ayah" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-pekerjaan_ayah" name="pekerjaan_ayah" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Kontak</label>
-                                <input type="text" id="edit-kontak_ayah" name="kontak_ayah" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-kontak_ayah" name="kontak_ayah" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                         </div>
                     </div>
@@ -311,19 +374,19 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Nama Ibu</label>
-                                <input type="text" id="edit-nama_ibu" name="nama_ibu" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-nama_ibu" name="nama_ibu" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">NIK Ibu</label>
-                                <input type="text" id="edit-nik_ibu" name="nik_ibu" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-nik_ibu" name="nik_ibu" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Pekerjaan</label>
-                                <input type="text" id="edit-pekerjaan_ibu" name="pekerjaan_ibu" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-pekerjaan_ibu" name="pekerjaan_ibu" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Kontak</label>
-                                <input type="text" id="edit-kontak_ibu" name="kontak_ibu" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-kontak_ibu" name="kontak_ibu" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                         </div>
                     </div>
@@ -334,15 +397,15 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Nama Wali</label>
-                                <input type="text" id="edit-nama_wali" name="nama_wali" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-nama_wali" name="nama_wali" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Pekerjaan</label>
-                                <input type="text" id="edit-pekerjaan_wali" name="pekerjaan_wali" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-pekerjaan_wali" name="pekerjaan_wali" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 mb-1">Kontak</label>
-                                <input type="text" id="edit-kontak_wali" name="kontak_wali" class="w-full border-teal-primary/20 rounded-card text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20">
+                                <input type="text" id="edit-kontak_wali" name="kontak_wali" class="w-full border-teal-primary/20 rounded-field text-sm py-1.5 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
                             </div>
                         </div>
                     </div>
@@ -350,8 +413,8 @@
 
                 {{-- Footer --}}
                 <div class="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex items-center justify-end gap-3">
-                    <button type="button" onclick="closeEdit()" class="px-4 py-2 text-sm font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-card transition-colors">Batal</button>
-                    <button type="submit" id="edit-submit-btn" class="px-4 py-2 text-sm font-bold text-white bg-teal-primary hover:bg-teal-primary-dark rounded-card transition-colors">Simpan Perubahan</button>
+                    <button type="button" onclick="closeEdit()" class="px-4 py-2 text-sm font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-pill transition-colors">Batal</button>
+                    <button type="submit" id="edit-submit-btn" class="btn-primary px-4 py-2 text-sm">Simpan Perubahan</button>
                 </div>
             </form>
         </div>

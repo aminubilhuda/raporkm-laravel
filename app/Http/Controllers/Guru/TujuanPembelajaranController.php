@@ -16,14 +16,15 @@ class TujuanPembelajaranController extends Controller
     {
         $user = auth()->user();
         $sekolah = Sekolah::first();
-        $taId = $sekolah?->tahun_aktif;
-        $semesterId = $sekolah?->semester_aktif;
+        $taId = session('selected_tahun', $sekolah?->tahun_aktif);
+        $semesterId = session('selected_semester', $sekolah?->semester_aktif);
 
         $mapelKelasList = $user->mapelKelas()
             ->when($taId, fn ($q) => $q->where('tahun_pelajaran_id', $taId))
             ->when($semesterId, fn ($q) => $q->where('semester_id', $semesterId))
             ->with('mapel', 'kelas.tingkat', 'kelas.kompetensiKeahlian')
-            ->get();
+            ->get()
+            ->sortBy(fn ($mk) => $mk->mapel?->urutan ?? 0);
 
         $selected = null;
         if ($kelas && $mapel) {
@@ -60,8 +61,8 @@ class TujuanPembelajaranController extends Controller
             'kelas_id' => $request->kelas_id,
             'kode_tp' => $request->kode_tp,
             'nama_tp' => $request->nama_tp,
-            'tahun_pelajaran_id' => $sekolah?->tahun_aktif,
-            'semester_id' => $sekolah?->semester_aktif,
+            'tahun_pelajaran_id' => session('selected_tahun', $sekolah?->tahun_aktif),
+            'semester_id' => session('selected_semester', $sekolah?->semester_aktif),
         ]);
 
         return redirect()->route('guru.tujuan-pembelajaran.index', ['kelas' => $request->kelas_id, 'mapel' => $request->mapel_id])

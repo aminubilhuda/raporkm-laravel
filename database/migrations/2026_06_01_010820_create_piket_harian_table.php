@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('hari_id')->references('id')->on('ref_hari');
             $table->foreign('tahun_pelajaran_id')->references('id')->on('tahun_pelajaran');
             $table->foreign('semester_id')->references('id')->on('semester');
-            $table->unique(['user_id', 'hari_id', 'tahun_pelajaran_id', 'semester_id']);
+            $table->unique(['user_id', 'hari_id', 'tahun_pelajaran_id', 'semester_id'], 'ph_user_hari_tp_smt_unique');
         });
     }
 

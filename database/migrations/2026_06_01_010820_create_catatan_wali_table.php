@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('tahun_pelajaran_id')->references('id')->on('tahun_pelajaran');
             $table->foreign('semester_id')->references('id')->on('semester');
-            $table->unique(['siswa_id', 'kelas_id', 'tahun_pelajaran_id', 'semester_id']);
+            $table->unique(['siswa_id', 'kelas_id', 'tahun_pelajaran_id', 'semester_id'], 'cw_siswa_kls_tp_smt_unique');
         });
     }
 

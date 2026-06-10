@@ -17,7 +17,7 @@ class EksporController extends Controller
     public function index()
     {
         $kelasList = Kelas::with('tingkat', 'kompetensiKeahlian')->orderBy('nama_kelas')->get();
-        $mapelList = Mapel::orderBy('nama_mapel')->get();
+        $mapelList = Mapel::orderBy('urutan')->get();
         $tahunList = TahunPelajaran::orderByDesc('status')->orderByDesc('tahun')->get();
         $semesterList = Semester::orderBy('urutan')->get();
 

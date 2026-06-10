@@ -13,6 +13,32 @@
         </button>
     </div>
 
+    <form method="GET" class="bg-cream rounded-field shadow-card p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <div class="sm:col-span-2">
+                <label class="block text-xs font-bold text-gray-500 mb-1">Pencarian</label>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Kode atau nama mapel..." class="w-full border-teal-primary/20 rounded-field text-sm py-2 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 mb-1">Kelompok</label>
+                <select name="kelompok_mapel_id" onchange="this.form.submit()" class="w-full border-teal-primary/20 rounded-field text-sm py-2 px-3 focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 bg-cream">
+                    <option value="">-- Semua Kelompok --</option>
+                    @foreach($kelompok as $k)
+                        <option value="{{ $k->id }}" {{ request('kelompok_mapel_id') == $k->id ? 'selected' : '' }}>{{ $k->nama }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="flex items-end gap-2">
+                <button type="submit" class="btn-primary px-4 py-2 text-sm inline-flex items-center gap-1">
+                    <x-heroicon-o-magnifying-glass class="w-4 h-4" /> Cari
+                </button>
+                <a href="{{ route('tu.mapel.index') }}" class="px-4 py-2 text-sm font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-field transition-colors">
+                    Reset
+                </a>
+            </div>
+        </div>
+    </form>
+
     @if($mapel->isNotEmpty())
     <div class="bg-white rounded-card shadow-card overflow-hidden border-l-[6px] border-l-teal-primary">
         <form method="POST" action="{{ route('tu.mapel.batch-update') }}">
@@ -39,17 +65,17 @@
                             <td class="px-3 py-2 font-bold text-gray-800">{{ $m->nama_mapel }}</td>
                             <td class="px-3 py-2">
                                 <input type="hidden" name="items[{{ $i }}][id]" value="{{ $m->id }}">
-                                <select name="items[{{ $i }}][kelompok_mapel_id]" class="block w-full border-teal-primary/20 bg-white rounded-card shadow-sm focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 transition-colors text-sm py-1.5">
+                                <select name="items[{{ $i }}][kelompok_mapel_id]" class="block w-full border-teal-primary/20 bg-cream rounded-field shadow-sm focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 transition-colors text-sm py-1.5">
                                     @foreach($kelompok as $k)
                                         <option value="{{ $k->id }}" {{ $m->kelompok_mapel_id == $k->id ? 'selected' : '' }}>{{ $k->nama }}</option>
                                     @endforeach
                                 </select>
                             </td>
                             <td class="px-3 py-2">
-                                <input type="number" name="items[{{ $i }}][kkm]" value="{{ $m->kkm }}" min="0" max="100" class="block w-20 border-teal-primary/20 bg-white rounded-card shadow-sm focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 transition-colors text-sm py-1.5 text-center">
+                                <input type="number" name="items[{{ $i }}][kkm]" value="{{ $m->kkm }}" min="0" max="100" class="block w-20 border-teal-primary/20 bg-cream rounded-field shadow-sm focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 transition-colors text-sm py-1.5 text-center">
                             </td>
                             <td class="px-3 py-2">
-                                <input type="number" name="items[{{ $i }}][urutan]" value="{{ $m->urutan }}" min="0" class="block w-20 border-teal-primary/20 bg-white rounded-card shadow-sm focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 transition-colors text-sm py-1.5 text-center">
+                                <input type="number" name="items[{{ $i }}][urutan]" value="{{ $m->urutan }}" min="0" class="block w-20 border-teal-primary/20 bg-cream rounded-field shadow-sm focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20 transition-colors text-sm py-1.5 text-center">
                             </td>
                             <td class="px-3 py-2 text-center">
                                 <button type="button" onclick="deleteMapel({{ $m->id }}, '{{ addslashes($m->nama_mapel) }}')" class="p-1.5 text-coral hover:bg-coral/5 rounded-lg" title="Hapus">
@@ -91,10 +117,15 @@
     @else
     <div class="bg-white rounded-card shadow-card p-12 text-center border-l-[6px] border-l-teal-primary">
         <x-heroicon-o-book-open class="w-16 h-16 text-gray-300 mx-auto mb-4" />
-        <p class="text-gray-400 mb-4">Belum ada data mata pelajaran.</p>
-        <button type="button" onclick="openModal()" class="btn-primary inline-flex items-center gap-2">
-            <x-heroicon-o-plus-circle class="w-5 h-5" /> Tambah Mapel Pertama
-        </button>
+        @if(request('search') || request('kelompok_mapel_id'))
+            <p class="text-gray-400 mb-4">Tidak ada mata pelajaran ditemukan untuk pencarian ini.</p>
+            <a href="{{ route('tu.mapel.index') }}" class="btn-secondary inline-flex items-center gap-2">Reset Filter</a>
+        @else
+            <p class="text-gray-400 mb-4">Belum ada data mata pelajaran.</p>
+            <button type="button" onclick="openModal()" class="btn-primary inline-flex items-center gap-2">
+                <x-heroicon-o-plus-circle class="w-5 h-5" /> Tambah Mapel Pertama
+            </button>
+        @endif
     </div>
     @endif
 
@@ -126,7 +157,7 @@
                             </div>
                             <div>
                                 <x-input-label for="modal_kelompok" value="Kelompok Mapel" />
-                                <select id="modal_kelompok" name="kelompok_mapel_id" class="mt-1 block w-full border-teal-primary/20 rounded-card focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20" required>
+                                <select id="modal_kelompok" name="kelompok_mapel_id" class="mt-1 block w-full border-teal-primary/20 rounded-field bg-cream focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20" required>
                                     <option value="">-- Pilih --</option>
                                     @foreach($kelompok as $k)
                                         <option value="{{ $k->id }}" {{ old('kelompok_mapel_id') == $k->id ? 'selected' : '' }}>{{ $k->nama }}</option>

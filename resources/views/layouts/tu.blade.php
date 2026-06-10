@@ -18,6 +18,41 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" crossorigin="" />
+    <style>
+        #map img { max-width: none !important; }
+        .leaflet-container { background: #e5e3df; position: relative; }
+        .leaflet-pane { z-index: auto; }
+        .leaflet-top, .leaflet-bottom { z-index: 9999 !important; }
+        .leaflet-control { z-index: 9999 !important; margin: 10px !important; }
+        .leaflet-control-locate a {
+            display: flex !important;
+            width: 30px !important;
+            height: 30px !important;
+            line-height: 30px !important;
+            text-align: center !important;
+            text-decoration: none !important;
+            color: #333 !important;
+            background-color: #fff !important;
+            border: 2px solid rgba(0,0,0,0.2) !important;
+            border-radius: 4px !important;
+        }
+        .leaflet-control-locate.active a { background-color: #10b981 !important; color: #fff !important; }
+        .leaflet-control-zoom a {
+            display: flex !important;
+            width: 30px !important;
+            height: 30px !important;
+            line-height: 30px !important;
+            text-align: center !important;
+            text-decoration: none !important;
+            color: #333 !important;
+            background-color: #fff !important;
+            border: 1px solid #ccc !important;
+            border-radius: 4px !important;
+        }
+        .leaflet-control-zoom a:hover { background-color: #f4f4f4 !important; }
+    </style>
 </head>
 <body class="font-sans antialiased h-full bg-surface-base">
     <!-- Sidebar overlay (mobile) -->
@@ -71,6 +106,8 @@
     </script>
 
     <script src="{{ asset('js/pwa.js') }}"></script>
+
+    <x-pwa-update-prompt />
 
     {{-- Tailwind JIT safelist --}}
     <div class="hidden hover:shadow-accent-glow hover:shadow-teal-glow hover:shadow-coral-glow hover:bg-teal-bg hover:bg-coral/5 hover:scale-[1.02] active:scale-95"></div>

@@ -84,7 +84,8 @@ class PrakerinPesertaTest extends TestCase
             ->delete(route('tu.prakerin.peserta.destroy', $p))
             ->assertRedirect();
 
-        $this->assertDatabaseMissing('siswa_prakerin', ['id' => $p->id]);
+        $this->assertDatabaseHas('siswa_prakerin', ['id' => $p->id]);
+        $this->assertNotNull($p->fresh()->deleted_at);
     }
 
     public function test_guru_cannot_access_peserta(): void

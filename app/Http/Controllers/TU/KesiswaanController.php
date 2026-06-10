@@ -8,6 +8,7 @@ use App\Models\Kelas;
 use App\Models\KompetensiKeahlian;
 use App\Models\Sekolah;
 use App\Models\Siswa;
+use App\Models\SiswaEskul;
 use App\Services\ImportService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -16,12 +17,37 @@ class KesiswaanController extends Controller
 {
     public function __construct(private ImportService $import) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $siswa = Siswa::with(['siswaKelas.kelas.tingkat', 'siswaKelas.kelas.kompetensiKeahlian'])
-            ->where('aktif', 1)->latest()->paginate(15);
+        $query = Siswa::with(['siswaKelas.kelas.tingkat', 'siswaKelas.kelas.kompetensiKeahlian'])
+            ->where('aktif', 1);
 
-        return view('tu.kesiswaan.index', compact('siswa'));
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nisn', 'like', "%{$search}%")
+                    ->orWhere('nis', 'like', "%{$search}%")
+                    ->orWhere('nama_siswa', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('kelas_id')) {
+            $query->whereHas('siswaKelas', function ($q) use ($request) {
+                $q->where('kelas_id', $request->kelas_id)
+                    ->where('status', 'aktif');
+            });
+        }
+
+        $perPage = $request->input('per_page', 15);
+        if ($perPage === 'all') {
+            $siswa = $query->latest()->get();
+        } else {
+            $siswa = $query->latest()->paginate((int) $perPage)->withQueryString();
+        }
+
+        $kelass = Kelas::with('tingkat', 'kompetensiKeahlian')->orderBy('nama_kelas')->get();
+
+        return view('tu.kesiswaan.index', compact('siswa', 'kelass'));
     }
 
     public function import()
@@ -37,8 +63,8 @@ class KesiswaanController extends Controller
         $result = $this->import->importSiswa(
             $r->file('file'),
             $r->integer('kelas_id'),
-            $sekolah?->tahun_aktif,
-            $sekolah?->semester_aktif,
+            session('selected_tahun', $sekolah?->tahun_aktif),
+            session('selected_semester', $sekolah?->semester_aktif),
         );
 
         return redirect()->route('tu.kesiswaan.import')
@@ -83,7 +109,13 @@ class KesiswaanController extends Controller
             'jurusan' => ['nullable', 'integer', 'exists:kompetensi_keahlian,id'],
         ]);
 
-        Siswa::create($validated);
+        $siswa = Siswa::create($validated);
+
+        activity()
+            ->performedOn($siswa)
+            ->event('created')
+            ->withProperties(['nama' => $siswa->nama_siswa])
+            ->log('Nama siswa ditambahkan');
 
         return redirect()->route('tu.kesiswaan.index')->with('status', 'Siswa berhasil ditambahkan.');
     }
@@ -140,6 +172,12 @@ class KesiswaanController extends Controller
 
         $kesiswaan->update($validated);
 
+        activity()
+            ->performedOn($kesiswaan)
+            ->event('updated')
+            ->withProperties(['nama' => $kesiswaan->nama_siswa])
+            ->log('Nama siswa diperbarui');
+
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json(['success' => true, 'message' => 'Siswa berhasil diperbarui.']);
         }
@@ -150,7 +188,22 @@ class KesiswaanController extends Controller
     public function destroy(Siswa $kesiswaan)
     {
         $kesiswaan->update(['aktif' => 0]);
+
+        $kesiswaan->siswaKelas()->delete();
+        $kesiswaan->mapelSiswa()->delete();
+        $kesiswaan->prakerin()->delete();
+        $kesiswaan->catatanWali()->delete();
+        $kesiswaan->prestasi()->delete();
+        SiswaEskul::where('siswa_id', $kesiswaan->id)->delete();
+
+        $nama = $kesiswaan->nama_siswa;
         $kesiswaan->delete();
+
+        activity()
+            ->performedOn($kesiswaan)
+            ->event('deleted')
+            ->withProperties(['nama' => $nama])
+            ->log('Nama siswa dihapus');
 
         return back()->with('status', 'Siswa berhasil dinonaktifkan.');
     }

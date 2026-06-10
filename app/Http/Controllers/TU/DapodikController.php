@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\TU;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SyncDapodikJob;
 use App\Models\DapodikSyncLog;
 use App\Services\DapodikService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class DapodikController extends Controller
@@ -48,26 +51,57 @@ class DapodikController extends Controller
         $allowed = ['sekolah', 'peserta-didik', 'rombongan-belajar', 'pengguna', 'gtk', 'pembelajaran', 'all'];
         abort_unless(in_array($endpoint, $allowed), 404);
 
-        try {
-            $result = match ($endpoint) {
-                'all' => $this->dapodik->syncAll(),
-                'sekolah' => $this->dapodik->syncSekolahan(),
-                'peserta-didik' => $this->dapodik->syncPesertaDidik(),
-                'rombongan-belajar' => $this->dapodik->syncRombonganBelajar(),
-                'pengguna' => $this->dapodik->syncPengguna(),
-                'gtk' => $this->dapodik->syncGtk(),
-                'pembelajaran' => $this->dapodik->syncPembelajaran(),
-            };
+        if ($endpoint === 'all') {
+            $endpoints = ['sekolah', 'gtk', 'pengguna', 'peserta-didik', 'rombongan-belajar', 'pembelajaran'];
+            $jobs = array_map(fn ($ep) => new SyncDapodikJob($ep), $endpoints);
 
-            $status = ($result['failed'] ?? 0) > 0 ? 'error' : 'status';
+            $batch = Bus::batch($jobs)
+                ->name('dapodik-sync-all')
+                ->then(function ($batch) {
+                    DapodikSyncLog::create([
+                        'endpoint' => 'sync-all',
+                        'status' => 'success',
+                        'records_count' => $batch->totalJobs,
+                        'message' => 'Sinkronisasi semua data selesai.',
+                        'batch_id' => $batch->id,
+                        'progress_current' => $batch->totalJobs,
+                        'progress_total' => $batch->totalJobs,
+                    ]);
+                })
+                ->catch(function ($batch, \Throwable $e) {
+                    DapodikSyncLog::create([
+                        'endpoint' => 'sync-all',
+                        'status' => 'error',
+                        'records_count' => $batch->processedJobs(),
+                        'message' => 'Sinkronisasi gagal: '.$e->getMessage(),
+                        'batch_id' => $batch->id,
+                        'progress_current' => $batch->processedJobs(),
+                        'progress_total' => $batch->totalJobs,
+                    ]);
+                })
+                ->allowFailures()
+                ->dispatch();
+
+            Cache::put('dapodik:active_batch_id', $batch->id, 600);
+
+            DapodikSyncLog::create([
+                'endpoint' => 'sync-all',
+                'status' => 'batch_started',
+                'records_count' => 0,
+                'message' => 'Sinkronisasi semua data dimulai...',
+                'batch_id' => $batch->id,
+                'progress_current' => 0,
+                'progress_total' => count($endpoints),
+            ]);
 
             return redirect()->route('tu.dapodik.index')
-                ->with($status, $result['message'])
-                ->with('sync_result', $result);
-        } catch (\Exception $e) {
-            return redirect()->route('tu.dapodik.index')
-                ->with('error', 'Gagal: '.$e->getMessage());
+                ->with('status', 'Sinkronisasi semua data dimulai di background. Progress dapat dilihat di bawah.');
         }
+
+        SyncDapodikJob::dispatch($endpoint);
+
+        return redirect()->route('tu.dapodik.index')
+            ->with('status', "Sinkronisasi '{$endpoint}' dimulai di background. Cek log untuk hasil.");
     }
 
     public function log()
@@ -75,5 +109,61 @@ class DapodikController extends Controller
         $logs = DapodikSyncLog::latest()->paginate(25);
 
         return view('tu.dapodik.log', compact('logs'));
+    }
+
+    public function status()
+    {
+        $batchId = Cache::get('dapodik:active_batch_id');
+        $batch = $batchId ? Bus::findBatch($batchId) : null;
+
+        $isRunning = $batch && ! $batch->finished();
+
+        if ($batch && $batch->finished()) {
+            Cache::forget('dapodik:active_batch_id');
+        }
+
+        $lastLog = DapodikSyncLog::where('endpoint', '!=', 'sync-all')
+            ->latest()
+            ->first();
+
+        return response()->json([
+            'running' => $isRunning,
+            'batch' => $batch ? [
+                'id' => $batch->id,
+                'name' => $batch->name,
+                'total' => $batch->totalJobs,
+                'processed' => $batch->processedJobs(),
+                'failed' => $batch->failedJobs,
+                'pending' => $batch->pendingJobs,
+                'progress' => $batch->progress(),
+                'finished' => $batch->finished(),
+                'cancelled' => $batch->cancelled(),
+            ] : null,
+            'last_log' => $lastLog,
+            'recent_logs' => DapodikSyncLog::latest()->take(5)->get(),
+        ]);
+    }
+
+    public function cancel()
+    {
+        $batchId = Cache::get('dapodik:active_batch_id');
+
+        if (! $batchId) {
+            return redirect()->route('tu.dapodik.index')
+                ->with('error', 'Tidak ada sinkronisasi yang sedang berjalan.');
+        }
+
+        $batch = Bus::findBatch($batchId);
+
+        if ($batch && ! $batch->finished()) {
+            $batch->cancel();
+            Cache::forget('dapodik:active_batch_id');
+
+            return redirect()->route('tu.dapodik.index')
+                ->with('status', 'Sinkronisasi berhasil dibatalkan.');
+        }
+
+        return redirect()->route('tu.dapodik.index')
+            ->with('error', 'Batch tidak ditemukan atau sudah selesai.');
     }
 }

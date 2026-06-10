@@ -12,7 +12,7 @@ class EkstraController extends Controller
     {
         $user = auth()->user();
         $sekolah = Sekolah::first();
-        $taId = $sekolah?->tahun_aktif;
+        $taId = session('selected_tahun', $sekolah?->tahun_aktif);
 
         $eskuls = Eskul::whereHas('pembinaEskul', fn ($q) => $q
             ->where('user_id', $user->id)

@@ -38,8 +38,8 @@ class PrakerinController extends Controller
         $sekolah = Sekolah::first();
         $result = $this->import->importPrakerin(
             $r->file('file'),
-            $sekolah?->tahun_aktif,
-            $sekolah?->semester_aktif,
+            session('selected_tahun', $sekolah?->tahun_aktif),
+            session('selected_semester', $sekolah?->semester_aktif),
         );
 
         return redirect()->route('tu.prakerin.import')
@@ -48,7 +48,11 @@ class PrakerinController extends Controller
 
     public function store(StorePrakerinRequest $r)
     {
-        Prakerin::create($r->validated());
+        $prakerin = Prakerin::create($r->validated());
+
+        activity()->performedOn($prakerin)->event('created')
+            ->withProperties(['nama' => $prakerin->nama_perusahaan])
+            ->log('Data prakerin ditambahkan');
 
         return back()->with('status', 'Prakerin ditambahkan.');
     }
@@ -57,12 +61,21 @@ class PrakerinController extends Controller
     {
         $prakerin->update($r->validated());
 
+        activity()->performedOn($prakerin)->event('updated')
+            ->withProperties(['nama' => $prakerin->nama_perusahaan])
+            ->log('Data prakerin diperbarui');
+
         return back()->with('status', 'Prakerin diperbarui.');
     }
 
     public function destroy(Prakerin $prakerin)
     {
+        $nama = $prakerin->nama_perusahaan;
         $prakerin->delete();
+
+        activity()->performedOn($prakerin)->event('deleted')
+            ->withProperties(['nama' => $nama])
+            ->log('Data prakerin dihapus');
 
         return back()->with('status', 'Prakerin dihapus.');
     }
@@ -82,14 +95,30 @@ class PrakerinController extends Controller
 
     public function pesertaStore(StoreSiswaPrakerinRequest $r)
     {
-        SiswaPrakerin::create($r->validated());
+        $sp = SiswaPrakerin::create($r->validated());
+
+        activity()->performedOn($sp)->event('created')
+            ->withProperties([
+                'siswa' => $sp->siswa->nama_siswa ?? '',
+                'perusahaan' => $sp->prakerin->nama_perusahaan ?? '',
+            ])
+            ->log('Peserta prakerin ditambahkan');
 
         return back()->with('status', 'Peserta ditambahkan.');
     }
 
     public function pesertaDestroy(SiswaPrakerin $siswaPrakerin)
     {
+        $siswaName = $siswaPrakerin->siswa->nama_siswa ?? '';
+        $perusahaan = $siswaPrakerin->prakerin->nama_perusahaan ?? '';
         $siswaPrakerin->delete();
+
+        activity()->performedOn($siswaPrakerin)->event('deleted')
+            ->withProperties([
+                'siswa' => $siswaName,
+                'perusahaan' => $perusahaan,
+            ])
+            ->log('Peserta prakerin dihapus');
 
         return back()->with('status', 'Peserta dihapus.');
     }

@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\DapodikSyncLog;
 use App\Models\Kelas;
 use App\Models\KelompokMapel;
 use App\Models\KompetensiKeahlian;
 use App\Models\Mapel;
 use App\Models\MapelKelas;
+use App\Models\Ptk;
 use App\Models\Sekolah;
 use App\Models\Semester;
 use App\Models\Siswa;
@@ -62,23 +62,11 @@ class DapodikService
         return [];
     }
 
-    private function log(string $endpoint, string $status, int $count, ?string $message = null): void
-    {
-        DapodikSyncLog::create([
-            'endpoint' => $endpoint,
-            'status' => $status,
-            'records_count' => $count,
-            'message' => $message,
-        ]);
-    }
-
     public function syncSekolahan(): array
     {
         $data = $this->httpGet('getSekolah');
 
         if (empty($data)) {
-            $this->log('getSekolah', 'error', 0, 'Data kosong.');
-
             return ['success' => 0, 'message' => 'Data kosong.'];
         }
 
@@ -114,7 +102,6 @@ class DapodikService
         }
 
         $msg = '1 data sekolah berhasil disinkron.';
-        $this->log('getSekolah', 'success', 1, $msg);
 
         return ['success' => 1, 'message' => $msg];
     }
@@ -124,8 +111,6 @@ class DapodikService
         $data = $this->httpGet('getPesertaDidik');
 
         if (empty($data)) {
-            $this->log('getPesertaDidik', 'error', 0, 'Data kosong.');
-
             return ['success' => 0, 'failed' => 0, 'message' => 'Data kosong.'];
         }
 
@@ -185,7 +170,6 @@ class DapodikService
         if (! empty($errors)) {
             $msg .= ' '.implode('; ', array_slice($errors, 0, 5));
         }
-        $this->log('getPesertaDidik', $failed > 0 ? 'error' : 'success', $success, $msg);
 
         return ['success' => $success, 'failed' => $failed, 'message' => $msg];
     }
@@ -195,8 +179,6 @@ class DapodikService
         $data = $this->httpGet('getRombonganBelajar');
 
         if (empty($data)) {
-            $this->log('getRombonganBelajar', 'error', 0, 'Data kosong.');
-
             return ['success' => 0, 'failed' => 0, 'message' => 'Data kosong.'];
         }
 
@@ -326,7 +308,6 @@ class DapodikService
         if (! empty($errors)) {
             $msg .= ' '.implode('; ', array_slice($errors, 0, 5));
         }
-        $this->log('getRombonganBelajar', $failed > 0 ? 'error' : 'success', $success, $msg);
 
         return ['success' => $success, 'failed' => $failed, 'message' => $msg];
     }
@@ -336,8 +317,6 @@ class DapodikService
         $data = $this->httpGet('getPengguna');
 
         if (empty($data)) {
-            $this->log('getPengguna', 'error', 0, 'Data kosong.');
-
             return ['success' => 0, 'failed' => 0, 'message' => 'Data kosong.'];
         }
 
@@ -345,20 +324,37 @@ class DapodikService
         $failed = 0;
         $errors = [];
 
+        // Deduplikasi: jika 1 orang punya 2 pengguna_id (PTK + Kepsek), pilih prioritas tertinggi
+        $deduplicated = [];
         foreach ($data as $item) {
             $item = (array) $item;
-            $username = $item['username'] ?? null;
-            if (! $username) {
+            $ptkId = $item['ptk_id'] ?? null;
+            $roleStr = $item['peran_id_str'] ?? '';
+
+            $priority = match ($roleStr) {
+                'Kepala Sekolah', 'Kepsek' => 1,
+                'Operator Sekolah', 'Tata Usaha', 'Admin', 'Bendahara BOS' => 2,
+                default => 3,
+            };
+
+            $key = $ptkId ?: ($item['username'] ?? uniqid());
+
+            if (! isset($deduplicated[$key]) || $priority < $deduplicated[$key]['_priority']) {
+                $item['_priority'] = $priority;
+                $deduplicated[$key] = $item;
+            }
+        }
+
+        foreach ($deduplicated as $item) {
+            $email = $item['username'] ?? null;
+            if (! $email) {
                 $failed++;
 
                 continue;
             }
 
-            $kelamin = match (strtoupper($item['jenis_kelamin'] ?? '')) {
-                'L', 'Laki-laki', 'LAKI-LAKI' => 1,
-                'P', 'Perempuan', 'PEREMPUAN' => 2,
-                default => null,
-            };
+            $username = $email;
+            $ptk_id = $item['ptk_id'] ?? null;
 
             $role = match ($item['peran_id_str'] ?? '') {
                 'Operator Sekolah', 'Tata Usaha', 'Admin', 'Bendahara BOS' => 2,
@@ -367,18 +363,72 @@ class DapodikService
             };
 
             try {
-                User::updateOrCreate(
-                    ['username' => $username],
-                    [
-                        'nama' => $item['nama'] ?? $item['nama_lengkap'] ?? '-',
-                        'nip' => $item['nip'] ?? null,
+                // Cari user: via gtk.ptk_id -> email -> username -> nama+jabatan
+                $existingUser = null;
+
+                if ($ptk_id) {
+                    $ptk = Ptk::where('ptk_id', $ptk_id)->first();
+                    $existingUser = $ptk?->user;
+                }
+                if (! $existingUser) {
+                    $existingUser = User::where('email', $email)->first();
+                }
+                if (! $existingUser) {
+                    $existingUser = User::where('username', $username)->first();
+                }
+                if (! $existingUser) {
+                    $existingUser = User::whereRaw('LOWER(nama) = ?', [strtolower($item['nama'] ?? '')])
+                        ->where('jabatan', $role)
+                        ->first();
+                }
+
+                if ($existingUser) {
+                    // Update user fields saja (bukan GTK fields)
+                    $updateData = [];
+                    $updateData['username'] = $username;
+                    $updateData['email'] = $email;
+                    $updateData['jabatan'] = $role;
+                    if (! empty($item['no_hp'])) {
+                        $updateData['kontak'] = $item['no_hp'];
+                    } elseif (! empty($item['no_telepon'])) {
+                        $updateData['kontak'] = $item['no_telepon'];
+                    }
+                    if (($item['nama'] ?? null) && $item['nama'] !== $existingUser->nama) {
+                        $updateData['nama'] = $item['nama'];
+                    }
+
+                    if (! empty($updateData)) {
+                        $updateData['updated_at'] = now();
+                        $existingUser->update($updateData);
+                    }
+
+                    // Link ptk_id jika user belum punya tapi GTK record ada
+                    if (! $existingUser->ptk_id && $ptk_id) {
+                        $ptk = Ptk::where('ptk_id', $ptk_id)->first();
+                        if ($ptk) {
+                            $existingUser->update(['ptk_id' => $ptk->id]);
+                        }
+                    }
+                } else {
+                    // Buat user baru
+                    $newUser = User::create([
+                        'nama' => $item['nama'] ?? '-',
+                        'username' => $username,
+                        'email' => $email,
                         'password' => bcrypt($username),
-                        'email' => $username,
                         'jabatan' => $role,
-                        'kelamin' => $kelamin,
                         'kontak' => $item['no_hp'] ?? $item['no_telepon'] ?? null,
-                    ]
-                );
+                    ]);
+
+                    // Link ke GTK record jika ada
+                    if ($ptk_id) {
+                        $ptk = Ptk::where('ptk_id', $ptk_id)->first();
+                        if ($ptk) {
+                            $newUser->update(['ptk_id' => $ptk->id]);
+                        }
+                    }
+                }
+
                 $success++;
             } catch (\Exception $e) {
                 $failed++;
@@ -390,7 +440,6 @@ class DapodikService
         if (! empty($errors)) {
             $msg .= ' '.implode('; ', array_slice($errors, 0, 5));
         }
-        $this->log('getPengguna', $failed > 0 ? 'error' : 'success', $success, $msg);
 
         return ['success' => $success, 'failed' => $failed, 'message' => $msg];
     }
@@ -400,8 +449,6 @@ class DapodikService
         $data = $this->httpGet('getGtk');
 
         if (empty($data)) {
-            $this->log('getGtk', 'error', 0, 'Data kosong.');
-
             return ['success' => 0, 'failed' => 0, 'message' => 'Data kosong.'];
         }
 
@@ -413,7 +460,9 @@ class DapodikService
             $item = (array) $item;
             $nuptk = $item['nuptk'] ?? null;
             $nik = $item['nik'] ?? null;
-            if (! $nuptk && ! $nik) {
+            $ptk_id = $item['ptk_id'] ?? null;
+
+            if (! $nuptk && ! $nik && ! $ptk_id) {
                 $failed++;
 
                 continue;
@@ -425,42 +474,76 @@ class DapodikService
                 default => null,
             };
 
-            $existingUser = null;
-            if ($nuptk) {
-                $existingUser = User::where('nuptk', $nuptk)->first();
-            }
-            if (! $existingUser && $nik) {
-                $existingUser = User::where('nik', $nik)->first();
-            }
+            $ptkData = [
+                'ptk_id' => $ptk_id,
+                'nuptk' => $nuptk,
+                'nik' => $nik,
+                'nip' => $item['nip'] ?? null,
+                'kelamin' => $kelamin,
+                'tempat_lahir' => $item['tempat_lahir'] ?? null,
+                'tanggal_lahir' => isset($item['tanggal_lahir']) ? date('Y-m-d', strtotime($item['tanggal_lahir'])) : null,
+                'agama' => isset($item['agama_id']) ? (int) $item['agama_id'] : null,
+                'pendidikan_terakhir' => $item['pendidikan_terakhir'] ?? null,
+                'bidang_studi_terakhir' => $item['bidang_studi_terakhir'] ?? null,
+                'pangkat_golongan' => $item['pangkat_golongan_terakhir'] ?? null,
+                'status_kepegawaian' => $item['status_kepegawaian_id_str'] ?? null,
+                'jenis_ptk' => $item['jenis_ptk_id_str'] ?? null,
+                'jabatan_ptk' => $item['jabatan_ptk_id_str'] ?? null,
+            ];
 
-            $username = $existingUser?->username ?? $nuptk ?? $nik ?? 'user-'.uniqid();
-            $email = $existingUser?->email ?? "{$username}@gtk.e-rapor.sch.id";
-
-            $keyField = $nuptk ? 'nuptk' : 'nik';
-            $key = $nuptk ?: $nik;
+            $keyField = $nuptk ? 'nuptk' : ($nik ? 'nik' : 'ptk_id');
+            $key = $nuptk ?: ($nik ?: $ptk_id);
 
             try {
-                User::updateOrCreate(
-                    [$keyField => $key],
-                    [
-                        'nama' => $item['nama'] ?? '-',
-                        'nik' => $nik,
-                        'nip' => $item['nip'] ?? null,
-                        'nuptk' => $nuptk,
-                        'ptk_id' => $item['ptk_id'] ?? null,
-                        'username' => $username,
-                        'password' => $existingUser ? $existingUser->password : bcrypt($username),
-                        'email' => $email,
-                        'jabatan' => $existingUser?->jabatan ?? 3,
-                        'kelamin' => $kelamin,
-                        'tempat_lahir' => $item['tempat_lahir'] ?? null,
-                        'tanggal_lahir' => isset($item['tanggal_lahir']) ? date('Y-m-d', strtotime($item['tanggal_lahir'])) : null,
-                        'agama' => isset($item['agama_id']) ? (int) $item['agama_id'] : null,
-                        'pendidikan_terakhir' => $item['pendidikan_terakhir'] ?? null,
-                        'bidang_studi_terakhir' => $item['bidang_studi_terakhir'] ?? null,
-                        'kontak' => $item['no_hp'] ?? null,
-                    ]
-                );
+                // Cari existing GTK record via ptk_id/nuptk/nik
+                $existingPtk = null;
+                if ($ptk_id) {
+                    $existingPtk = Ptk::where('ptk_id', $ptk_id)->first();
+                }
+                if (! $existingPtk && $nuptk) {
+                    $existingPtk = Ptk::where('nuptk', $nuptk)->first();
+                }
+                if (! $existingPtk && $nik) {
+                    $existingPtk = Ptk::where('nik', $nik)->first();
+                }
+
+                if ($existingPtk) {
+                    // Update gtk record
+                    $existingPtk->update($ptkData);
+                } else {
+                    // Cari atau buat user, lalu buat gtk record
+                    $existingUser = null;
+                    if ($ptk_id) {
+                        $ptk = Ptk::where('ptk_id', $ptk_id)->first();
+                        $existingUser = $ptk?->user;
+                    }
+                    if (! $existingUser) {
+                        $existingUser = User::whereRaw('LOWER(nama) = ?', [strtolower($item['nama'] ?? '')])
+                            ->where('jabatan', 3)
+                            ->first();
+                    }
+
+                    if (! $existingUser) {
+                        $username = $nuptk ?? $nik ?? 'gtk-'.uniqid();
+                        $existingUser = User::create([
+                            'nama' => $item['nama'] ?? '-',
+                            'username' => $username,
+                            'email' => "{$username}@gtk.e-rapor.sch.id",
+                            'password' => bcrypt($username),
+                            'jabatan' => 3,
+                        ]);
+                    }
+
+                    $ptk = Ptk::create(array_merge($ptkData, [
+                        'user_id' => $existingUser->id,
+                    ]));
+
+                    // Link ptk_id ke user jika belum ada
+                    if (! $existingUser->ptk_id) {
+                        $existingUser->update(['ptk_id' => $ptk->id]);
+                    }
+                }
+
                 $success++;
             } catch (\Exception $e) {
                 $failed++;
@@ -472,7 +555,6 @@ class DapodikService
         if (! empty($errors)) {
             $msg .= ' '.implode('; ', array_slice($errors, 0, 5));
         }
-        $this->log('getGtk', $failed > 0 ? 'error' : 'success', $success, $msg);
 
         return ['success' => $success, 'failed' => $failed, 'message' => $msg];
     }
@@ -482,8 +564,6 @@ class DapodikService
         $data = $this->httpGet('getRombonganBelajar');
 
         if (empty($data)) {
-            $this->log('syncPembelajaran', 'error', 0, 'Data rombel kosong.');
-
             return ['success' => 0, 'failed' => 0, 'message' => 'Data rombel kosong.'];
         }
 
@@ -503,8 +583,6 @@ class DapodikService
             $semesterId = $sem?->id;
         }
         if (! $taId || ! $semesterId) {
-            $this->log('syncPembelajaran', 'error', 0, 'Tahun pelajaran atau semester belum tersedia. Jalankan sync Rombongan Belajar terlebih dahulu.');
-
             return ['success' => 0, 'failed' => 0, 'message' => 'Tahun pelajaran atau semester belum tersedia.'];
         }
 
@@ -559,7 +637,11 @@ class DapodikService
                         ]
                     );
 
-                    $guru = $ptkId ? User::where('ptk_id', $ptkId)->first() : null;
+                    $guru = null;
+                    if ($ptkId) {
+                        $ptk = Ptk::where('ptk_id', $ptkId)->first();
+                        $guru = $ptk?->user;
+                    }
 
                     MapelKelas::updateOrCreate(
                         [
@@ -587,7 +669,6 @@ class DapodikService
         if (! empty($errors)) {
             $msg .= ' '.implode('; ', array_slice($errors, 0, 5));
         }
-        $this->log('syncPembelajaran', $failed > 0 ? 'error' : 'success', $success, $msg);
 
         return ['success' => $success, 'failed' => $failed, 'message' => $msg];
     }
@@ -598,10 +679,10 @@ class DapodikService
 
         $results = [
             'Sekolah' => $this->syncSekolahan(),
+            'GTK' => $this->syncGtk(),
+            'Pengguna' => $this->syncPengguna(),
             'Peserta Didik' => $this->syncPesertaDidik(),
             'Rombongan Belajar' => $this->syncRombonganBelajar(),
-            'Pengguna' => $this->syncPengguna(),
-            'GTK' => $this->syncGtk(),
             'Pembelajaran' => $this->syncPembelajaran(),
         ];
 

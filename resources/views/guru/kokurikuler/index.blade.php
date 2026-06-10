@@ -1,8 +1,5 @@
 @extends('layouts.guru')
 @section('content')
-@php
-    $dimensiList = \App\Models\DimensiKokurikuler::orderBy('nama')->get();
-@endphp
 <div class="space-y-6">
 <div><h1 class="text-2xl md:text-3xl font-extrabold text-coral-dark flex items-center gap-2"><x-heroicon-o-sparkles class="w-7 h-7" /> Kokurikuler</h1><p class="mt-1 text-sm text-gray-500">Dimensi kegiatan kokurikuler.</p></div>
 @if($dimensiList->isEmpty())

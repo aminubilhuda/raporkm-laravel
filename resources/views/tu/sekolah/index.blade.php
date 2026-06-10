@@ -127,13 +127,226 @@
             </div>
         </div>
 
+        {{-- GPS & Lokasi Sekolah --}}
+        <div class="bg-white rounded-card shadow-card p-5 md:p-6 border-l-[6px] border-l-emerald-500">
+            <h2 class="text-lg font-extrabold text-teal-primary-dark mb-1">GPS & Lokasi Sekolah</h2>
+            <p class="text-xs text-gray-400 mb-4">Atur titik lokasi sekolah untuk validasi absensi berbasis GPS.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {{-- Map --}}
+                <div class="md:col-span-2">
+                    <div id="map" style="width:100%;height:400px;border:1px solid #e5e7eb;border-radius:12px;position:relative;z-index:1;"></div>
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        <button type="button" onclick="getCurrentLocation()"
+                            style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-size:12px;font-weight:600;color:#fff;background:#10b981;border:none;border-radius:8px;cursor:pointer;"
+                            onmouseover="this.style.background='#059669'"
+                            onmouseout="this.style.background='#10b981'">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            Lokasi Saat Ini
+                        </button>
+                        <button type="button" onclick="clearLocation()"
+                            style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-size:12px;font-weight:600;color:#374151;background:#f3f4f6;border:none;border-radius:8px;cursor:pointer;"
+                            onmouseover="this.style.background='#e5e7eb'"
+                            onmouseout="this.style.background='#f3f4f6'">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            Hapus Pin
+                        </button>
+                        <span id="map-status" style="font-size:12px;color:#9ca3af;align-self:center;"></span>
+                    </div>
+                </div>
+
+                {{-- Latitude --}}
+                <div>
+                    <x-input-label for="latitude" value="Latitude" />
+                    <x-text-input id="latitude" name="latitude" type="number" step="any" min="-90" max="90"
+                        :value="old('latitude', $sekolah->latitude)" class="block w-full mt-1" placeholder="-7.1234567" readonly />
+                    <x-input-error :messages="$errors->get('latitude')" class="mt-1" />
+                </div>
+
+                {{-- Longitude --}}
+                <div>
+                    <x-input-label for="longitude" value="Longitude" />
+                    <x-text-input id="longitude" name="longitude" type="number" step="any" min="-180" max="180"
+                        :value="old('longitude', $sekolah->longitude)" class="block w-full mt-1" placeholder="112.1234567" readonly />
+                    <x-input-error :messages="$errors->get('longitude')" class="mt-1" />
+                </div>
+            </div>
+        </div>
+
+        {{-- Pengaturan Absensi --}}
+        <div class="bg-white rounded-card shadow-card p-5 md:p-6 border-l-[6px] border-l-gold">
+            <h2 class="text-lg font-extrabold text-teal-primary-dark mb-1">Pengaturan Absensi</h2>
+            <p class="text-xs text-gray-400 mb-4">Konfigurasi radius dan jam kerja untuk absensi GPS guru & TU.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {{-- Radius --}}
+                <div>
+                    <x-input-label for="radius_absen" value="Radius Absensi (meter)" />
+                    <div class="relative mt-1">
+                        <x-text-input id="radius_absen" name="radius_absen" type="number" min="10" max="5000"
+                            :value="old('radius_absen', $sekolah->radius_absen ?? 100)" class="block w-full" />
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <span class="text-gray-400 text-sm">m</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">10 - 5.000 meter. Default: 100m</p>
+                    <x-input-error :messages="$errors->get('radius_absen')" class="mt-1" />
+                </div>
+
+                {{-- Jam Masuk --}}
+                <div>
+                    <x-input-label for="jam_masuk" value="Jam Masuk" />
+                    <x-text-input id="jam_masuk" name="jam_masuk" type="time"
+                        :value="old('jam_masuk', $sekolah->jam_masuk ?? '07:00')" class="block w-full mt-1" />
+                    <p class="text-xs text-gray-400 mt-1">Batas waktu check-in</p>
+                    <x-input-error :messages="$errors->get('jam_masuk')" class="mt-1" />
+                </div>
+
+                {{-- Jam Pulang --}}
+                <div>
+                    <x-input-label for="jam_pulang" value="Jam Pulang" />
+                    <x-text-input id="jam_pulang" name="jam_pulang" type="time"
+                        :value="old('jam_pulang', $sekolah->jam_pulang ?? '15:00')" class="block w-full mt-1" />
+                    <p class="text-xs text-gray-400 mt-1">Batas waktu check-out</p>
+                    <x-input-error :messages="$errors->get('jam_pulang')" class="mt-1" />
+                </div>
+            </div>
+
+            {{-- Radius Preview --}}
+            <div class="mt-4 p-3 bg-gray-50 rounded-card">
+                <p class="text-xs text-gray-500">
+                    <strong>Info:</strong> Guru & TU yang berada dalam radius
+                    <span id="radius-preview" class="font-bold text-emerald-600">{{ $sekolah->radius_absen ?? 100 }}</span>
+                    meter dari lokasi sekolah akan dianggap valid untuk absensi.
+                    Status "tepat_waktu" jika check-in sebelum jam
+                    <span class="font-bold text-emerald-600">{{ $sekolah->jam_masuk ?? '07:00' }}</span>.
+                </p>
+            </div>
+        </div>
+
         <div class="flex justify-end">
             <x-primary-button>Simpan Perubahan</x-primary-button>
         </div>
     </form>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.js" crossorigin=""></script>
+
 <script>
+    const defaultLat = {{ $sekolah->latitude ?? '-6.9' }};
+    const defaultLng = {{ $sekolah->longitude ?? '112.0' }};
+    const defaultRadius = {{ $sekolah->radius_absen ?? 100 }};
+
+    let map, marker, circle;
+
+    function initMap() {
+        map = L.map('map', { zoomControl: false }).setView([defaultLat, defaultLng], 16);
+
+        L.control.zoom({ position: 'topright' }).addTo(map);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        L.control.locate({
+            position: 'topright',
+            setView: false,
+            keepCurrentZoomLevel: true,
+            showCompass: true,
+            markerStyle: { color: '#10b981' },
+            circleStyle: { color: '#10b981', fillColor: '#10b981', fillOpacity: 0.05 }
+        }).addTo(map);
+
+        if (document.getElementById('latitude').value && document.getElementById('longitude').value) {
+            const lat = parseFloat(document.getElementById('latitude').value);
+            const lng = parseFloat(document.getElementById('longitude').value);
+            addMarker(lat, lng);
+            map.setView([lat, lng], 17);
+        }
+
+        map.on('click', function(e) {
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+            document.getElementById('latitude').value = lat.toFixed(7);
+            document.getElementById('longitude').value = lng.toFixed(7);
+            addMarker(lat, lng);
+            updateRadius();
+        });
+    }
+
+    function addMarker(lat, lng) {
+        if (marker) map.removeLayer(marker);
+        if (circle) map.removeLayer(circle);
+
+        marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+
+        marker.on('dragend', function(e) {
+            const pos = e.target.getLatLng();
+            document.getElementById('latitude').value = pos.lat.toFixed(7);
+            document.getElementById('longitude').value = pos.lng.toFixed(7);
+            updateRadius();
+        });
+
+        updateRadius();
+    }
+
+    function updateRadius() {
+        if (circle) map.removeLayer(circle);
+
+        const lat = parseFloat(document.getElementById('latitude').value);
+        const lng = parseFloat(document.getElementById('longitude').value);
+        const radius = parseInt(document.getElementById('radius_absen').value) || 100;
+
+        if (isNaN(lat) || isNaN(lng)) return;
+
+        circle = L.circle([lat, lng], {
+            radius: radius,
+            color: '#10b981',
+            fillColor: '#10b981',
+            fillOpacity: 0.1,
+            weight: 2
+        }).addTo(map);
+
+        document.getElementById('radius-preview').textContent = radius;
+    }
+
+    function getCurrentLocation() {
+        const status = document.getElementById('map-status');
+        status.textContent = 'Mengambil lokasi...';
+        status.classList.remove('hidden');
+
+        if (!navigator.geolocation) {
+            status.textContent = 'Browser tidak mendukung geolocation';
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            function(pos) {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                document.getElementById('latitude').value = lat.toFixed(7);
+                document.getElementById('longitude').value = lng.toFixed(7);
+                map.setView([lat, lng], 17);
+                addMarker(lat, lng);
+                status.textContent = 'Lokasi berhasil diambil!';
+                setTimeout(() => { status.textContent = ''; }, 2000);
+            },
+            function(err) {
+                status.textContent = 'Gagal: ' + err.message;
+                setTimeout(() => { status.textContent = ''; }, 3000);
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
+        );
+    }
+
+    function clearLocation() {
+        document.getElementById('latitude').value = '';
+        document.getElementById('longitude').value = '';
+        if (marker) { map.removeLayer(marker); marker = null; }
+        if (circle) { map.removeLayer(circle); circle = null; }
+    }
+
     function previewLogo(input) {
         const preview = document.getElementById('logo-preview');
         const placeholder = document.getElementById('logo-placeholder');
@@ -148,5 +361,14 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            initMap();
+            map.invalidateSize();
+        }, 100);
+
+        document.getElementById('radius_absen').addEventListener('input', updateRadius);
+    });
 </script>
 @endsection

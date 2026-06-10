@@ -9,12 +9,33 @@ use Illuminate\Http\Request;
 
 class MapelController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $mapel = Mapel::with('kelompokMapel')
+        $query = Mapel::with('kelompokMapel');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('kode', 'like', "%{$search}%")
+                    ->orWhere('nama_mapel', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('kelompok_mapel_id')) {
+            $query->where('kelompok_mapel_id', $request->kelompok_mapel_id);
+        }
+
+        $perPage = $request->input('per_page', 20);
+        $mapel = $query
             ->orderByRaw('CASE WHEN urutan IS NULL OR urutan = 0 THEN 1 ELSE 0 END')
-            ->orderBy('urutan')
-            ->paginate(20);
+            ->orderBy('urutan');
+
+        if ($perPage === 'all') {
+            $mapel = $mapel->get();
+        } else {
+            $mapel = $mapel->paginate((int) $perPage)->withQueryString();
+        }
+
         $kelompok = KelompokMapel::orderBy('nama')->get();
 
         return view('tu.mapel.index', compact('mapel', 'kelompok'));
@@ -37,7 +58,13 @@ class MapelController extends Controller
             'urutan' => ['nullable', 'integer', 'min:0'],
         ]);
 
-        Mapel::create($validated);
+        $mapel = Mapel::create($validated);
+
+        activity()
+            ->performedOn($mapel)
+            ->event('created')
+            ->withProperties(['nama' => $mapel->nama_mapel])
+            ->log('Mata pelajaran ditambahkan');
 
         return redirect()->route('tu.mapel.index')->with('status', 'Mata pelajaran berhasil ditambahkan.');
     }
@@ -61,12 +88,25 @@ class MapelController extends Controller
 
         $mapel->update($validated);
 
+        activity()
+            ->performedOn($mapel)
+            ->event('updated')
+            ->withProperties(['nama' => $mapel->nama_mapel])
+            ->log('Mata pelajaran diperbarui');
+
         return redirect()->route('tu.mapel.index')->with('status', 'Mata pelajaran berhasil diperbarui.');
     }
 
     public function destroy(Mapel $mapel)
     {
+        $nama = $mapel->nama_mapel;
         $mapel->delete();
+
+        activity()
+            ->performedOn($mapel)
+            ->event('deleted')
+            ->withProperties(['nama' => $nama])
+            ->log('Mata pelajaran dihapus');
 
         return back()->with('status', 'Mata pelajaran berhasil dihapus.');
     }

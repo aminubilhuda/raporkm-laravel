@@ -11,10 +11,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 #[Fillable([
-    'jabatan', 'nama', 'nip', 'nuptk', 'ptk_id', 'nik', 'username', 'email', 'password',
-    'kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'kontak',
-    'pendidikan_terakhir', 'bidang_studi_terakhir',
-    'id_tugas_tambahan', 'foto', 'moto',
+    'jabatan', 'nama', 'ptk_id', 'username', 'email', 'password',
+    'kontak', 'id_tugas_tambahan', 'foto', 'moto', 'fcm_token', 'device_name',
 ])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
@@ -61,6 +59,11 @@ class User extends Authenticatable
         return $this->jabatan === 4;
     }
 
+    public function ptk()
+    {
+        return $this->hasOne(Ptk::class);
+    }
+
     public function kelasWali()
     {
         return $this->belongsToMany(Kelas::class, 'kelas_wali')
@@ -98,6 +101,11 @@ class User extends Authenticatable
     public function pwaTokens()
     {
         return $this->hasMany(PwaToken::class);
+    }
+
+    public function pushSubscriptions()
+    {
+        return $this->hasMany(PushSubscription::class);
     }
 
     public function rememberTokens()

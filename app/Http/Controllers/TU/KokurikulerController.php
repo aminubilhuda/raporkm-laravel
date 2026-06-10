@@ -15,13 +15,18 @@ class KokurikulerController extends Controller
     public function index()
     {
         $dimensi = DimensiKokurikuler::with('deskripsiKokurikuler')->latest()->get();
+        $totalDeskripsi = DeskripsiKokurikuler::count();
 
-        return view('tu.kokurikuler.index', compact('dimensi'));
+        return view('tu.kokurikuler.index', compact('dimensi', 'totalDeskripsi'));
     }
 
     public function dimensiStore(StoreDimensiKokurikulerRequest $r)
     {
-        DimensiKokurikuler::create($r->validated());
+        $dimensi = DimensiKokurikuler::create($r->validated());
+
+        activity()->performedOn($dimensi)->event('created')
+            ->withProperties(['nama' => $dimensi->nama])
+            ->log('Dimensi kokurikuler ditambahkan');
 
         return back()->with('status', 'Dimensi kokurikuler ditambahkan.');
     }
@@ -30,19 +35,32 @@ class KokurikulerController extends Controller
     {
         $dimensiKokurikuler->update($r->validated());
 
+        activity()->performedOn($dimensiKokurikuler)->event('updated')
+            ->withProperties(['nama' => $dimensiKokurikuler->nama])
+            ->log('Dimensi kokurikuler diperbarui');
+
         return back()->with('status', 'Diperbarui.');
     }
 
     public function dimensiDestroy(DimensiKokurikuler $dimensiKokurikuler)
     {
+        $nama = $dimensiKokurikuler->nama;
         $dimensiKokurikuler->delete();
+
+        activity()->performedOn($dimensiKokurikuler)->event('deleted')
+            ->withProperties(['nama' => $nama])
+            ->log('Dimensi kokurikuler dihapus');
 
         return back()->with('status', 'Dihapus.');
     }
 
     public function deskripsiStore(StoreDeskripsiKokurikulerRequest $r)
     {
-        DeskripsiKokurikuler::create($r->validated());
+        $deskripsi = DeskripsiKokurikuler::create($r->validated());
+
+        activity()->performedOn($deskripsi)->event('created')
+            ->withProperties(['predikat' => $deskripsi->predikat])
+            ->log('Deskripsi kokurikuler ditambahkan');
 
         return back()->with('status', 'Deskripsi ditambahkan.');
     }
@@ -51,12 +69,21 @@ class KokurikulerController extends Controller
     {
         $deskripsiKokurikuler->update($r->validated());
 
+        activity()->performedOn($deskripsiKokurikuler)->event('updated')
+            ->withProperties(['predikat' => $deskripsiKokurikuler->predikat])
+            ->log('Deskripsi kokurikuler diperbarui');
+
         return back()->with('status', 'Diperbarui.');
     }
 
     public function deskripsiDestroy(DeskripsiKokurikuler $deskripsiKokurikuler)
     {
+        $predikat = $deskripsiKokurikuler->predikat;
         $deskripsiKokurikuler->delete();
+
+        activity()->performedOn($deskripsiKokurikuler)->event('deleted')
+            ->withProperties(['predikat' => $predikat])
+            ->log('Deskripsi kokurikuler dihapus');
 
         return back()->with('status', 'Dihapus.');
     }

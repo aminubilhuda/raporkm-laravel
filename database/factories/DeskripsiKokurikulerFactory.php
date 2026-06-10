@@ -17,7 +17,7 @@ class DeskripsiKokurikulerFactory extends Factory
     {
         return [
             'dimensi_kokurikuler_id' => DimensiKokurikuler::factory(),
-            'predikat' => fake()->randomElement(['A', 'B', 'C', 'D']),
+            'predikat' => fake()->randomElement(['Sangat Baik', 'Baik', 'Cukup', 'Perlu Bimbingan']),
             'deskripsi' => fake()->paragraph(),
         ];
     }

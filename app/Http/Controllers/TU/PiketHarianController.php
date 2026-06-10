@@ -19,14 +19,30 @@ class PiketHarianController extends Controller
 
     public function store(StorePiketHarianRequest $r)
     {
-        PiketHarian::create($r->validated());
+        $ph = PiketHarian::create($r->validated());
+
+        activity()->performedOn($ph)->event('created')
+            ->withProperties([
+                'nama' => $ph->user->nama ?? '',
+                'hari' => $ph->hari->nama ?? '',
+            ])
+            ->log('Jadwal piket guru ditambahkan');
 
         return back()->with('status', 'Piket ditambahkan.');
     }
 
     public function destroy(PiketHarian $piketHarian)
     {
+        $nama = $piketHarian->user->nama ?? '';
+        $hari = $piketHarian->hari->nama ?? '';
         $piketHarian->delete();
+
+        activity()->performedOn($piketHarian)->event('deleted')
+            ->withProperties([
+                'nama' => $nama,
+                'hari' => $hari,
+            ])
+            ->log('Jadwal piket guru dihapus');
 
         return back()->with('status', 'Piket dihapus.');
     }

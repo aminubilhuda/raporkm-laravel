@@ -18,7 +18,11 @@ class OrganisasiController extends Controller
 
     public function store(StoreOrganisasiRequest $r)
     {
-        OrganisasiModel::create($r->validated());
+        $org = OrganisasiModel::create($r->validated());
+
+        activity()->performedOn($org)->event('created')
+            ->withProperties(['nama' => $org->nama_organisasi])
+            ->log('Organisasi ditambahkan');
 
         return back()->with('status', 'Organisasi ditambahkan.');
     }
@@ -27,12 +31,21 @@ class OrganisasiController extends Controller
     {
         $organisasi->update($r->validated());
 
+        activity()->performedOn($organisasi)->event('updated')
+            ->withProperties(['nama' => $organisasi->nama_organisasi])
+            ->log('Organisasi diperbarui');
+
         return back()->with('status', 'Diperbarui.');
     }
 
     public function destroy(OrganisasiModel $organisasi)
     {
+        $nama = $organisasi->nama_organisasi;
         $organisasi->delete();
+
+        activity()->performedOn($organisasi)->event('deleted')
+            ->withProperties(['nama' => $nama])
+            ->log('Organisasi dihapus');
 
         return back()->with('status', 'Dihapus.');
     }

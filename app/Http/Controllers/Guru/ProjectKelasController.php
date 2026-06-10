@@ -18,8 +18,8 @@ class ProjectKelasController extends Controller
     {
         $user = auth()->user();
         $sekolah = Sekolah::first();
-        $taId = $sekolah?->tahun_aktif;
-        $semesterId = $sekolah?->semester_aktif;
+        $taId = session('selected_tahun', $sekolah?->tahun_aktif);
+        $semesterId = session('selected_semester', $sekolah?->semester_aktif);
 
         $kelasWali = $user->kelasWali()
             ->when($taId, fn ($q) => $q->where('kelas_wali.tahun_pelajaran_id', $taId))
@@ -59,8 +59,8 @@ class ProjectKelasController extends Controller
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'user_id' => $user->id,
-            'tahun_pelajaran_id' => $sekolah?->tahun_aktif,
-            'semester_id' => $sekolah?->semester_aktif,
+            'tahun_pelajaran_id' => session('selected_tahun', $sekolah?->tahun_aktif),
+            'semester_id' => session('selected_semester', $sekolah?->semester_aktif),
         ]);
 
         return redirect()->route('guru.project-kelas.index', $request->kelas_id)
@@ -83,8 +83,8 @@ class ProjectKelasController extends Controller
         abort_unless($this->isWali($proyekKelas->kelas_id), 403);
 
         $sekolah = Sekolah::first();
-        $taId = $sekolah?->tahun_aktif;
-        $semesterId = $sekolah?->semester_aktif;
+        $taId = session('selected_tahun', $sekolah?->tahun_aktif);
+        $semesterId = session('selected_semester', $sekolah?->semester_aktif);
 
         $siswa = SiswaKelas::where('kelas_id', $proyekKelas->kelas_id)
             ->when($taId, fn ($q) => $q->where('tahun_pelajaran_id', $taId))
@@ -123,8 +123,8 @@ class ProjectKelasController extends Controller
                     ],
                     [
                         'nilai' => $nilai,
-                        'tahun_pelajaran_id' => $sekolah?->tahun_aktif,
-                        'semester_id' => $sekolah?->semester_aktif,
+                        'tahun_pelajaran_id' => session('selected_tahun', $sekolah?->tahun_aktif),
+                        'semester_id' => session('selected_semester', $sekolah?->semester_aktif),
                     ]
                 );
             }
@@ -139,8 +139,8 @@ class ProjectKelasController extends Controller
         $sekolah = Sekolah::first();
 
         return auth()->user()->kelasWali()
-            ->where('kelas_wali.tahun_pelajaran_id', $sekolah?->tahun_aktif)
-            ->where('kelas_wali.semester_id', $sekolah?->semester_aktif)
+            ->where('kelas_wali.tahun_pelajaran_id', session('selected_tahun', $sekolah?->tahun_aktif))
+            ->where('kelas_wali.semester_id', session('selected_semester', $sekolah?->semester_aktif))
             ->where('id', $kelasId)->exists();
     }
 }

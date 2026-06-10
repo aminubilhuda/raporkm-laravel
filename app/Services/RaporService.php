@@ -86,7 +86,8 @@ class RaporService
             ->where('siswa_id', $siswaId)
             ->where('tahun_pelajaran_id', $tahunId)
             ->where('semester_id', $semesterId)
-            ->get();
+            ->get()
+            ->sortBy(fn ($n) => $n->mapel?->urutan ?? 0);
 
         return [
             'siswa' => $siswa,

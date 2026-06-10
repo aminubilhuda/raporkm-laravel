@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('npsn', 20);
             $table->string('nama_sekolah', 200);
             $table->unsignedTinyInteger('id_jenjang')->default(1);
-            $table->unsignedTinyInteger('bentuk_sekolah')->default(1);
+            $table->string('bentuk_sekolah', 50)->default('SMK');
             $table->text('yayasan')->nullable();
             $table->string('website', 255)->nullable();
             $table->text('alamat')->nullable();

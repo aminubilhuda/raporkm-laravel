@@ -131,6 +131,85 @@
             </div>
         </div>
 
+        @if($isEdit && ($pegawai->jabatan == 3 || $pegawai->jabatan == 4))
+        @php
+            $menuLabels = [
+                'dashboard' => 'Dashboard',
+                'kelas-ku' => 'Kelas Saya',
+                'tujuan-pembelajaran' => 'Tujuan Pembelajaran',
+                'penilaian' => 'Penilaian',
+                'lager-nilai' => 'Lager Nilai',
+                'catatan-rapor' => 'Catatan Rapor',
+                'cetak-rapor' => 'Cetak Rapor',
+                'project-kelas' => 'Project Kelas',
+                'p5bk' => 'P5BK',
+                'kokurikuler' => 'Kokurikuler',
+                'penilaian-kokurikuler' => 'Nilai Kokurikuler',
+                'ekstra' => 'Ekstrakurikuler',
+                'presensi' => 'Presensi',
+                'rekap-presensi' => 'Rekap Presensi',
+                'absensi-bk' => 'Absensi BK',
+                'prakerin' => 'Prakerin',
+                'nilai-prakerin' => 'Nilai Prakerin',
+                'rapor-pkl' => 'Rapor PKL',
+                'piket-harian' => 'Piket Harian',
+                'organisasi' => 'Organisasi',
+            ];
+            $menuCategories = [
+                'Utama' => ['dashboard', 'kelas-ku'],
+                'Penilaian' => ['tujuan-pembelajaran', 'penilaian', 'lager-nilai', 'catatan-rapor', 'cetak-rapor'],
+                'P5 & Lainnya' => ['project-kelas', 'p5bk', 'kokurikuler', 'penilaian-kokurikuler', 'ekstra', 'presensi', 'rekap-presensi', 'absensi-bk'],
+                'Lainnya' => ['prakerin', 'nilai-prakerin', 'rapor-pkl', 'piket-harian', 'organisasi'],
+            ];
+        @endphp
+        <div class="bg-white rounded-card shadow-card p-5 md:p-6 border-l-[6px] border-l-coral">
+            <h2 class="text-lg font-extrabold text-coral-dark mb-2">Hak Akses Menu</h2>
+            <p class="text-sm text-gray-500 mb-4">Atur menu mana saja yang terlihat untuk guru ini. <strong>Auto</strong> = mengikuti data tugas otomatis (wali kelas, mengajar mapel, dll).</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-surface-base text-left">
+                        <tr>
+                            <th class="px-4 py-2 font-extrabold text-gray-500 text-xs uppercase tracking-wider">Menu</th>
+                            <th class="px-4 py-2 font-extrabold text-gray-500 text-xs uppercase tracking-wider text-center w-24">Auto</th>
+                            <th class="px-4 py-2 font-extrabold text-gray-500 text-xs uppercase tracking-wider text-center w-24">Grant</th>
+                            <th class="px-4 py-2 font-extrabold text-gray-500 text-xs uppercase tracking-wider text-center w-24">Revoke</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @foreach($menuCategories as $category => $slugs)
+                        <tr class="bg-surface-base/50">
+                            <td colspan="4" class="px-4 py-2 font-extrabold text-gray-700 text-xs uppercase tracking-wider">{{ $category }}</td>
+                        </tr>
+                        @foreach($slugs as $slug)
+                        @php $currentValue = $menuAkses[$slug] ?? null; @endphp
+                        <tr class="hover:bg-coral/5 transition-colors">
+                            <td class="px-4 py-2 font-bold text-gray-700">{{ $menuLabels[$slug] }}</td>
+                            <td class="px-4 py-2 text-center">
+                                <input type="radio" name="menu_akses[{{ $slug }}]" value="" {{ is_null($currentValue) ? 'checked' : '' }}
+                                    class="text-teal-primary focus:ring-teal-primary">
+                            </td>
+                            <td class="px-4 py-2 text-center">
+                                <input type="radio" name="menu_akses[{{ $slug }}]" value="grant" {{ $currentValue === 'grant' ? 'checked' : '' }}
+                                    class="text-green-500 focus:ring-green-500">
+                            </td>
+                            <td class="px-4 py-2 text-center">
+                                <input type="radio" name="menu_akses[{{ $slug }}]" value="revoke" {{ $currentValue === 'revoke' ? 'checked' : '' }}
+                                    class="text-red-500 focus:ring-red-500">
+                            </td>
+                        </tr>
+                        @endforeach
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-3 flex gap-4 text-xs text-gray-400">
+                <span><span class="inline-block w-2 h-2 rounded-full bg-teal-500 mr-1"></span>Auto = ikut tugas otomatis</span>
+                <span><span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>Grant = paksa tampilkan</span>
+                <span><span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-1"></span>Revoke = paksa sembunyikan</span>
+            </div>
+        </div>
+        @endif
+
         <div class="flex items-center justify-end gap-3">
             <a href="{{ route('tu.pegawai.index') }}" class="btn-secondary inline-flex items-center gap-2">Batal</a>
             <x-primary-button>{{ $isEdit ? 'Simpan Perubahan' : 'Tambah Pegawai' }}</x-primary-button>

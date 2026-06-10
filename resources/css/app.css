@@ -55,13 +55,18 @@
 
     /* ── Stat Cards ── */
     .stat-card {
-        @apply rounded-card shadow-card p-5 transition-all duration-300 border-l-[6px] hover:scale-[1.02] hover:shadow-accent-glow;
+        @apply rounded-card p-6 md:p-7 transition-all duration-300 border-l-[6px] hover:scale-[1.02];
+        box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .stat-card:hover {
+        box-shadow: 0 8px 40px rgba(43,168,162,0.15), 0 2px 8px rgba(0,0,0,0.06);
+        transform: translateY(-2px) scale(1.02);
     }
 
-    .stat-card-teal  { @apply bg-gradient-to-br from-teal-bg to-white border-l-teal-primary; }
-    .stat-card-coral { @apply bg-gradient-to-br from-red-50 to-white border-l-coral; }
-    .stat-card-gold  { @apply bg-gradient-to-br from-yellow-50 to-white border-l-gold; }
-    .stat-card-sky   { @apply bg-gradient-to-br from-blue-50 to-white border-l-sky; }
+    .stat-card-teal  { background: linear-gradient(135deg, #E8F6F5 0%, #D1EFED 40%, #FFFFFF 100%); border-l-color: #2BA8A2; }
+    .stat-card-coral { background: linear-gradient(135deg, #FFF0EC 0%, #FFE0D6 40%, #FFFFFF 100%); border-l-color: #EF6C4A; }
+    .stat-card-gold  { background: linear-gradient(135deg, #FFF8E1 0%, #FFEFB3 40%, #FFFFFF 100%); border-l-color: #FFD23F; }
+    .stat-card-sky   { background: linear-gradient(135deg, #E8F4FD 0%, #D0EAFA 40%, #FFFFFF 100%); border-l-color: #5DADE2; }
 
     /* ── Flash ── */
     .flash-message {
@@ -91,27 +96,29 @@
 
     /* ── Icon Circle ── */
     .icon-circle {
-        @apply w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0;
+        @apply w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0;
     }
 
-    .icon-circle-teal  { @apply bg-teal-primary/10 text-teal-primary; }
-    .icon-circle-coral { @apply bg-coral/10 text-coral; }
-    .icon-circle-gold  { @apply bg-gold/20 text-gold-dark; }
-    .icon-circle-sky   { @apply bg-sky/10 text-sky; }
+    .icon-circle-teal  { background: linear-gradient(135deg, rgba(43,168,162,0.15), rgba(43,168,162,0.08)); color: #2BA8A2; }
+    .icon-circle-coral { background: linear-gradient(135deg, rgba(239,108,74,0.15), rgba(239,108,74,0.08)); color: #EF6C4A; }
+    .icon-circle-gold  { background: linear-gradient(135deg, rgba(255,210,63,0.25), rgba(255,210,63,0.12)); color: #E6B800; }
+    .icon-circle-sky   { background: linear-gradient(135deg, rgba(93,173,226,0.15), rgba(93,173,226,0.08)); color: #5DADE2; }
     .icon-circle-white { @apply bg-white/20 text-white; }
 
     /* ── Progress Bar ── */
     .progress-track {
-        @apply h-2.5 rounded-full bg-gray-200 overflow-hidden;
+        @apply h-3 rounded-full bg-gray-100 overflow-hidden;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
     }
 
     .progress-fill {
         @apply h-full rounded-full transition-all duration-1000 ease-out;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.12);
     }
 
-    .progress-fill-teal  { @apply bg-gradient-to-r from-teal-primary to-teal-light; }
-    .progress-fill-coral { @apply bg-gradient-to-r from-coral to-coral-light; }
-    .progress-fill-gold  { @apply bg-gradient-to-r from-gold to-gold-light; }
+    .progress-fill-teal  { background: linear-gradient(90deg, #2BA8A2, #3CC4BD, #5DD4CE); }
+    .progress-fill-coral { background: linear-gradient(90deg, #EF6C4A, #FF8A6A, #FFB09A); }
+    .progress-fill-gold  { background: linear-gradient(90deg, #E6B800, #FFD23F, #FFE47A); }
 
     /* ── Quick Action ── */
     .quick-action {
@@ -122,6 +129,153 @@
     .quick-action-gold  { @apply bg-gold/10 hover:bg-gold/20; }
     .quick-action-coral { @apply bg-coral/5 hover:bg-coral/10; }
     .quick-action-sky   { @apply bg-sky/5 hover:bg-sky/10; }
+
+    /* ── Auth shell ── */
+    .auth-shell {
+        @apply min-h-screen w-full flex flex-col items-center justify-center
+               px-4 sm:px-6 py-10
+               bg-surface-base
+               relative overflow-hidden;
+        background-image:
+            radial-gradient(1200px 600px at 50% -10%, rgba(43,168,162,0.10), transparent 60%),
+            radial-gradient(800px  400px at 100% 100%, rgba(93,173,226,0.08), transparent 60%);
+    }
+
+    .auth-shell::before {
+        content: "";
+        @apply absolute inset-0 bg-dots opacity-60 pointer-events-none;
+    }
+
+    /* ── Auth card ── */
+    .auth-card {
+        @apply relative w-full max-w-[420px]
+               bg-white rounded-card shadow-card-soft
+               px-7 sm:px-9 py-9 sm:py-10
+               ring-1 ring-black/[0.04]
+               animate-fade-up;
+    }
+
+    /* ── Brand header ── */
+    .auth-brand {
+        @apply flex flex-col items-center text-center mb-7 sm:mb-8;
+    }
+
+    .auth-brand-tile {
+        @apply inline-flex items-center justify-center
+               w-14 h-14 rounded-card
+               bg-white shadow-card-soft ring-1 ring-black/[0.05]
+               mb-4 overflow-hidden;
+    }
+
+    .auth-brand-title {
+        @apply text-[26px] sm:text-2xl font-bold
+               text-teal-dark leading-tight tracking-tight;
+    }
+
+    .auth-brand-tagline {
+        @apply mt-1.5 text-[11px] font-medium
+               uppercase tracking-[0.18em] text-teal-primary/60;
+    }
+
+    .auth-brand-school {
+        @apply mt-2 text-[13px] text-gray-500 leading-relaxed;
+    }
+
+    /* ── Form fields ── */
+    .field {
+        @apply relative;
+    }
+
+    .field-label {
+        @apply block text-[13px] font-semibold text-gray-700 mb-1.5;
+    }
+
+    .field-input {
+        @apply w-full h-11 px-3.5
+               bg-cream text-[15px] text-gray-900 placeholder-gray-400
+               border border-gray-200 rounded-field
+               shadow-sm
+               transition-all duration-150
+               hover:border-gray-300
+               focus:outline-none focus:border-teal-primary
+               focus:shadow-focus-ring;
+    }
+
+    .field-input--error {
+        @apply border-red-400 focus:border-red-500
+               focus:shadow-[0_0_0_4px_rgba(231,76,60,0.15)];
+    }
+
+    .field-error {
+        @apply mt-1.5 text-[12.5px] text-red-600 leading-snug;
+    }
+
+    /* ── Soft checkbox ── */
+    .check {
+        @apply h-4 w-4 rounded-md border-gray-300
+               text-teal-primary
+               focus:ring-2 focus:ring-teal-primary/30 focus:ring-offset-1
+               transition-colors;
+    }
+
+    .check-label {
+        @apply ms-2.5 text-[13.5px] text-gray-600 select-none;
+    }
+
+    /* ── PWA row ── */
+    .pwa-row {
+        @apply mt-4 flex items-start gap-3
+               rounded-field border border-gray-100
+               bg-gray-50/60 px-3.5 py-3
+               transition-colors hover:bg-gray-50;
+    }
+
+    .pwa-row-body { @apply flex-1 min-w-0; }
+    .pwa-row-title {
+        @apply text-[13.5px] font-semibold text-gray-700 leading-snug;
+    }
+    .pwa-row-help {
+        @apply text-[12px] text-gray-500 leading-snug mt-0.5;
+    }
+
+    /* ── Submit row ── */
+    .auth-actions {
+        @apply mt-7 flex flex-col-reverse sm:flex-row
+               sm:items-center sm:justify-between gap-3;
+    }
+
+    .auth-link {
+        @apply text-[13px] font-medium text-gray-500
+               hover:text-teal-primary transition-colors
+               rounded-md
+               focus:outline-none focus:ring-2 focus:ring-teal-primary/30;
+    }
+
+    .auth-submit {
+        @apply w-full sm:w-auto sm:min-w-[140px]
+               h-11 px-5
+               inline-flex items-center justify-center
+               bg-teal-primary text-white
+               rounded-field
+               text-[14.5px] font-semibold tracking-wide
+               shadow-teal-glow
+               transition-all duration-200
+               hover:bg-teal-dark hover:shadow-[0_6px_20px_rgba(43,168,162,0.35)]
+               active:scale-[0.98]
+               focus:outline-none focus:shadow-focus-ring
+               disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    /* ── Auth status (optional enhancement) ── */
+    .auth-status {
+        @apply rounded-field bg-teal-bg/60 text-teal-dark px-3.5 py-2 text-[13px];
+    }
+
+    /* Softer fade up animation */
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
 }
 
 @layer utilities {

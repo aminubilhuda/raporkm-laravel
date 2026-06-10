@@ -18,7 +18,7 @@ class SekolahFactory extends Factory
             'npsn' => (string) fake()->unique()->numberBetween(10000000, 99999999),
             'nama_sekolah' => 'SMK Negeri '.fake()->numberBetween(1, 50),
             'id_jenjang' => 1,
-            'bentuk_sekolah' => 1,
+            'bentuk_sekolah' => 'SD',
             'yayasan' => null,
             'website' => fake()->url(),
             'alamat' => fake()->address(),

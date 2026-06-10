@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['siswa_id', 'kelas_id', 'tahun_pelajaran_id', 'tanggal_lulus', 'no_ijazah', 'lanjut_ke', 'keterangan'])]
 class Lulusan extends Model
 {
-    protected $table = 'lulusan';
+    use HasFactory, SoftDeletes;
 
-    use HasFactory;
+    protected $table = 'lulusan';
 
     protected function casts(): array
     {

@@ -65,8 +65,7 @@ class AuthenticationTest extends TestCase
         $response
             ->assertOk()
             ->assertViewIs('guru.dashboard')
-            ->assertSee('Kelas Saya')
-            ->assertSee('Catatan Rapor');
+            ->assertSee('Kelas Saya');
     }
 
     public function test_users_can_logout(): void

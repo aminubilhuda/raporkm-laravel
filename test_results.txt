@@ -1,0 +1,861 @@
+﻿PHPUnit 12.5.28 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.5.6
+Configuration: D:\PROJECT\php\laravel\raporkm-laravel\phpunit.xml
+
+Time: 00:42.670, Memory: 114.00 MB
+
+[4mAbsensi Bk (Tests\Feature\Guru\AbsensiBk\AbsensiBk)[0m
+[32m Γ£ö [0mGuru can view absensi bk form
+[32m Γ£ö [0mGuru can store absensi bk
+[32m Γ£ö [0mAbsensi bk validates required
+
+[4mAuth (Tests\Feature\Api\V1\Auth)[0m
+[32m Γ£ö [0mLogin success
+[32m Γ£ö [0mLogin wrong password
+[32m Γ£ö [0mLogin wrong username
+[32m Γ£ö [0mLogin missing fields
+[32m Γ£ö [0mMe authenticated
+[32m Γ£ö [0mMe unauthenticated
+[32m Γ£ö [0mMe guru role
+[32m Γ£ö [0mLogout
+[32m Γ£ö [0mFcm register
+[32m Γ£ö [0mFcm register missing token
+[32m Γ£ö [0mFcm unregister
+[32m Γ£ö [0mLogin revokes previous token
+[32m Γ£ö [0mDifferent devices keep tokens
+[32m Γ£ö [0mReferensi agama
+[32m Γ£ö [0mReferensi unauthenticated
+
+[4mAuthentication (Tests\Feature\Auth\Authentication)[0m
+[32m Γ£ö [0mLogin screen can be rendered
+[32m Γ£ö [0mUsers can authenticate using the login screen
+[32m Γ£ö [0mUsers can not authenticate with invalid password
+[32m Γ£ö [0mNavigation menu can be rendered
+[32m Γ£ö [0mUsers can logout
+
+[4mAuthorization (Tests\Feature\Guru\Authorization)[0m
+[32m Γ£ö [0mGuru tidak bisa input nilai mapel yang tidak diajar
+[32m Γ£ö [0mGuru tidak bisa lihat lager nilai kelas yang tidak diajar
+[32m Γ£ö [0mWali kelas bisa lihat catatan rapor kelasnya
+[32m Γ£ö [0mBukan wali tidak bisa akses catatan rapor kelas lain
+[32m Γ£ö [0mPenilaian index menampilkan hanya kelas dan mapel yang diajar
+[32m Γ£ö [0mPenilaian index guru lain terkunci
+[32m Γ£ö [0mGuru tidak bisa tambah tp untuk mapel yang tidak diajar
+[32m Γ£ö [0mGuru tidak bisa tambah catatan kelas bukan walianya
+
+[4mBuku Induk (Tests\Feature\Tu\BukuInduk\BukuInduk)[0m
+[32m Γ£ö [0mTu can view buku induk
+[32m Γ£ö [0mGuru cannot access buku induk
+[32m Γ£ö [0mBuku induk filter by kelas
+[32m Γ£ö [0mBuku induk search
+[32m Γ£ö [0mBuku induk pdf download
+
+[4mCetak Rapor (Tests\Feature\Guru\CetakRapor\CetakRapor)[0m
+[32m Γ£ö [0mWali kelas bisa lihat cetak rapor index
+[32m Γ£ö [0mBukan wali tidak bisa lihat cetak rapor kelas
+[32m Γ£ö [0mWali kelas bisa lihat daftar siswa
+[32m Γ£ö [0mGuru tidak bisa cetak rapor kelas bukan walianya
+[32m Γ£ö [0mGuru bisa cetak rapor single siswa
+[32m Γ£ö [0mGuru bisa cetak rapor mid siswa
+[32m Γ£ö [0mCetak rapor batch siswa menghasilkan zip
+[32m Γ£ö [0mCetak rapor jenis wajib dipilih
+
+[4mDapodik Job (Tests\Feature\Tu\Dapodik\DapodikJob)[0m
+[32m Γ£ö [0mDispatch sync job puts job on queue
+[32m Γ£ö [0mDispatch sync job works for all endpoints
+[32m Γ£ö [0mSync job logs error when service throws
+[32m Γ£ö [0mSync job has correct timeout
+
+[4mDapodik Sync (Tests\Feature\Tu\Dapodik\DapodikSync)[0m
+[32m Γ£ö [0mIndex page renders
+[32m Γ£ö [0mUpdate config saves settings
+[32m Γ£ö [0mUpdate config validates required
+[32m Γ£ö [0mSync endpoint dispatches job and redirects
+[32m Γ£ö [0mSync returns 404 for unknown endpoint
+[32m Γ£ö [0mLog page is paginated
+[32m Γ£ö [0mStatus endpoint returns json
+[32m Γ£ö [0mCancel returns message when no active batch
+[32m Γ£ö [0mGuru cannot access dapodik
+
+[4mEkstra (Tests\Feature\Guru\Ekstra\Ekstra)[0m
+[32m Γ£ö [0mGuru can view ekstra index
+[32m Γ£ö [0mGuru sees only their eskuls
+
+[4mEkstra (Tests\Feature\Tu\Ekstra\Ekstra)[0m
+[32m Γ£ö [0mTu can view ekstra index
+[32m Γ£ö [0mTu can create eskul
+[32m Γ£ö [0mCreate eskul validates required nama
+[32m Γ£ö [0mTu can update eskul
+[32m Γ£ö [0mTu can delete eskul
+[32m Γ£ö [0mGuru cannot access tu ekstra
+
+[4mEkstra Api (Tests\Feature\Api\V1\EkstraApi)[0m
+[32m Γ£ö [0mIndex returns ekstra list
+[32m Γ£ö [0mStore creates ekstra
+[32m Γ£ö [0mStore validates required
+[32m Γ£ö [0mUpdate modifies ekstra
+[32m Γ£ö [0mDestroy deletes ekstra
+[32m Γ£ö [0mStore pembina
+[32m Γ£ö [0mDestroy pembina
+[32m Γ£ö [0mRequires tu role
+
+[4mEmail Verification (Tests\Feature\Auth\EmailVerification)[0m
+[32m Γ£ö [0mEmail verification screen can be rendered
+[32m Γ£ö [0mEmail can be verified
+[32m Γ£ö [0mEmail is not verified with invalid hash
+
+[4mExample (Tests\Feature\Example)[0m
+[32m Γ£ö [0mThe application returns a successful response
+
+[4mExample (Tests\Unit\Example)[0m
+[32m Γ£ö [0mThat true is true
+
+[4mExport Service (Tests\Unit\Services\ExportService)[0m
+[32m Γ£ö [0mExport nilai returns streamed response with xlsx content type
+[32m Γ£ö [0mExport presensi groups by siswa and jenis absen
+[32m Γ£ö [0mExport siswa returns all when kelas id null
+[32m Γ£ö [0mExport siswa filters by kelas when provided
+
+[4mFactory Smoke (Tests\Feature\Tu\FactorySmoke)[0m
+[32m Γ£ö [0mAll fase 3 factories can create
+
+[4mGuru Catatan Rapor (Tests\Feature\Api\V1\GuruCatatanRapor)[0m
+[32m Γ£ö [0mIndex returns catatan
+[32m Γ£ö [0mStore creates catatan
+[32m Γ£ö [0mRequires guru role
+
+[4mGuru Dashboard (Tests\Feature\Api\V1\GuruDashboard)[0m
+[32m Γ£ö [0mDashboard returns success
+[32m Γ£ö [0mDashboard with wali kelas
+[32m Γ£ö [0mDashboard with mapel diajar
+[32m Γ£ö [0mDashboard requires guru role
+[32m Γ£ö [0mDashboard with empty data
+
+[4mGuru Kelas Ku (Tests\Feature\Api\V1\GuruKelasKu)[0m
+[31m Γ£ÿ [0mIndex returns kelas where guru teaches
+   [31mΓöÉ[0m
+   [31mΓö£[0m [41;37mExpected response status code [200] but received 500.                    [0m
+   [31mΓö£[0m [41;37mFailed asserting that 500 is identical to 200.                           [0m
+   [31mΓö£[0m                                                                          
+   [31mΓö£[0m [41;37mThe following exception occurred during the last request:                [0m
+   [31mΓö£[0m                                                                          
+   [31mΓö£[0m [41;37mPDOException: SQLSTATE[HY000]: General error: 1 ambiguous column name: tahun_pelajaran_id in D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php:421[0m
+   [31mΓö£[0m [41;37mStack trace:                                                             [0m
+   [31mΓö£[0m [41;37m#0 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php(421): PDO->prepare('select "kelas_i...')[0m
+   [31mΓö£[0m [41;37m#1 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php(830): Illuminate\Database\Connection->{closure:Illuminate\Database\Connection::select():412}('select "kelas_i...', Array)[0m
+   [31mΓö£[0m [41;37m#2 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php(797): Illuminate\Database\Connection->runQueryCallback('select "kelas_i...', Array, Object(Closure))[0m
+   [31mΓö£[0m [41;37m#3 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php(412): Illuminate\Database\Connection->run('select "kelas_i...', Array, Object(Closure))[0m
+   [31mΓö£[0m [41;37m#4 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3567): Illuminate\Database\Connection->select('select "kelas_i...', Array, true, Array)[0m
+   [31mΓö£[0m [41;37m#5 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3827): Illuminate\Database\Query\Builder->runSelect()[0m
+   [31mΓö£[0m [41;37m#6 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(1088): Illuminate\Database\Query\Builder->pluck('kelas_id', NULL)[0m
+   [31mΓö£[0m [41;37m#7 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php(23): Illuminate\Database\Eloquent\Builder->pluck('kelas_id')[0m
+   [31mΓö£[0m [41;37m#8 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php(52): Illuminate\Database\Eloquent\Relations\Relation->forwardCallTo(Object(Illuminate\Database\Eloquent\Builder), 'pluck', Array)[0m
+   [31mΓö£[0m [41;37m#9 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Relations\Relation.php(538): Illuminate\Database\Eloquent\Relations\Relation->forwardDecoratedCallTo(Object(Illuminate\Database\Eloquent\Builder), 'pluck', Array)[0m
+   [31mΓö£[0m [41;37m#10 D:\PROJECT\php\laravel\raporkm-laravel\app\Http\Controllers\Api\V1\Guru\KelasKuController.php(29): Illuminate\Database\Eloquent\Relations\Relation->__call('pluck', Array)[0m
+   [31mΓö£[0m [41;37m#11 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\ControllerDispatcher.php(46): App\Http\Controllers\Api\V1\Guru\KelasKuController->index(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#12 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Route.php(269): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(App\Http\Controllers\Api\V1\Guru\KelasKuController), 'index')[0m
+   [31mΓö£[0m [41;37m#13 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Route.php(215): Illuminate\Routing\Route->runController()[0m
+   [31mΓö£[0m [41;37m#14 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(822): Illuminate\Routing\Route->run()[0m
+   [31mΓö£[0m [41;37m#15 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Routing\Router->{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#16 D:\PROJECT\php\laravel\raporkm-laravel\app\Http\Middleware\EnsureRole.php(21): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#17 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): App\Http\Middleware\EnsureRole->handle(Object(Illuminate\Http\Request), Object(Closure), '3', '4')[0m
+   [31mΓö£[0m [41;37m#18 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Middleware\SubstituteBindings.php(52): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#19 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#20 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Auth\Middleware\Authenticate.php(63): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#21 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Auth\Middleware\Authenticate->handle(Object(Illuminate\Http\Request), Object(Closure), 'sanctum')[0m
+   [31mΓö£[0m [41;37m#22 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#23 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(821): Illuminate\Pipeline\Pipeline->then(Object(Closure))[0m
+   [31mΓö£[0m [41;37m#24 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(800): Illuminate\Routing\Router->runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#25 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(764): Illuminate\Routing\Router->runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))[0m
+   [31mΓö£[0m [41;37m#26 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(753): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#27 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(200): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#28 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Foundation\Http\Kernel->{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#29 D:\PROJECT\php\laravel\raporkm-laravel\vendor\livewire\livewire\src\Features\SupportDisablingBackButtonCache\DisableBackButtonCacheMiddleware.php(19): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#30 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Livewire\Features\SupportDisablingBackButtonCache\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#31 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#32 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#33 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#34 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#35 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#36 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#37 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#38 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#39 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#40 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#41 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\HandleCors.php(74): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#42 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\HandleCors->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#43 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\TrustProxies.php(58): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#44 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#45 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#46 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#47 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePathEncoding.php(28): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#48 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#49 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#50 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(175): Illuminate\Pipeline\Pipeline->then(Object(Closure))[0m
+   [31mΓö£[0m [41;37m#51 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(144): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#52 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(607): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#53 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(573): Illuminate\Foundation\Testing\TestCase->call('GET', '/api/v1/guru/ke...', Array, Array, Array, Array, '[]')[0m
+   [31mΓö£[0m [41;37m#54 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(381): Illuminate\Foundation\Testing\TestCase->json('GET', '/api/v1/guru/ke...', Array, Array, 0)[0m
+   [31mΓö£[0m [41;37m#55 D:\PROJECT\php\laravel\raporkm-laravel\tests\Feature\Api\V1\GuruKelasKuTest.php(76): Illuminate\Foundation\Testing\TestCase->getJson('/api/v1/guru/ke...', Array)[0m
+   [31mΓö£[0m [41;37m#56 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(1314): Tests\Feature\Api\V1\GuruKelasKuTest->test_index_returns_kelas_where_guru_teaches()[0m
+   [31mΓö£[0m [41;37m#57 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(1351): PHPUnit\Framework\TestCase->invokeTestMethod('test_index_retu...', Array)[0m
+   [31mΓö£[0m [41;37m#58 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(521): PHPUnit\Framework\TestCase->runTest()[0m
+   [31mΓö£[0m [41;37m#59 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestRunner\TestRunner.php(99): PHPUnit\Framework\TestCase->runBare()[0m
+   [31mΓö£[0m [41;37m#60 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(361): PHPUnit\Framework\TestRunner->run(Object(Tests\Feature\Api\V1\GuruKelasKuTest))[0m
+   [31mΓö£[0m [41;37m#61 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestCase->run()[0m
+   [31mΓö£[0m [41;37m#62 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestSuite->run()[0m
+   [31mΓö£[0m [41;37m#63 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestSuite->run()[0m
+   [31mΓö£[0m [41;37m#64 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(64): PHPUnit\Framework\TestSuite->run()[0m
+   [31mΓö£[0m [41;37m#65 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\TextUI\Application.php(229): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))[0m
+   [31mΓö£[0m [41;37m#66 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\phpunit(104): PHPUnit\TextUI\Application->run(Array)[0m
+   [31mΓö£[0m [41;37m#67 D:\PROJECT\php\laravel\raporkm-laravel\vendor\bin\phpunit(122): include('D:\\PROJECT\\php\\...')[0m
+   [31mΓö£[0m [41;37m#68 {main}                                                               [0m
+   [31mΓö£[0m                                                                          
+   [31mΓö£[0m [41;37mNext Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 ambiguous column name: tahun_pelajaran_id (Connection: sqlite, Database: :memory:, SQL: select "kelas_id" from "kelas" inner join "kelas_wali" on "kelas"."id" = "kelas_wali"."kelas_id" where "kelas_wali"."user_id" = 1 and "tahun_pelajaran_id" = 1 and "semester_id" = 1) in D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php:841[0m
+   [31mΓö£[0m [41;37mStack trace:                                                             [0m
+   [31mΓö£[0m [41;37m#0 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php(797): Illuminate\Database\Connection->runQueryCallback('select "kelas_i...', Array, Object(Closure))[0m
+   [31mΓö£[0m [41;37m#1 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php(412): Illuminate\Database\Connection->run('select "kelas_i...', Array, Object(Closure))[0m
+   [31mΓö£[0m [41;37m#2 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3567): Illuminate\Database\Connection->select('select "kelas_i...', Array, true, Array)[0m
+   [31mΓö£[0m [41;37m#3 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3827): Illuminate\Database\Query\Builder->runSelect()[0m
+   [31mΓö£[0m [41;37m#4 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(1088): Illuminate\Database\Query\Builder->pluck('kelas_id', NULL)[0m
+   [31mΓö£[0m [41;37m#5 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php(23): Illuminate\Database\Eloquent\Builder->pluck('kelas_id')[0m
+   [31mΓö£[0m [41;37m#6 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php(52): Illuminate\Database\Eloquent\Relations\Relation->forwardCallTo(Object(Illuminate\Database\Eloquent\Builder), 'pluck', Array)[0m
+   [31mΓö£[0m [41;37m#7 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Relations\Relation.php(538): Illuminate\Database\Eloquent\Relations\Relation->forwardDecoratedCallTo(Object(Illuminate\Database\Eloquent\Builder), 'pluck', Array)[0m
+   [31mΓö£[0m [41;37m#8 D:\PROJECT\php\laravel\raporkm-laravel\app\Http\Controllers\Api\V1\Guru\KelasKuController.php(29): Illuminate\Database\Eloquent\Relations\Relation->__call('pluck', Array)[0m
+   [31mΓö£[0m [41;37m#9 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\ControllerDispatcher.php(46): App\Http\Controllers\Api\V1\Guru\KelasKuController->index(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#10 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Route.php(269): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(App\Http\Controllers\Api\V1\Guru\KelasKuController), 'index')[0m
+   [31mΓö£[0m [41;37m#11 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Route.php(215): Illuminate\Routing\Route->runController()[0m
+   [31mΓö£[0m [41;37m#12 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(822): Illuminate\Routing\Route->run()[0m
+   [31mΓö£[0m [41;37m#13 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Routing\Router->{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#14 D:\PROJECT\php\laravel\raporkm-laravel\app\Http\Middleware\EnsureRole.php(21): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#15 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): App\Http\Middleware\EnsureRole->handle(Object(Illuminate\Http\Request), Object(Closure), '3', '4')[0m
+   [31mΓö£[0m [41;37m#16 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Middleware\SubstituteBindings.php(52): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#17 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#18 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Auth\Middleware\Authenticate.php(63): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#19 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Auth\Middleware\Authenticate->handle(Object(Illuminate\Http\Request), Object(Closure), 'sanctum')[0m
+   [31mΓö£[0m [41;37m#20 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#21 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(821): Illuminate\Pipeline\Pipeline->then(Object(Closure))[0m
+   [31mΓö£[0m [41;37m#22 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(800): Illuminate\Routing\Router->runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#23 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(764): Illuminate\Routing\Router->runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))[0m
+   [31mΓö£[0m [41;37m#24 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(753): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#25 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(200): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#26 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Foundation\Http\Kernel->{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#27 D:\PROJECT\php\laravel\raporkm-laravel\vendor\livewire\livewire\src\Features\SupportDisablingBackButtonCache\DisableBackButtonCacheMiddleware.php(19): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#28 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Livewire\Features\SupportDisablingBackButtonCache\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#29 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#30 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#31 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#32 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#33 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#34 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#35 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#36 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#37 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#38 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#39 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\HandleCors.php(74): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#40 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\HandleCors->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#41 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\TrustProxies.php(58): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#42 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#43 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#44 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#45 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePathEncoding.php(28): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#46 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#47 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#48 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(175): Illuminate\Pipeline\Pipeline->then(Object(Closure))[0m
+   [31mΓö£[0m [41;37m#49 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(144): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#50 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(607): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#51 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(573): Illuminate\Foundation\Testing\TestCase->call('GET', '/api/v1/guru/ke...', Array, Array, Array, Array, '[]')[0m
+   [31mΓö£[0m [41;37m#52 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(381): Illuminate\Foundation\Testing\TestCase->json('GET', '/api/v1/guru/ke...', Array, Array, 0)[0m
+   [31mΓö£[0m [41;37m#53 D:\PROJECT\php\laravel\raporkm-laravel\tests\Feature\Api\V1\GuruKelasKuTest.php(76): Illuminate\Foundation\Testing\TestCase->getJson('/api/v1/guru/ke...', Array)[0m
+   [31mΓö£[0m [41;37m#54 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(1314): Tests\Feature\Api\V1\GuruKelasKuTest->test_index_returns_kelas_where_guru_teaches()[0m
+   [31mΓö£[0m [41;37m#55 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(1351): PHPUnit\Framework\TestCase->invokeTestMethod('test_index_retu...', Array)[0m
+   [31mΓö£[0m [41;37m#56 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(521): PHPUnit\Framework\TestCase->runTest()[0m
+   [31mΓö£[0m [41;37m#57 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestRunner\TestRunner.php(99): PHPUnit\Framework\TestCase->runBare()[0m
+   [31mΓö£[0m [41;37m#58 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(361): PHPUnit\Framework\TestRunner->run(Object(Tests\Feature\Api\V1\GuruKelasKuTest))[0m
+   [31mΓö£[0m [41;37m#59 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestCase->run()[0m
+   [31mΓö£[0m [41;37m#60 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestSuite->run()[0m
+   [31mΓö£[0m [41;37m#61 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestSuite->run()[0m
+   [31mΓö£[0m [41;37m#62 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(64): PHPUnit\Framework\TestSuite->run()[0m
+   [31mΓö£[0m [41;37m#63 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\TextUI\Application.php(229): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))[0m
+   [31mΓö£[0m [41;37m#64 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\phpunit(104): PHPUnit\TextUI\Application->run(Array)[0m
+   [31mΓö£[0m [41;37m#65 D:\PROJECT\php\laravel\raporkm-laravel\vendor\bin\phpunit(122): include('D:\\PROJECT\\php\\...')[0m
+   [31mΓö£[0m [41;37m#66 {main}                                                               [0m
+   [31mΓö£[0m                                                                          
+   [31mΓö£[0m [41;37m----------------------------------------------------------------------------------[0m
+   [31mΓö£[0m                                                                          
+   [31mΓö£[0m [41;37mSQLSTATE[HY000]: General error: 1 ambiguous column name: tahun_pelajaran_id (Connection: sqlite, Database: :memory:, SQL: select "kelas_id" from "kelas" inner join "kelas_wali" on "kelas"."id" = "kelas_wali"."kelas_id" where "kelas_wali"."user_id" = 1 and "tahun_pelajaran_id" = 1 and "semester_id" = 1)[0m
+   [31mΓöé[0m
+   [31mΓöé[0m D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:45
+   [31mΓöé[0m D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:176
+   [31mΓöé[0m D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Testing\Concerns\AssertsStatusCodes.php:16
+   [31mΓöé[0m D:\PROJECT\php\laravel\raporkm-laravel\tests\Feature\Api\V1\GuruKelasKuTest.php:78
+   [31mΓö┤[0m
+[31m Γ£ÿ [0mIndex returns wali kelas
+   [31mΓöÉ[0m
+   [31mΓö£[0m [41;37mExpected response status code [200] but received 500.                    [0m
+   [31mΓö£[0m [41;37mFailed asserting that 500 is identical to 200.                           [0m
+   [31mΓö£[0m                                                                          
+   [31mΓö£[0m [41;37mThe following exception occurred during the last request:                [0m
+   [31mΓö£[0m                                                                          
+   [31mΓö£[0m [41;37mPDOException: SQLSTATE[HY000]: General error: 1 ambiguous column name: tahun_pelajaran_id in D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php:421[0m
+   [31mΓö£[0m [41;37mStack trace:                                                             [0m
+   [31mΓö£[0m [41;37m#0 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php(421): PDO->prepare('select "kelas_i...')[0m
+   [31mΓö£[0m [41;37m#1 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php(830): Illuminate\Database\Connection->{closure:Illuminate\Database\Connection::select():412}('select "kelas_i...', Array)[0m
+   [31mΓö£[0m [41;37m#2 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php(797): Illuminate\Database\Connection->runQueryCallback('select "kelas_i...', Array, Object(Closure))[0m
+   [31mΓö£[0m [41;37m#3 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php(412): Illuminate\Database\Connection->run('select "kelas_i...', Array, Object(Closure))[0m
+   [31mΓö£[0m [41;37m#4 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3567): Illuminate\Database\Connection->select('select "kelas_i...', Array, true, Array)[0m
+   [31mΓö£[0m [41;37m#5 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3827): Illuminate\Database\Query\Builder->runSelect()[0m
+   [31mΓö£[0m [41;37m#6 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(1088): Illuminate\Database\Query\Builder->pluck('kelas_id', NULL)[0m
+   [31mΓö£[0m [41;37m#7 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php(23): Illuminate\Database\Eloquent\Builder->pluck('kelas_id')[0m
+   [31mΓö£[0m [41;37m#8 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php(52): Illuminate\Database\Eloquent\Relations\Relation->forwardCallTo(Object(Illuminate\Database\Eloquent\Builder), 'pluck', Array)[0m
+   [31mΓö£[0m [41;37m#9 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Relations\Relation.php(538): Illuminate\Database\Eloquent\Relations\Relation->forwardDecoratedCallTo(Object(Illuminate\Database\Eloquent\Builder), 'pluck', Array)[0m
+   [31mΓö£[0m [41;37m#10 D:\PROJECT\php\laravel\raporkm-laravel\app\Http\Controllers\Api\V1\Guru\KelasKuController.php(29): Illuminate\Database\Eloquent\Relations\Relation->__call('pluck', Array)[0m
+   [31mΓö£[0m [41;37m#11 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\ControllerDispatcher.php(46): App\Http\Controllers\Api\V1\Guru\KelasKuController->index(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#12 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Route.php(269): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(App\Http\Controllers\Api\V1\Guru\KelasKuController), 'index')[0m
+   [31mΓö£[0m [41;37m#13 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Route.php(215): Illuminate\Routing\Route->runController()[0m
+   [31mΓö£[0m [41;37m#14 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(822): Illuminate\Routing\Route->run()[0m
+   [31mΓö£[0m [41;37m#15 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Routing\Router->{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#16 D:\PROJECT\php\laravel\raporkm-laravel\app\Http\Middleware\EnsureRole.php(21): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#17 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): App\Http\Middleware\EnsureRole->handle(Object(Illuminate\Http\Request), Object(Closure), '3', '4')[0m
+   [31mΓö£[0m [41;37m#18 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Middleware\SubstituteBindings.php(52): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#19 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#20 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Auth\Middleware\Authenticate.php(63): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#21 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Auth\Middleware\Authenticate->handle(Object(Illuminate\Http\Request), Object(Closure), 'sanctum')[0m
+   [31mΓö£[0m [41;37m#22 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#23 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(821): Illuminate\Pipeline\Pipeline->then(Object(Closure))[0m
+   [31mΓö£[0m [41;37m#24 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(800): Illuminate\Routing\Router->runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#25 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(764): Illuminate\Routing\Router->runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))[0m
+   [31mΓö£[0m [41;37m#26 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(753): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#27 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(200): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#28 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Foundation\Http\Kernel->{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#29 D:\PROJECT\php\laravel\raporkm-laravel\vendor\livewire\livewire\src\Features\SupportDisablingBackButtonCache\DisableBackButtonCacheMiddleware.php(19): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#30 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Livewire\Features\SupportDisablingBackButtonCache\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#31 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#32 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#33 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#34 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#35 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#36 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#37 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#38 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#39 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#40 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#41 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\HandleCors.php(74): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#42 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\HandleCors->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#43 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\TrustProxies.php(58): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#44 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#45 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#46 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#47 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePathEncoding.php(28): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#48 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#49 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#50 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(175): Illuminate\Pipeline\Pipeline->then(Object(Closure))[0m
+   [31mΓö£[0m [41;37m#51 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(144): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#52 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(607): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#53 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(573): Illuminate\Foundation\Testing\TestCase->call('GET', '/api/v1/guru/ke...', Array, Array, Array, Array, '[]')[0m
+   [31mΓö£[0m [41;37m#54 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(381): Illuminate\Foundation\Testing\TestCase->json('GET', '/api/v1/guru/ke...', Array, Array, 0)[0m
+   [31mΓö£[0m [41;37m#55 D:\PROJECT\php\laravel\raporkm-laravel\tests\Feature\Api\V1\GuruKelasKuTest.php(96): Illuminate\Foundation\Testing\TestCase->getJson('/api/v1/guru/ke...', Array)[0m
+   [31mΓö£[0m [41;37m#56 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(1314): Tests\Feature\Api\V1\GuruKelasKuTest->test_index_returns_wali_kelas()[0m
+   [31mΓö£[0m [41;37m#57 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(1351): PHPUnit\Framework\TestCase->invokeTestMethod('test_index_retu...', Array)[0m
+   [31mΓö£[0m [41;37m#58 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(521): PHPUnit\Framework\TestCase->runTest()[0m
+   [31mΓö£[0m [41;37m#59 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestRunner\TestRunner.php(99): PHPUnit\Framework\TestCase->runBare()[0m
+   [31mΓö£[0m [41;37m#60 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(361): PHPUnit\Framework\TestRunner->run(Object(Tests\Feature\Api\V1\GuruKelasKuTest))[0m
+   [31mΓö£[0m [41;37m#61 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestCase->run()[0m
+   [31mΓö£[0m [41;37m#62 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestSuite->run()[0m
+   [31mΓö£[0m [41;37m#63 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestSuite->run()[0m
+   [31mΓö£[0m [41;37m#64 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(64): PHPUnit\Framework\TestSuite->run()[0m
+   [31mΓö£[0m [41;37m#65 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\TextUI\Application.php(229): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))[0m
+   [31mΓö£[0m [41;37m#66 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\phpunit(104): PHPUnit\TextUI\Application->run(Array)[0m
+   [31mΓö£[0m [41;37m#67 D:\PROJECT\php\laravel\raporkm-laravel\vendor\bin\phpunit(122): include('D:\\PROJECT\\php\\...')[0m
+   [31mΓö£[0m [41;37m#68 {main}                                                               [0m
+   [31mΓö£[0m                                                                          
+   [31mΓö£[0m [41;37mNext Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 ambiguous column name: tahun_pelajaran_id (Connection: sqlite, Database: :memory:, SQL: select "kelas_id" from "kelas" inner join "kelas_wali" on "kelas"."id" = "kelas_wali"."kelas_id" where "kelas_wali"."user_id" = 1 and "tahun_pelajaran_id" = 1 and "semester_id" = 1) in D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php:841[0m
+   [31mΓö£[0m [41;37mStack trace:                                                             [0m
+   [31mΓö£[0m [41;37m#0 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php(797): Illuminate\Database\Connection->runQueryCallback('select "kelas_i...', Array, Object(Closure))[0m
+   [31mΓö£[0m [41;37m#1 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Connection.php(412): Illuminate\Database\Connection->run('select "kelas_i...', Array, Object(Closure))[0m
+   [31mΓö£[0m [41;37m#2 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3567): Illuminate\Database\Connection->select('select "kelas_i...', Array, true, Array)[0m
+   [31mΓö£[0m [41;37m#3 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(3827): Illuminate\Database\Query\Builder->runSelect()[0m
+   [31mΓö£[0m [41;37m#4 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(1088): Illuminate\Database\Query\Builder->pluck('kelas_id', NULL)[0m
+   [31mΓö£[0m [41;37m#5 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php(23): Illuminate\Database\Eloquent\Builder->pluck('kelas_id')[0m
+   [31mΓö£[0m [41;37m#6 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php(52): Illuminate\Database\Eloquent\Relations\Relation->forwardCallTo(Object(Illuminate\Database\Eloquent\Builder), 'pluck', Array)[0m
+   [31mΓö£[0m [41;37m#7 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Relations\Relation.php(538): Illuminate\Database\Eloquent\Relations\Relation->forwardDecoratedCallTo(Object(Illuminate\Database\Eloquent\Builder), 'pluck', Array)[0m
+   [31mΓö£[0m [41;37m#8 D:\PROJECT\php\laravel\raporkm-laravel\app\Http\Controllers\Api\V1\Guru\KelasKuController.php(29): Illuminate\Database\Eloquent\Relations\Relation->__call('pluck', Array)[0m
+   [31mΓö£[0m [41;37m#9 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\ControllerDispatcher.php(46): App\Http\Controllers\Api\V1\Guru\KelasKuController->index(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#10 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Route.php(269): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(App\Http\Controllers\Api\V1\Guru\KelasKuController), 'index')[0m
+   [31mΓö£[0m [41;37m#11 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Route.php(215): Illuminate\Routing\Route->runController()[0m
+   [31mΓö£[0m [41;37m#12 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(822): Illuminate\Routing\Route->run()[0m
+   [31mΓö£[0m [41;37m#13 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Routing\Router->{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#14 D:\PROJECT\php\laravel\raporkm-laravel\app\Http\Middleware\EnsureRole.php(21): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#15 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): App\Http\Middleware\EnsureRole->handle(Object(Illuminate\Http\Request), Object(Closure), '3', '4')[0m
+   [31mΓö£[0m [41;37m#16 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Middleware\SubstituteBindings.php(52): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#17 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#18 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Auth\Middleware\Authenticate.php(63): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#19 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Auth\Middleware\Authenticate->handle(Object(Illuminate\Http\Request), Object(Closure), 'sanctum')[0m
+   [31mΓö£[0m [41;37m#20 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#21 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(821): Illuminate\Pipeline\Pipeline->then(Object(Closure))[0m
+   [31mΓö£[0m [41;37m#22 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(800): Illuminate\Routing\Router->runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#23 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(764): Illuminate\Routing\Router->runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))[0m
+   [31mΓö£[0m [41;37m#24 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Routing\Router.php(753): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#25 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(200): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#26 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(180): Illuminate\Foundation\Http\Kernel->{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#27 D:\PROJECT\php\laravel\raporkm-laravel\vendor\livewire\livewire\src\Features\SupportDisablingBackButtonCache\DisableBackButtonCacheMiddleware.php(19): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#28 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Livewire\Features\SupportDisablingBackButtonCache\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#29 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#30 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#31 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#32 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#33 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#34 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#35 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#36 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#37 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#38 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#39 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\HandleCors.php(74): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#40 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\HandleCors->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#41 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\TrustProxies.php(58): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#42 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#43 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#44 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#45 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Http\Middleware\ValidatePathEncoding.php(28): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#46 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding->handle(Object(Illuminate\Http\Request), Object(Closure))[0m
+   [31mΓö£[0m [41;37m#47 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#48 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(175): Illuminate\Pipeline\Pipeline->then(Object(Closure))[0m
+   [31mΓö£[0m [41;37m#49 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(144): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#50 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(607): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))[0m
+   [31mΓö£[0m [41;37m#51 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(573): Illuminate\Foundation\Testing\TestCase->call('GET', '/api/v1/guru/ke...', Array, Array, Array, Array, '[]')[0m
+   [31mΓö£[0m [41;37m#52 D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(381): Illuminate\Foundation\Testing\TestCase->json('GET', '/api/v1/guru/ke...', Array, Array, 0)[0m
+   [31mΓö£[0m [41;37m#53 D:\PROJECT\php\laravel\raporkm-laravel\tests\Feature\Api\V1\GuruKelasKuTest.php(96): Illuminate\Foundation\Testing\TestCase->getJson('/api/v1/guru/ke...', Array)[0m
+   [31mΓö£[0m [41;37m#54 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(1314): Tests\Feature\Api\V1\GuruKelasKuTest->test_index_returns_wali_kelas()[0m
+   [31mΓö£[0m [41;37m#55 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(1351): PHPUnit\Framework\TestCase->invokeTestMethod('test_index_retu...', Array)[0m
+   [31mΓö£[0m [41;37m#56 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(521): PHPUnit\Framework\TestCase->runTest()[0m
+   [31mΓö£[0m [41;37m#57 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestRunner\TestRunner.php(99): PHPUnit\Framework\TestCase->runBare()[0m
+   [31mΓö£[0m [41;37m#58 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestCase.php(361): PHPUnit\Framework\TestRunner->run(Object(Tests\Feature\Api\V1\GuruKelasKuTest))[0m
+   [31mΓö£[0m [41;37m#59 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestCase->run()[0m
+   [31mΓö£[0m [41;37m#60 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestSuite->run()[0m
+   [31mΓö£[0m [41;37m#61 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\Framework\TestSuite.php(374): PHPUnit\Framework\TestSuite->run()[0m
+   [31mΓö£[0m [41;37m#62 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(64): PHPUnit\Framework\TestSuite->run()[0m
+   [31mΓö£[0m [41;37m#63 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\src\TextUI\Application.php(229): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))[0m
+   [31mΓö£[0m [41;37m#64 D:\PROJECT\php\laravel\raporkm-laravel\vendor\phpunit\phpunit\phpunit(104): PHPUnit\TextUI\Application->run(Array)[0m
+   [31mΓö£[0m [41;37m#65 D:\PROJECT\php\laravel\raporkm-laravel\vendor\bin\phpunit(122): include('D:\\PROJECT\\php\\...')[0m
+   [31mΓö£[0m [41;37m#66 {main}                                                               [0m
+   [31mΓö£[0m                                                                          
+   [31mΓö£[0m [41;37m----------------------------------------------------------------------------------[0m
+   [31mΓö£[0m                                                                          
+   [31mΓö£[0m [41;37mSQLSTATE[HY000]: General error: 1 ambiguous column name: tahun_pelajaran_id (Connection: sqlite, Database: :memory:, SQL: select "kelas_id" from "kelas" inner join "kelas_wali" on "kelas"."id" = "kelas_wali"."kelas_id" where "kelas_wali"."user_id" = 1 and "tahun_pelajaran_id" = 1 and "semester_id" = 1)[0m
+   [31mΓöé[0m
+   [31mΓöé[0m D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:45
+   [31mΓöé[0m D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:176
+   [31mΓöé[0m D:\PROJECT\php\laravel\raporkm-laravel\vendor\laravel\framework\src\Illuminate\Testing\Concerns\AssertsStatusCodes.php:16
+   [31mΓöé[0m D:\PROJECT\php\laravel\raporkm-laravel\tests\Feature\Api\V1\GuruKelasKuTest.php:98
+   [31mΓö┤[0m
+[32m Γ£ö [0mSiswa returns class students
+[32m Γ£ö [0mRequires guru role
+
+[4mGuru Penilaian (Tests\Feature\Api\V1\GuruPenilaian)[0m
+[32m Γ£ö [0mIndex requires kelas and mapel
+[32m Γ£ö [0mIndex returns penilaian data
+[33m Γ£ÿ [0mStore formatif
+   [33mΓöÉ[0m
+   [33mΓö£[0m [43;30mError: Class "Tests\Feature\Api\V1\Siswa" not found[0m
+   [33mΓöé[0m
+   [33mΓöé[0m D:[2m\[22mPROJECT[2m\[22mphp[2m\[22mlaravel[2m\[22mraporkm-laravel[2m\[22mtests[2m\[22mFeature[2m\[22mApi[2m\[22mV1[2m\[22mGuruPenilaianTest.php[2m:[22m[34m110[0m
+   [33mΓö┤[0m
+[32m Γ£ö [0mStore formatif validates nilai
+[32m Γ£ö [0mRequires guru role
+
+[4mImport (Tests\Feature\Tu\Import\Import)[0m
+[32m Γ£ö [0mImport siswa form loads
+[32m Γ£ö [0mImport siswa csv success
+[32m Γ£ö [0mImport siswa skips duplicate nisn
+[32m Γ£ö [0mImport prakerin form loads
+[32m Γ£ö [0mImport prakerin csv success
+[32m Γ£ö [0mImport siswa validates file required
+[32m Γ£ö [0mImport siswa validates kelas required
+
+[4mKelas Api (Tests\Feature\Api\V1\KelasApi)[0m
+[32m Γ£ö [0mIndex returns kelas list
+[32m Γ£ö [0mIndex search
+[32m Γ£ö [0mIndex filter by tingkat
+[32m Γ£ö [0mShow returns kelas
+[32m Γ£ö [0mShow 404
+[32m Γ£ö [0mStore creates kelas
+[32m Γ£ö [0mStore validates required fields
+[32m Γ£ö [0mUpdate modifies kelas
+[32m Γ£ö [0mDestroy deletes kelas
+[32m Γ£ö [0mAnggota kelas index
+[32m Γ£ö [0mAnggota kelas store
+[32m Γ£ö [0mAnggota kelas store duplicate
+[32m Γ£ö [0mAnggota kelas destroy
+[32m Γ£ö [0mRequires tu role
+
+[4mKokurikuler (Tests\Feature\Tu\Kokurikuler\Kokurikuler)[0m
+[32m Γ£ö [0mTu can view kokurikuler index
+[32m Γ£ö [0mTu can create dimensi kokurikuler
+[32m Γ£ö [0mCreate dimensi validates nama required
+[32m Γ£ö [0mTu can update dimensi kokurikuler
+[32m Γ£ö [0mTu can delete dimensi kokurikuler
+[32m Γ£ö [0mGuru cannot access tu kokurikuler
+
+[4mKokurikuler Api (Tests\Feature\Api\V1\KokurikulerApi)[0m
+[32m Γ£ö [0mIndex returns dimensi list
+[32m Γ£ö [0mStore creates dimensi
+[32m Γ£ö [0mStore validates required
+[32m Γ£ö [0mUpdate modifies dimensi
+[32m Γ£ö [0mDestroy deletes dimensi
+[32m Γ£ö [0mStore deskripsi
+[32m Γ£ö [0mDestroy deskripsi
+[32m Γ£ö [0mRequires tu role
+
+[4mLager Nilai Pdf (Tests\Feature\LagerNilaiPdf)[0m
+[32m Γ£ö [0mGuru dapat download lager nilai pdf
+
+[4mLulusan (Tests\Feature\Tu\Lulusan\Lulusan)[0m
+[32m Γ£ö [0mTu can view lulusan index
+[32m Γ£ö [0mTu can record lulusan
+[32m Γ£ö [0mCreate lulusan validates siswa required
+[32m Γ£ö [0mTu can update lulusan
+[32m Γ£ö [0mTu can delete lulusan
+[32m Γ£ö [0mGuru cannot access tu lulusan
+
+[4mMapel Api (Tests\Feature\Api\V1\MapelApi)[0m
+[32m Γ£ö [0mIndex returns mapel list
+[32m Γ£ö [0mIndex search
+[32m Γ£ö [0mIndex filter by kelompok
+[32m Γ£ö [0mIndex ordering by urutan
+[32m Γ£ö [0mShow returns mapel
+[32m Γ£ö [0mShow 404
+[32m Γ£ö [0mStore creates mapel
+[32m Γ£ö [0mStore validates required fields
+[32m Γ£ö [0mStore validates unique kode
+[32m Γ£ö [0mUpdate modifies mapel
+[32m Γ£ö [0mDestroy soft deletes mapel
+[32m Γ£ö [0mRequires tu role
+
+[4mMapel Siswa (Tests\Feature\Tu\MapelSiswa\MapelSiswa)[0m
+[32m Γ£ö [0mTu can view mapel siswa page
+[32m Γ£ö [0mGuru cannot access mapel siswa
+[32m Γ£ö [0mMapel siswa displays matrix with correct checkboxes
+[32m Γ£ö [0mMapel siswa batch update saves correctly
+[32m Γ£ö [0mMapel siswa batch update removes unchecked
+[32m Γ£ö [0mMapel siswa filter by kelas and semester
+
+[4mMenu Akses (Tests\Feature\Guru\MenuAkses\MenuAkses)[0m
+[32m Γ£ö [0mGuru tanpa apapun hanya lihat menu universal
+[32m Γ£ö [0mGuru yang mengajar mapel lihat menu penilaian
+[32m Γ£ö [0mGuru wali kelas lihat menu wali
+[32m Γ£ö [0mRevoke override sembunyikan menu
+[32m Γ£ö [0mGrant override tampilkan menu
+[32m Γ£ö [0mRevoke beats grant
+[32m Γ£ö [0mSidebar menampilkan menu berdasarkan hak akses
+[32m Γ£ö [0mPegawai form menampilkan menu access section
+
+[4mMutasi Keluar (Tests\Feature\Tu\Mutasi\MutasiKeluar)[0m
+[32m Γ£ö [0mTu can view mutasi keluar index
+[32m Γ£ö [0mTu can record mutasi keluar
+[32m Γ£ö [0mCreate mutasi keluar validates tanggal required
+[32m Γ£ö [0mTu can delete mutasi keluar
+[32m Γ£ö [0mGuru cannot access mutasi keluar
+
+[4mMutasi Masuk (Tests\Feature\Tu\Mutasi\MutasiMasuk)[0m
+[32m Γ£ö [0mTu can view mutasi masuk index
+[32m Γ£ö [0mTu can record mutasi masuk
+[32m Γ£ö [0mCreate mutasi masuk validates required
+[32m Γ£ö [0mTu can delete mutasi masuk
+[32m Γ£ö [0mGuru cannot access mutasi masuk
+
+[4mNilai Export (Tests\Feature\Ekspor\NilaiExport)[0m
+[32m Γ£ö [0mTu can export nilai to xlsx
+[32m Γ£ö [0mExport nilai requires valid inputs
+
+[4mNilai Prakerin (Tests\Feature\Guru\NilaiPrakerin\NilaiPrakerin)[0m
+[32m Γ£ö [0mGuru bisa lihat daftar siswa bimbingan
+[32m Γ£ö [0mGuru bisa lihat form edit nilai prakerin
+[32m Γ£ö [0mGuru lain tidak bisa edit nilai prakerin
+[32m Γ£ö [0mGuru bisa simpan nilai prakerin
+[32m Γ£ö [0mGuru lain tidak bisa simpan nilai prakerin
+[32m Γ£ö [0mNilai prakerin wajib diantara 0 dan 100
+[32m Γ£ö [0mGuru bisa update nilai prakerin
+[32m Γ£ö [0mSiswa tidak aktif tidak bisa diinput nilai
+
+[4mNilai Service (Tests\Unit\Services\NilaiService)[0m
+[32m Γ£ö [0mHitung nilai akhir menggunakan bobot 40 30 30
+[32m Γ£ö [0mHitung nilai akhir dengan tanpa nilai adalah nol
+[32m Γ£ö [0mGet predikat s b untuk nilai 90 ke atas
+[32m Γ£ö [0mGet predikat b untuk nilai 75 ke atas
+[32m Γ£ö [0mGet predikat c untuk nilai 60 ke atas
+[32m Γ£ö [0mGet predikat p b dibawah 60
+[32m Γ£ö [0mGenerate deskripsi mengambil template sb
+[32m Γ£ö [0mGenerate deskripsi mengambil template pb
+[32m Γ£ö [0mGenerate deskripsi default jika template tidak ada
+[32m Γ£ö [0mSimpan nilai akhir upsert ke tabel nilai mapel
+[32m Γ£ö [0mSimpan nilai akhir update bukan insert jika sudah ada
+
+[4mNilai Sumatif As Observer (Tests\Feature\NilaiSumatifAsObserver)[0m
+[32m Γ£ö [0mMenyimpan sumatif as otomatis buat record nilai mapel
+[32m Γ£ö [0mPredikat terupdate saat nilai berubah
+[32m Γ£ö [0mNilai mapel tidak terbuat tanpa sumatif as
+
+[4mOrganisasi (Tests\Feature\Guru\Organisasi\Organisasi)[0m
+[32m Γ£ö [0mGuru can view organisasi index
+[32m Γ£ö [0mGuru sees empty state
+
+[4mOrganisasi (Tests\Feature\Tu\Organisasi\Organisasi)[0m
+[32m Γ£ö [0mTu can view organisasi index
+[32m Γ£ö [0mTu can create organisasi
+[32m Γ£ö [0mCreate organisasi validates nama required
+[32m Γ£ö [0mTu can update organisasi
+[32m Γ£ö [0mTu can delete organisasi
+[32m Γ£ö [0mGuru cannot access tu organisasi
+
+[4mP5bk Api (Tests\Feature\Api\V1\P5bkApi)[0m
+[32m Γ£ö [0mIndex returns tema list
+[32m Γ£ö [0mIndex search
+[32m Γ£ö [0mStore creates tema
+[32m Γ£ö [0mStore validates required
+[32m Γ£ö [0mUpdate modifies tema
+[32m Γ£ö [0mDestroy deletes tema
+[32m Γ£ö [0mProyek kelas index
+[32m Γ£ö [0mRequires tu role
+
+[4mP5bk Dimensi (Tests\Feature\Tu\P5bk\P5bkDimensi)[0m
+[32m Γ£ö [0mTu can view p5bk index
+[32m Γ£ö [0mTu can create dimensi
+[32m Γ£ö [0mCreate dimensi validates nama required
+[32m Γ£ö [0mTu can update dimensi
+[32m Γ£ö [0mTu can delete dimensi
+[32m Γ£ö [0mGuru cannot access tu p5bk
+
+[4mP5bk Proyek (Tests\Feature\Tu\P5bk\P5bkProyek)[0m
+[32m Γ£ö [0mTu can view proyek index
+[32m Γ£ö [0mTu can create proyek
+[32m Γ£ö [0mCreate proyek validates kelas required
+[32m Γ£ö [0mTu can update proyek
+[32m Γ£ö [0mTu can delete proyek
+[32m Γ£ö [0mGuru cannot access tu proyek
+
+[4mP5bk Tema (Tests\Feature\Tu\P5bk\P5bkTema)[0m
+[32m Γ£ö [0mTu can view tema index
+[32m Γ£ö [0mTu can create tema
+[32m Γ£ö [0mCreate tema validates nama required
+[32m Γ£ö [0mTu can update tema
+[32m Γ£ö [0mTu can delete tema
+[32m Γ£ö [0mGuru cannot access tu tema
+
+[4mPassword Confirmation (Tests\Feature\Auth\PasswordConfirmation)[0m
+[32m Γ£ö [0mConfirm password screen can be rendered
+[32m Γ£ö [0mPassword can be confirmed
+[32m Γ£ö [0mPassword is not confirmed with invalid password
+
+[4mPassword Reset (Tests\Feature\Auth\PasswordReset)[0m
+[32m Γ£ö [0mReset password link screen can be rendered
+[32m Γ£ö [0mReset password link can be requested
+[32m Γ£ö [0mReset password screen can be rendered
+[32m Γ£ö [0mPassword can be reset with valid token
+
+[4mPassword Update (Tests\Feature\Auth\PasswordUpdate)[0m
+[32m Γ£ö [0mPassword can be updated
+[32m Γ£ö [0mCorrect password must be provided to update password
+
+[4mPegawai Api (Tests\Feature\Api\V1\PegawaiApi)[0m
+[32m Γ£ö [0mIndex returns pegawai list
+[32m Γ£ö [0mIndex search
+[32m Γ£ö [0mIndex filter by jabatan
+[32m Γ£ö [0mIndex per page all
+[32m Γ£ö [0mShow returns pegawai
+[32m Γ£ö [0mShow 404
+[32m Γ£ö [0mStore creates pegawai
+[32m Γ£ö [0mStore validates required fields
+[32m Γ£ö [0mStore validates unique username
+[32m Γ£ö [0mUpdate modifies pegawai
+[32m Γ£ö [0mDestroy deletes pegawai
+[32m Γ£ö [0mRequires tu role
+
+[4mPendidikan (Tests\Feature\Laporan\Pendidikan)[0m
+[32m Γ£ö [0mTu can view laporan pendidikan
+[32m Γ£ö [0mLaporan with explicit filter params
+[32m Γ£ö [0mUnauthenticated user redirected
+
+[4mPengaturan Api (Tests\Feature\Api\V1\PengaturanApi)[0m
+[32m Γ£ö [0mIndex returns pengaturan
+[32m Γ£ö [0mUpdate changes semester
+[32m Γ£ö [0mTahun pelajaran list
+[32m Γ£ö [0mSemester list
+[32m Γ£ö [0mRequires tu role
+
+[4mPengingat (Tests\Feature\Tu\Pengingat\Pengingat)[0m
+[32m Γ£ö [0mTu can view pengingat index
+[32m Γ£ö [0mTu can add pengingat
+[32m Γ£ö [0mAdd pengingat validates judul required
+[32m Γ£ö [0mTu can delete pengingat
+[32m Γ£ö [0mGuru cannot access tu pengingat
+
+[4mPenilaian Formatif (Tests\Feature\PenilaianFormatif)[0m
+[32m Γ£ö [0mFormatif menyimpan nilai per tp
+[32m Γ£ö [0mFormatif update nilai yang ada
+[32m Γ£ö [0mFormatif ditolak jika guru bukan pengajar mapel
+
+[4mPenilaian Profil Pancasila (Tests\Feature\Guru\PenilaianProfilPancasila\PenilaianProfilPancasila)[0m
+[32m Γ£ö [0mWali kelas bisa lihat index
+[32m Γ£ö [0mBukan wali tidak bisa lihat kelas
+[32m Γ£ö [0mWali kelas bisa lihat daftar proyek
+[32m Γ£ö [0mWali kelas bisa buka form penilaian
+[32m Γ£ö [0mBukan wali tidak bisa buka form penilaian
+[32m Γ£ö [0mWali bisa simpan nilai
+[32m Γ£ö [0mNilai diluar batas 100 gagal
+[32m Γ£ö [0mBukan wali tidak bisa simpan nilai
+
+[4mPiket Harian (Tests\Feature\Guru\PiketHarian\PiketHarian)[0m
+[32m Γ£ö [0mGuru can view piket index
+[32m Γ£ö [0mGuru sees piket data
+
+[4mPiket Harian (Tests\Feature\Tu\PiketHarian\PiketHarian)[0m
+[32m Γ£ö [0mTu can view piket index
+[32m Γ£ö [0mTu can add piket
+[32m Γ£ö [0mAdd piket validates user required
+[32m Γ£ö [0mTu can delete piket
+[32m Γ£ö [0mGuru cannot access tu piket
+
+[4mPrakerin (Tests\Feature\Guru\Prakerin\Prakerin)[0m
+[32m Γ£ö [0mGuru can view prakerin index
+[32m Γ£ö [0mGuru sees empty state when no data
+
+[4mPrakerin (Tests\Feature\Tu\Prakerin\Prakerin)[0m
+[32m Γ£ö [0mTu can view prakerin index
+[32m Γ£ö [0mTu can create prakerin
+[32m Γ£ö [0mCreate prakerin validates nama required
+[32m Γ£ö [0mTu can update prakerin
+[32m Γ£ö [0mTu can delete prakerin
+[32m Γ£ö [0mGuru cannot access tu prakerin
+
+[4mPrakerin Api (Tests\Feature\Api\V1\PrakerinApi)[0m
+[32m Γ£ö [0mIndex returns prakerin list
+[32m Γ£ö [0mIndex search
+[32m Γ£ö [0mStore creates prakerin
+[32m Γ£ö [0mStore validates required
+[32m Γ£ö [0mUpdate modifies prakerin
+[32m Γ£ö [0mDestroy deletes prakerin
+[32m Γ£ö [0mStore peserta
+[32m Γ£ö [0mPeserta index
+[32m Γ£ö [0mRequires tu role
+
+[4mPrakerin Peserta (Tests\Feature\Tu\Prakerin\PrakerinPeserta)[0m
+[32m Γ£ö [0mTu can view peserta index
+[32m Γ£ö [0mTu can add peserta
+[32m Γ£ö [0mAdd peserta validates siswa required
+[32m Γ£ö [0mTu can delete peserta
+[32m Γ£ö [0mGuru cannot access peserta
+
+[4mPresensi (Tests\Feature\Guru\Presensi\Presensi)[0m
+[32m Γ£ö [0mGuru can view presensi form
+[32m Γ£ö [0mGuru can store presensi
+[32m Γ£ö [0mGuru can view rekap presensi
+[32m Γ£ö [0mPresensi validates required fields
+
+[4mPresensi Export (Tests\Feature\Ekspor\PresensiExport)[0m
+[32m Γ£ö [0mTu can export presensi to xlsx
+[32m Γ£ö [0mExport presensi validates kelas id
+
+[4mPresensi Rekap (Tests\Feature\Tu\Presensi\PresensiRekap)[0m
+[32m Γ£ö [0mTu can view presensi rekap
+[32m Γ£ö [0mGuru cannot access presensi rekap
+
+[4mPrestasi (Tests\Feature\Tu\Prestasi\Prestasi)[0m
+[32m Γ£ö [0mTu can view prestasi index
+[32m Γ£ö [0mTu can record prestasi
+[32m Γ£ö [0mCreate prestasi validates nama required
+[32m Γ£ö [0mTu can update prestasi
+[32m Γ£ö [0mTu can delete prestasi
+[32m Γ£ö [0mGuru cannot access tu prestasi
+
+[4mProfile (Tests\Feature\Profile)[0m
+[32m Γ£ö [0mProfile page is displayed
+[32m Γ£ö [0mProfile information can be updated
+[32m Γ£ö [0mEmail verification status is unchanged when the email address is unchanged
+[32m Γ£ö [0mUser can delete their account
+[32m Γ£ö [0mCorrect password must be provided to delete account
+
+[4mRapor Mid Pdf (Tests\Feature\RaporMidPdf)[0m
+[32m Γ£ö [0mTu dapat download rapor mid pdf
+
+[4mRapor Pdf (Tests\Feature\RaporPdf)[0m
+[32m Γ£ö [0mTu dapat melihat halaman pilih rapor
+[32m Γ£ö [0mTu dapat download rapor semester pdf
+[32m Γ£ö [0mGuru tidak boleh download rapor siswa
+
+[4mRapor Pkl (Tests\Feature\Guru\RaporPkl\RaporPkl)[0m
+[32m Γ£ö [0mGuru can view rapor pkl index
+[32m Γ£ö [0mGuru sees only their pkl students
+[32m Γ£ö [0mOther guru cannot access pkl pdf of another
+
+[4mRapor Pkl Pdf (Tests\Feature\RaporPklPdf)[0m
+[32m Γ£ö [0mTu dapat download rapor pkl pdf
+
+[4mRapor Service (Tests\Unit\Services\RaporService)[0m
+[32m Γ£ö [0mGet data rapor semester returns complete payload
+[32m Γ£ö [0mData rapor siswa tanpa nilai tetap berhasil
+[32m Γ£ö [0mData rapor mid berisi sumatif ts saja
+[32m Γ£ö [0mData rapor ekskul dan presensi ter agregasi
+[32m Γ£ö [0mData lager nilai grid per siswa per mapel
+[32m Γ£ö [0mData rapor pkl mengandung siswa prakerin
+
+[4mReferensi (Tests\Feature\Api\V1\Referensi)[0m
+[32m Γ£ö [0mReferensi index returns list of slugs
+[32m Γ£ö [0mReferensi agama
+[32m Γ£ö [0mReferensi jenis kelamin
+[32m Γ£ö [0mReferensi ordered by angka
+[32m Γ£ö [0mReferensi tahun pelajaran descending
+[32m Γ£ö [0mReferensi with keterangan
+[32m Γ£ö [0mReferensi unknown slug returns 404
+[32m Γ£ö [0mReferensi requires auth
+[32m Γ£ö [0mReferensi mapel with ordering
+[32m Γ£ö [0mDimensi elemen combined endpoint
+[32m Γ£ö [0mReferensi bulan
+[32m Γ£ö [0mReferensi hari
+
+[4mRegistration (Tests\Feature\Auth\Registration)[0m
+[32m Γ£ö [0mRegistration screen can be rendered
+[32m Γ£ö [0mNew users can register
+
+[4mRekap Presensi Api (Tests\Feature\Api\V1\RekapPresensiApi)[0m
+[32m Γ£ö [0mIndex returns rekap
+[32m Γ£ö [0mIndex requires kelas id
+[32m Γ£ö [0mDetail returns presensi
+[32m Γ£ö [0mRequires tu role
+
+[4mSekolah Api (Tests\Feature\Api\V1\SekolahApi)[0m
+[32m Γ£ö [0mSekolah profile returns data
+[32m Γ£ö [0mSekolah profile includes related data
+[32m Γ£ö [0mSekolah profile requires auth
+
+[4mSiswa Api (Tests\Feature\Api\V1\SiswaApi)[0m
+[32m Γ£ö [0mIndex returns siswa list
+[32m Γ£ö [0mIndex search by nama
+[32m Γ£ö [0mIndex filter by kelas
+[32m Γ£ö [0mShow returns siswa
+[32m Γ£ö [0mShow 404
+[32m Γ£ö [0mStore creates siswa
+[32m Γ£ö [0mStore validates required fields
+[32m Γ£ö [0mUpdate modifies siswa
+[32m Γ£ö [0mDestroy soft deletes siswa
+[32m Γ£ö [0mRequires tu role
+
+[4mSiswa Export (Tests\Feature\Ekspor\SiswaExport)[0m
+[32m Γ£ö [0mTu can export all siswa
+[32m Γ£ö [0mTu can export siswa filtered by kelas
+[32m Γ£ö [0mUnauthenticated user cannot export siswa
+
+[4mTu Dashboard (Tests\Feature\Api\V1\TuDashboard)[0m
+[32m Γ£ö [0mDashboard returns success
+[32m Γ£ö [0mDashboard counts students
+[32m Γ£ö [0mDashboard counts mapel and kelas
+[32m Γ£ö [0mDashboard requires tu role
+
+[4mTu Workflow Integration (Tests\Feature\Tu\TuWorkflowIntegration)[0m
+[32m Γ£ö [0mFull tu workflow lifecycle
+[32m Γ£ö [0mLulusan unique no ijazah validation
+[32m Γ£ö [0mLulusan unique no ijazah excludes self on update
+
+[37;41mERRORS![0m
+[37;41mTests: 384[0m[37;41m, Assertions: 1078[0m[37;41m, Errors: 1[0m[37;41m, Failures: 2[0m[37;41m.[0m
+{"tool":"phpunit","result":"failed","tests":384,"passed":381,"assertions":1078,"duration_ms":42682,"failed":2,"failures":[{"test":"Tests\\Feature\\Api\\V1\\GuruKelasKuTest::test_index_returns_kelas_where_guru_teaches","file":"D:\\PROJECT\\php\\laravel\\raporkm-laravel\\tests\\Feature\\Api\\V1\\GuruKelasKuTest.php","line":63,"message":"Expected response status code [200] but received 500.\nFailed asserting that 500 is identical to 200.\r\n\r\nThe following exception occurred during the last request:\n\nPDOException: SQLSTATE[HY000]: General error: 1 ambiguous column name: tahun_pelajaran_id in D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:421\nStack trace:\n#0 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(421): PDO->prepare('select \"kelas_i...')\n#1 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(830): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::select():412}('select \"kelas_i...', Array)\n#2 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(797): Illuminate\\Database\\Connection->runQueryCallback('select \"kelas_i...', Array, Object(Closure))\n#3 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(412): Illuminate\\Database\\Connection->run('select \"kelas_i...', Array, Object(Closure))\n#4 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3567): Illuminate\\Database\\Connection->select('select \"kelas_i...', Array, true, Array)\n#5 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3827): Illuminate\\Database\\Query\\Builder->runSelect()\n#6 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(1088): Illuminate\\Database\\Query\\Builder->pluck('kelas_id', NULL)\n#7 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Traits\\ForwardsCalls.php(23): Illuminate\\Database\\Eloquent\\Builder->pluck('kelas_id')\n#8 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Traits\\ForwardsCalls.php(52): Illuminate\\Database\\Eloquent\\Relations\\Relation->forwardCallTo(Object(Illuminate\\Database\\Eloquent\\Builder), 'pluck', Array)\n#9 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Relations\\Relation.php(538): Illuminate\\Database\\Eloquent\\Relations\\Relation->forwardDecoratedCallTo(Object(Illuminate\\Database\\Eloquent\\Builder), 'pluck', Array)\n#10 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\app\\Http\\Controllers\\Api\\V1\\Guru\\KelasKuController.php(29): Illuminate\\Database\\Eloquent\\Relations\\Relation->__call('pluck', Array)\n#11 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php(46): App\\Http\\Controllers\\Api\\V1\\Guru\\KelasKuController->index(Object(Illuminate\\Http\\Request))\n#12 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(269): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\Api\\V1\\Guru\\KelasKuController), 'index')\n#13 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(215): Illuminate\\Routing\\Route->runController()\n#14 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(822): Illuminate\\Routing\\Route->run()\n#15 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Routing\\Router->{closure:Illuminate\\Routing\\Router::runRouteWithinStack():821}(Object(Illuminate\\Http\\Request))\n#16 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\app\\Http\\Middleware\\EnsureRole.php(21): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():178}(Object(Illuminate\\Http\\Request))\n#17 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): App\\Http\\Middleware\\EnsureRole->handle(Object(Illuminate\\Http\\Request), Object(Closure), '3', '4')\n#18 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(52): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#19 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#20 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(63): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#21 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'sanctum')\n#22 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#23 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(821): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#24 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(800): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#25 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(764): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#26 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(753): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#27 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))\n#28 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Foundation\\Http\\Kernel->{closure:Illuminate\\Foundation\\Http\\Kernel::dispatchToRouter():197}(Object(Illuminate\\Http\\Request))\n#29 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\livewire\\livewire\\src\\Features\\SupportDisablingBackButtonCache\\DisableBackButtonCacheMiddleware.php(19): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():178}(Object(Illuminate\\Http\\Request))\n#30 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Livewire\\Features\\SupportDisablingBackButtonCache\\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#31 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#32 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#33 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#34 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#35 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#36 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#37 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#38 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#39 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(109): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#40 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#41 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(74): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#42 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#43 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(58): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#44 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#45 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php(22): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#46 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#47 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePathEncoding.php(28): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#48 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\ValidatePathEncoding->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#49 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#50 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#51 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#52 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests.php(607): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#53 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests.php(573): Illuminate\\Foundation\\Testing\\TestCase->call('GET', '/api/v1/guru/ke...', Array, Array, Array, Array, '[]')\n#54 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests.php(381): Illuminate\\Foundation\\Testing\\TestCase->json('GET', '/api/v1/guru/ke...', Array, Array, 0)\n#55 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\tests\\Feature\\Api\\V1\\GuruKelasKuTest.php(76): Illuminate\\Foundation\\Testing\\TestCase->getJson('/api/v1/guru/ke...', Array)\n#56 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(1314): Tests\\Feature\\Api\\V1\\GuruKelasKuTest->test_index_returns_kelas_where_guru_teaches()\n#57 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(1351): PHPUnit\\Framework\\TestCase->invokeTestMethod('test_index_retu...', Array)\n#58 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(521): PHPUnit\\Framework\\TestCase->runTest()\n#59 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestRunner\\TestRunner.php(99): PHPUnit\\Framework\\TestCase->runBare()\n#60 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(361): PHPUnit\\Framework\\TestRunner->run(Object(Tests\\Feature\\Api\\V1\\GuruKelasKuTest))\n#61 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestSuite.php(374): PHPUnit\\Framework\\TestCase->run()\n#62 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestSuite.php(374): PHPUnit\\Framework\\TestSuite->run()\n#63 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestSuite.php(374): PHPUnit\\Framework\\TestSuite->run()\n#64 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\TextUI\\TestRunner.php(64): PHPUnit\\Framework\\TestSuite->run()\n#65 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\TextUI\\Application.php(229): PHPUnit\\TextUI\\TestRunner->run(Object(PHPUnit\\TextUI\\Configuration\\Configuration), Object(PHPUnit\\Runner\\ResultCache\\DefaultResultCache), Object(PHPUnit\\Framework\\TestSuite))\n#66 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\phpunit(104): PHPUnit\\TextUI\\Application->run(Array)\n#67 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\bin\\phpunit(122): include('D:\\\\PROJECT\\\\php\\\\...')\n#68 {main}\n\nNext Illuminate\\Database\\QueryException: SQLSTATE[HY000]: General error: 1 ambiguous column name: tahun_pelajaran_id (Connection: sqlite, Database: :memory:, SQL: select \"kelas_id\" from \"kelas\" inner join \"kelas_wali\" on \"kelas\".\"id\" = \"kelas_wali\".\"kelas_id\" where \"kelas_wali\".\"user_id\" = 1 and \"tahun_pelajaran_id\" = 1 and \"semester_id\" = 1) in D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:841\nStack trace:\n#0 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(797): Illuminate\\Database\\Connection->runQueryCallback('select \"kelas_i...', Array, Object(Closure))\n#1 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(412): Illuminate\\Database\\Connection->run('select \"kelas_i...', Array, Object(Closure))\n#2 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3567): Illuminate\\Database\\Connection->select('select \"kelas_i...', Array, true, Array)\n#3 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3827): Illuminate\\Database\\Query\\Builder->runSelect()\n#4 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(1088): Illuminate\\Database\\Query\\Builder->pluck('kelas_id', NULL)\n#5 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Traits\\ForwardsCalls.php(23): Illuminate\\Database\\Eloquent\\Builder->pluck('kelas_id')\n#6 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Traits\\ForwardsCalls.php(52): Illuminate\\Database\\Eloquent\\Relations\\Relation->forwardCallTo(Object(Illuminate\\Database\\Eloquent\\Builder), 'pluck', Array)\n#7 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Relations\\Relation.php(538): Illuminate\\Database\\Eloquent\\Relations\\Relation->forwardDecoratedCallTo(Object(Illuminate\\Database\\Eloquent\\Builder), 'pluck', Array)\n#8 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\app\\Http\\Controllers\\Api\\V1\\Guru\\KelasKuController.php(29): Illuminate\\Database\\Eloquent\\Relations\\Relation->__call('pluck', Array)\n#9 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php(46): App\\Http\\Controllers\\Api\\V1\\Guru\\KelasKuController->index(Object(Illuminate\\Http\\Request))\n#10 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(269): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\Api\\V1\\Guru\\KelasKuController), 'index')\n#11 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(215): Illuminate\\Routing\\Route->runController()\n#12 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(822): Illuminate\\Routing\\Route->run()\n#13 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Routing\\Router->{closure:Illuminate\\Routing\\Router::runRouteWithinStack():821}(Object(Illuminate\\Http\\Request))\n#14 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\app\\Http\\Middleware\\EnsureRole.php(21): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():178}(Object(Illuminate\\Http\\Request))\n#15 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): App\\Http\\Middleware\\EnsureRole->handle(Object(Illuminate\\Http\\Request), Object(Closure), '3', '4')\n#16 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(52): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#17 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#18 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(63): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#19 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'sanctum')\n#20 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#21 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(821): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#22 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(800): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#23 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(764): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#24 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(753): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#25 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))\n#26 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Foundation\\Http\\Kernel->{closure:Illuminate\\Foundation\\Http\\Kernel::dispatchToRouter():197}(Object(Illuminate\\Http\\Request))\n#27 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\livewire\\livewire\\src\\Features\\SupportDisablingBackButtonCache\\DisableBackButtonCacheMiddleware.php(19): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():178}(Object(Illuminate\\Http\\Request))\n#28 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Livewire\\Features\\SupportDisablingBackButtonCache\\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#29 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#30 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#31 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#32 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#33 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#34 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#35 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#36 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#37 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(109): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#38 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#39 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(74): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#40 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#41 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(58): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#42 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#43 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php(22): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#44 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#45 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePathEncoding.php(28): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#46 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\ValidatePathEncoding->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#47 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#48 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#49 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#50 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests.php(607): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#51 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests.php(573): Illuminate\\Foundation\\Testing\\TestCase->call('GET', '/api/v1/guru/ke...', Array, Array, Array, Array, '[]')\n#52 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests.php(381): Illuminate\\Foundation\\Testing\\TestCase->json('GET', '/api/v1/guru/ke...', Array, Array, 0)\n#53 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\tests\\Feature\\Api\\V1\\GuruKelasKuTest.php(76): Illuminate\\Foundation\\Testing\\TestCase->getJson('/api/v1/guru/ke...', Array)\n#54 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(1314): Tests\\Feature\\Api\\V1\\GuruKelasKuTest->test_index_returns_kelas_where_guru_teaches()\n#55 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(1351): PHPUnit\\Framework\\TestCase->invokeTestMethod('test_index_retu...', Array)\n#56 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(521): PHPUnit\\Framework\\TestCase->runTest()\n#57 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestRunner\\TestRunner.php(99): PHPUnit\\Framework\\TestCase->runBare()\n#58 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(361): PHPUnit\\Framework\\TestRunner->run(Object(Tests\\Feature\\Api\\V1\\GuruKelasKuTest))\n#59 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestSuite.php(374): PHPUnit\\Framework\\TestCase->run()\n#60 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestSuite.php(374): PHPUnit\\Framework\\TestSuite->run()\n#61 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestSuite.php(374): PHPUnit\\Framework\\TestSuite->run()\n#62 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\TextUI\\TestRunner.php(64): PHPUnit\\Framework\\TestSuite->run()\n#63 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\TextUI\\Application.php(229): PHPUnit\\TextUI\\TestRunner->run(Object(PHPUnit\\TextUI\\Configuration\\Configuration), Object(PHPUnit\\Runner\\ResultCache\\DefaultResultCache), Object(PHPUnit\\Framework\\TestSuite))\n#64 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\phpunit(104): PHPUnit\\TextUI\\Application->run(Array)\n#65 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\bin\\phpunit(122): include('D:\\\\PROJECT\\\\php\\\\...')\n#66 {main}\n\n----------------------------------------------------------------------------------\n\nSQLSTATE[HY000]: General error: 1 ambiguous column name: tahun_pelajaran_id (Connection: sqlite, Database: :memory:, SQL: select \"kelas_id\" from \"kelas\" inner join \"kelas_wali\" on \"kelas\".\"id\" = \"kelas_wali\".\"kelas_id\" where \"kelas_wali\".\"user_id\" = 1 and \"tahun_pelajaran_id\" = 1 and \"semester_id\" = 1)"},{"test":"Tests\\Feature\\Api\\V1\\GuruKelasKuTest::test_index_returns_wali_kelas","file":"D:\\PROJECT\\php\\laravel\\raporkm-laravel\\tests\\Feature\\Api\\V1\\GuruKelasKuTest.php","line":85,"message":"Expected response status code [200] but received 500.\nFailed asserting that 500 is identical to 200.\r\n\r\nThe following exception occurred during the last request:\n\nPDOException: SQLSTATE[HY000]: General error: 1 ambiguous column name: tahun_pelajaran_id in D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:421\nStack trace:\n#0 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(421): PDO->prepare('select \"kelas_i...')\n#1 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(830): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::select():412}('select \"kelas_i...', Array)\n#2 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(797): Illuminate\\Database\\Connection->runQueryCallback('select \"kelas_i...', Array, Object(Closure))\n#3 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(412): Illuminate\\Database\\Connection->run('select \"kelas_i...', Array, Object(Closure))\n#4 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3567): Illuminate\\Database\\Connection->select('select \"kelas_i...', Array, true, Array)\n#5 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3827): Illuminate\\Database\\Query\\Builder->runSelect()\n#6 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(1088): Illuminate\\Database\\Query\\Builder->pluck('kelas_id', NULL)\n#7 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Traits\\ForwardsCalls.php(23): Illuminate\\Database\\Eloquent\\Builder->pluck('kelas_id')\n#8 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Traits\\ForwardsCalls.php(52): Illuminate\\Database\\Eloquent\\Relations\\Relation->forwardCallTo(Object(Illuminate\\Database\\Eloquent\\Builder), 'pluck', Array)\n#9 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Relations\\Relation.php(538): Illuminate\\Database\\Eloquent\\Relations\\Relation->forwardDecoratedCallTo(Object(Illuminate\\Database\\Eloquent\\Builder), 'pluck', Array)\n#10 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\app\\Http\\Controllers\\Api\\V1\\Guru\\KelasKuController.php(29): Illuminate\\Database\\Eloquent\\Relations\\Relation->__call('pluck', Array)\n#11 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php(46): App\\Http\\Controllers\\Api\\V1\\Guru\\KelasKuController->index(Object(Illuminate\\Http\\Request))\n#12 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(269): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\Api\\V1\\Guru\\KelasKuController), 'index')\n#13 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(215): Illuminate\\Routing\\Route->runController()\n#14 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(822): Illuminate\\Routing\\Route->run()\n#15 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Routing\\Router->{closure:Illuminate\\Routing\\Router::runRouteWithinStack():821}(Object(Illuminate\\Http\\Request))\n#16 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\app\\Http\\Middleware\\EnsureRole.php(21): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():178}(Object(Illuminate\\Http\\Request))\n#17 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): App\\Http\\Middleware\\EnsureRole->handle(Object(Illuminate\\Http\\Request), Object(Closure), '3', '4')\n#18 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(52): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#19 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#20 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(63): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#21 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'sanctum')\n#22 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#23 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(821): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#24 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(800): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#25 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(764): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#26 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(753): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#27 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))\n#28 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Foundation\\Http\\Kernel->{closure:Illuminate\\Foundation\\Http\\Kernel::dispatchToRouter():197}(Object(Illuminate\\Http\\Request))\n#29 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\livewire\\livewire\\src\\Features\\SupportDisablingBackButtonCache\\DisableBackButtonCacheMiddleware.php(19): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():178}(Object(Illuminate\\Http\\Request))\n#30 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Livewire\\Features\\SupportDisablingBackButtonCache\\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#31 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#32 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#33 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#34 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#35 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#36 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#37 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#38 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#39 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(109): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#40 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#41 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(74): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#42 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#43 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(58): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#44 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#45 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php(22): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#46 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#47 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePathEncoding.php(28): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#48 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\ValidatePathEncoding->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#49 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#50 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#51 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#52 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests.php(607): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#53 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests.php(573): Illuminate\\Foundation\\Testing\\TestCase->call('GET', '/api/v1/guru/ke...', Array, Array, Array, Array, '[]')\n#54 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests.php(381): Illuminate\\Foundation\\Testing\\TestCase->json('GET', '/api/v1/guru/ke...', Array, Array, 0)\n#55 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\tests\\Feature\\Api\\V1\\GuruKelasKuTest.php(96): Illuminate\\Foundation\\Testing\\TestCase->getJson('/api/v1/guru/ke...', Array)\n#56 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(1314): Tests\\Feature\\Api\\V1\\GuruKelasKuTest->test_index_returns_wali_kelas()\n#57 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(1351): PHPUnit\\Framework\\TestCase->invokeTestMethod('test_index_retu...', Array)\n#58 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(521): PHPUnit\\Framework\\TestCase->runTest()\n#59 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestRunner\\TestRunner.php(99): PHPUnit\\Framework\\TestCase->runBare()\n#60 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(361): PHPUnit\\Framework\\TestRunner->run(Object(Tests\\Feature\\Api\\V1\\GuruKelasKuTest))\n#61 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestSuite.php(374): PHPUnit\\Framework\\TestCase->run()\n#62 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestSuite.php(374): PHPUnit\\Framework\\TestSuite->run()\n#63 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestSuite.php(374): PHPUnit\\Framework\\TestSuite->run()\n#64 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\TextUI\\TestRunner.php(64): PHPUnit\\Framework\\TestSuite->run()\n#65 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\TextUI\\Application.php(229): PHPUnit\\TextUI\\TestRunner->run(Object(PHPUnit\\TextUI\\Configuration\\Configuration), Object(PHPUnit\\Runner\\ResultCache\\DefaultResultCache), Object(PHPUnit\\Framework\\TestSuite))\n#66 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\phpunit(104): PHPUnit\\TextUI\\Application->run(Array)\n#67 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\bin\\phpunit(122): include('D:\\\\PROJECT\\\\php\\\\...')\n#68 {main}\n\nNext Illuminate\\Database\\QueryException: SQLSTATE[HY000]: General error: 1 ambiguous column name: tahun_pelajaran_id (Connection: sqlite, Database: :memory:, SQL: select \"kelas_id\" from \"kelas\" inner join \"kelas_wali\" on \"kelas\".\"id\" = \"kelas_wali\".\"kelas_id\" where \"kelas_wali\".\"user_id\" = 1 and \"tahun_pelajaran_id\" = 1 and \"semester_id\" = 1) in D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:841\nStack trace:\n#0 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(797): Illuminate\\Database\\Connection->runQueryCallback('select \"kelas_i...', Array, Object(Closure))\n#1 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(412): Illuminate\\Database\\Connection->run('select \"kelas_i...', Array, Object(Closure))\n#2 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3567): Illuminate\\Database\\Connection->select('select \"kelas_i...', Array, true, Array)\n#3 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3827): Illuminate\\Database\\Query\\Builder->runSelect()\n#4 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(1088): Illuminate\\Database\\Query\\Builder->pluck('kelas_id', NULL)\n#5 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Traits\\ForwardsCalls.php(23): Illuminate\\Database\\Eloquent\\Builder->pluck('kelas_id')\n#6 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Traits\\ForwardsCalls.php(52): Illuminate\\Database\\Eloquent\\Relations\\Relation->forwardCallTo(Object(Illuminate\\Database\\Eloquent\\Builder), 'pluck', Array)\n#7 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Relations\\Relation.php(538): Illuminate\\Database\\Eloquent\\Relations\\Relation->forwardDecoratedCallTo(Object(Illuminate\\Database\\Eloquent\\Builder), 'pluck', Array)\n#8 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\app\\Http\\Controllers\\Api\\V1\\Guru\\KelasKuController.php(29): Illuminate\\Database\\Eloquent\\Relations\\Relation->__call('pluck', Array)\n#9 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php(46): App\\Http\\Controllers\\Api\\V1\\Guru\\KelasKuController->index(Object(Illuminate\\Http\\Request))\n#10 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(269): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\Api\\V1\\Guru\\KelasKuController), 'index')\n#11 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(215): Illuminate\\Routing\\Route->runController()\n#12 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(822): Illuminate\\Routing\\Route->run()\n#13 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Routing\\Router->{closure:Illuminate\\Routing\\Router::runRouteWithinStack():821}(Object(Illuminate\\Http\\Request))\n#14 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\app\\Http\\Middleware\\EnsureRole.php(21): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():178}(Object(Illuminate\\Http\\Request))\n#15 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): App\\Http\\Middleware\\EnsureRole->handle(Object(Illuminate\\Http\\Request), Object(Closure), '3', '4')\n#16 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(52): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#17 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#18 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(63): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#19 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'sanctum')\n#20 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#21 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(821): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#22 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(800): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))\n#23 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(764): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))\n#24 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(753): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))\n#25 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))\n#26 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Foundation\\Http\\Kernel->{closure:Illuminate\\Foundation\\Http\\Kernel::dispatchToRouter():197}(Object(Illuminate\\Http\\Request))\n#27 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\livewire\\livewire\\src\\Features\\SupportDisablingBackButtonCache\\DisableBackButtonCacheMiddleware.php(19): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():178}(Object(Illuminate\\Http\\Request))\n#28 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Livewire\\Features\\SupportDisablingBackButtonCache\\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#29 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#30 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#31 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#32 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#33 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#34 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#35 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#36 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#37 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(109): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#38 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#39 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(74): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#40 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#41 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(58): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#42 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#43 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php(22): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#44 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#45 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePathEncoding.php(28): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#46 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(219): Illuminate\\Http\\Middleware\\ValidatePathEncoding->handle(Object(Illuminate\\Http\\Request), Object(Closure))\n#47 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():194}:195}(Object(Illuminate\\Http\\Request))\n#48 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#49 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))\n#50 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests.php(607): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))\n#51 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests.php(573): Illuminate\\Foundation\\Testing\\TestCase->call('GET', '/api/v1/guru/ke...', Array, Array, Array, Array, '[]')\n#52 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests.php(381): Illuminate\\Foundation\\Testing\\TestCase->json('GET', '/api/v1/guru/ke...', Array, Array, 0)\n#53 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\tests\\Feature\\Api\\V1\\GuruKelasKuTest.php(96): Illuminate\\Foundation\\Testing\\TestCase->getJson('/api/v1/guru/ke...', Array)\n#54 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(1314): Tests\\Feature\\Api\\V1\\GuruKelasKuTest->test_index_returns_wali_kelas()\n#55 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(1351): PHPUnit\\Framework\\TestCase->invokeTestMethod('test_index_retu...', Array)\n#56 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(521): PHPUnit\\Framework\\TestCase->runTest()\n#57 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestRunner\\TestRunner.php(99): PHPUnit\\Framework\\TestCase->runBare()\n#58 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestCase.php(361): PHPUnit\\Framework\\TestRunner->run(Object(Tests\\Feature\\Api\\V1\\GuruKelasKuTest))\n#59 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestSuite.php(374): PHPUnit\\Framework\\TestCase->run()\n#60 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestSuite.php(374): PHPUnit\\Framework\\TestSuite->run()\n#61 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\Framework\\TestSuite.php(374): PHPUnit\\Framework\\TestSuite->run()\n#62 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\TextUI\\TestRunner.php(64): PHPUnit\\Framework\\TestSuite->run()\n#63 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\src\\TextUI\\Application.php(229): PHPUnit\\TextUI\\TestRunner->run(Object(PHPUnit\\TextUI\\Configuration\\Configuration), Object(PHPUnit\\Runner\\ResultCache\\DefaultResultCache), Object(PHPUnit\\Framework\\TestSuite))\n#64 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\phpunit\\phpunit\\phpunit(104): PHPUnit\\TextUI\\Application->run(Array)\n#65 D:\\PROJECT\\php\\laravel\\raporkm-laravel\\vendor\\bin\\phpunit(122): include('D:\\\\PROJECT\\\\php\\\\...')\n#66 {main}\n\n----------------------------------------------------------------------------------\n\nSQLSTATE[HY000]: General error: 1 ambiguous column name: tahun_pelajaran_id (Connection: sqlite, Database: :memory:, SQL: select \"kelas_id\" from \"kelas\" inner join \"kelas_wali\" on \"kelas\".\"id\" = \"kelas_wali\".\"kelas_id\" where \"kelas_wali\".\"user_id\" = 1 and \"tahun_pelajaran_id\" = 1 and \"semester_id\" = 1)"}],"errors":1,"error_details":[{"test":"Tests\\Feature\\Api\\V1\\GuruPenilaianTest::test_store_formatif","file":"D:\\PROJECT\\php\\laravel\\raporkm-laravel\\tests\\Feature\\Api\\V1\\GuruPenilaianTest.php","line":83,"message":"Class \"Tests\\Feature\\Api\\V1\\Siswa\" not found"}]}

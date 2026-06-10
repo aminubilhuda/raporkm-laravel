@@ -24,8 +24,8 @@ class LagerNilaiKelasController extends Controller
     {
         $user = auth()->user();
         $sekolah = Sekolah::first();
-        $taId = $sekolah?->tahun_aktif;
-        $semesterId = $sekolah?->semester_aktif;
+        $taId = session('selected_tahun', $sekolah?->tahun_aktif);
+        $semesterId = session('selected_semester', $sekolah?->semester_aktif);
 
         $kelasList = $user->mapelKelas()
             ->when($taId, fn ($q) => $q->where('tahun_pelajaran_id', $taId))
@@ -50,7 +50,8 @@ class LagerNilaiKelasController extends Controller
                 ->when($taId, fn ($q) => $q->where('tahun_pelajaran_id', $taId))
                 ->when($semesterId, fn ($q) => $q->where('semester_id', $semesterId))
                 ->with('mapel')
-                ->get();
+                ->get()
+                ->sortBy(fn ($mk) => $mk->mapel?->urutan ?? 0);
 
             $mapelIds = $mapelGuru->pluck('mapel_id');
 
@@ -103,8 +104,8 @@ class LagerNilaiKelasController extends Controller
     public function exportPdf(Request $request, Kelas $kelas, Mapel $mapel)
     {
         $sekolah = Sekolah::first();
-        $taId = $sekolah?->tahun_aktif;
-        $semesterId = $sekolah?->semester_aktif;
+        $taId = session('selected_tahun', $sekolah?->tahun_aktif);
+        $semesterId = session('selected_semester', $sekolah?->semester_aktif);
 
         abort_unless(
             auth()->user()->mapelKelas()

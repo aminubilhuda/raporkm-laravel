@@ -16,8 +16,8 @@ class PenilaianKokurikulerController extends Controller
     {
         $user = auth()->user();
         $sekolah = Sekolah::first();
-        $taId = $sekolah?->tahun_aktif;
-        $semesterId = $sekolah?->semester_aktif;
+        $taId = session('selected_tahun', $sekolah?->tahun_aktif);
+        $semesterId = session('selected_semester', $sekolah?->semester_aktif);
 
         $kelasWali = $user->kelasWali()
             ->when($taId, fn ($q) => $q->where('kelas_wali.tahun_pelajaran_id', $taId))
@@ -65,8 +65,8 @@ class PenilaianKokurikulerController extends Controller
                 ],
                 [
                     'nilai' => $request->input("nilai.{$siswaId}"),
-                    'tahun_pelajaran_id' => $sekolah?->tahun_aktif,
-                    'semester_id' => $sekolah?->semester_aktif,
+                    'tahun_pelajaran_id' => session('selected_tahun', $sekolah?->tahun_aktif),
+                    'semester_id' => session('selected_semester', $sekolah?->semester_aktif),
                 ]
             );
         }
@@ -80,8 +80,8 @@ class PenilaianKokurikulerController extends Controller
         $sekolah = Sekolah::first();
 
         return auth()->user()->kelasWali()
-            ->where('kelas_wali.tahun_pelajaran_id', $sekolah?->tahun_aktif)
-            ->where('kelas_wali.semester_id', $sekolah?->semester_aktif)
+            ->where('kelas_wali.tahun_pelajaran_id', session('selected_tahun', $sekolah?->tahun_aktif))
+            ->where('kelas_wali.semester_id', session('selected_semester', $sekolah?->semester_aktif))
             ->where('kelas_wali.kelas_id', $kelasId)->exists();
     }
 }

@@ -15,7 +15,7 @@ class StoreDeskripsiKokurikulerRequest extends FormRequest
     {
         return [
             'dimensi_kokurikuler_id' => 'required|integer|exists:dimensi_kokurikuler,id',
-            'predikat' => 'required|string|in:A,B,C,D',
+            'predikat' => 'required|string|in:Sangat Baik,Baik,Cukup,Perlu Bimbingan',
             'deskripsi' => 'required|string',
         ];
     }

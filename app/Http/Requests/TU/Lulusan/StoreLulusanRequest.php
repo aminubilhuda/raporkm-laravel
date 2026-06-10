@@ -16,7 +16,7 @@ class StoreLulusanRequest extends FormRequest
         return [
             'siswa_id' => 'required|integer|exists:siswa,id',
             'kelas_id' => 'required|integer|exists:kelas,id',
-            'tahun_pelajaran_id' => 'required|integer|exists:tahun_pelajaran,id',
+            'tahun_pelajaran_id' => 'nullable|integer|exists:tahun_pelajaran,id',
             'tanggal_lulus' => 'nullable|date',
             'no_ijazah' => 'nullable|string|max:50|unique:lulusan,no_ijazah',
             'lanjut_ke' => 'nullable|string|max:200',

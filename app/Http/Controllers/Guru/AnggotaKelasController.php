@@ -13,8 +13,8 @@ class AnggotaKelasController extends Controller
     {
         $user = auth()->user();
         $sekolah = Sekolah::first();
-        $taId = $sekolah?->tahun_aktif;
-        $semesterId = $sekolah?->semester_aktif;
+        $taId = session('selected_tahun', $sekolah?->tahun_aktif);
+        $semesterId = session('selected_semester', $sekolah?->semester_aktif);
 
         $kelasWaliIds = $user->kelasWali()
             ->when($taId, fn ($q) => $q->where('kelas_wali.tahun_pelajaran_id', $taId))

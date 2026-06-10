@@ -38,6 +38,11 @@ class SekolahController extends Controller
             'website' => ['nullable', 'url', 'max:255'],
             'visi' => ['nullable', 'string'],
             'misi' => ['nullable', 'string'],
+            'latitude' => ['nullable', 'numeric', 'min:-90', 'max:90'],
+            'longitude' => ['nullable', 'numeric', 'min:-180', 'max:180'],
+            'radius_absen' => ['nullable', 'integer', 'min:10', 'max:5000'],
+            'jam_masuk' => ['nullable', 'date_format:H:i'],
+            'jam_pulang' => ['nullable', 'date_format:H:i'],
             'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:5120'],
             'hapus_logo' => ['nullable', 'boolean'],
         ]);

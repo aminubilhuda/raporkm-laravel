@@ -1,0 +1,18 @@
+[Unit]
+Description=E-Rapor KM Queue Worker
+After=network.target
+
+[Service]
+Type=simple
+User=www
+Group=www
+WorkingDirectory=/www/wwwroot/km.smkabdinegara.sch.id
+ExecStart=/www/server/php/83/bin/php artisan queue:work database --sleep=3 --tries=3 --timeout=90 --max-jobs=1000
+Restart=always
+RestartSec=5
+StandardOutput=append:/www/wwwroot/km.smkabdinegara.sch.id/storage/logs/queue-worker.log
+StandardError=append:/www/wwwroot/km.smkabdinegara.sch.id/storage/logs/queue-worker-error.log
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

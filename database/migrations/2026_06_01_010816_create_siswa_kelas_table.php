@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('tahun_pelajaran_id')->references('id')->on('tahun_pelajaran')->onDelete('cascade');
             $table->foreign('semester_id')->references('id')->on('semester')->onDelete('cascade');
 
-            $table->unique(['siswa_id', 'kelas_id', 'tahun_pelajaran_id', 'semester_id']);
+            $table->unique(['siswa_id', 'kelas_id', 'tahun_pelajaran_id', 'semester_id'], 'sk_siswa_kelas_tp_smt_unique');
             $table->index('kelas_id');
 
             $table->timestamps();

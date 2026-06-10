@@ -17,8 +17,8 @@ class RaporPklController extends Controller
     {
         $user = auth()->user();
         $sekolah = Sekolah::first();
-        $taId = $sekolah?->tahun_aktif;
-        $semesterId = $sekolah?->semester_aktif;
+        $taId = session('selected_tahun', $sekolah?->tahun_aktif);
+        $semesterId = session('selected_semester', $sekolah?->semester_aktif);
 
         $daftarPkl = SiswaPrakerin::with(['siswa', 'kelas.tingkat', 'kelas.kompetensiKeahlian', 'prakerin'])
             ->where('user_id', $user->id)

@@ -31,7 +31,7 @@
                 </div>
                 <div>
                     <x-input-label for="kelompok_mapel_id" value="Kelompok Mapel" />
-                    <select id="kelompok_mapel_id" name="kelompok_mapel_id" class="mt-1 block w-full border-teal-primary/20 rounded-card focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20" required>
+                    <select id="kelompok_mapel_id" name="kelompok_mapel_id" class="mt-1 block w-full border-teal-primary/20 rounded-field bg-cream focus:border-teal-primary focus:ring-2 focus:ring-teal-primary/20" required>
                         <option value="">-- Pilih --</option>
                         @foreach($kelompok as $k)
                             <option value="{{ $k->id }}" {{ old('kelompok_mapel_id', $mapel->kelompok_mapel_id) == $k->id ? 'selected' : '' }}>{{ $k->nama }}</option>

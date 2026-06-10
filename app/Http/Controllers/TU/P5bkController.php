@@ -18,8 +18,10 @@ use App\Models\Elemen;
 use App\Models\Kelas;
 use App\Models\ProyekKelas;
 use App\Models\ProyekTema;
+use App\Models\Sekolah;
 use App\Models\SubElemen;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class P5bkController extends Controller
 {
@@ -34,7 +36,11 @@ class P5bkController extends Controller
 
     public function dimensiStore(StoreDimensiRequest $r)
     {
-        Dimensi::create($r->validated());
+        $dimensi = Dimensi::create($r->validated());
+
+        activity()->performedOn($dimensi)->event('created')
+            ->withProperties(['nama' => $dimensi->nama])
+            ->log('Dimensi P5BK ditambahkan');
 
         return back()->with('status', 'Dimensi ditambahkan.');
     }
@@ -43,19 +49,32 @@ class P5bkController extends Controller
     {
         $dimensi->update($r->validated());
 
+        activity()->performedOn($dimensi)->event('updated')
+            ->withProperties(['nama' => $dimensi->nama])
+            ->log('Dimensi P5BK diperbarui');
+
         return back()->with('status', 'Dimensi diperbarui.');
     }
 
     public function dimensiDestroy(Dimensi $dimensi)
     {
+        $nama = $dimensi->nama;
         $dimensi->delete();
+
+        activity()->performedOn($dimensi)->event('deleted')
+            ->withProperties(['nama' => $nama])
+            ->log('Dimensi P5BK dihapus');
 
         return back()->with('status', 'Dimensi dihapus.');
     }
 
     public function elemenStore(StoreElemenRequest $r)
     {
-        Elemen::create($r->validated());
+        $elemen = Elemen::create($r->validated());
+
+        activity()->performedOn($elemen)->event('created')
+            ->withProperties(['nama' => $elemen->nama])
+            ->log('Elemen P5BK ditambahkan');
 
         return back()->with('status', 'Elemen ditambahkan.');
     }
@@ -64,19 +83,32 @@ class P5bkController extends Controller
     {
         $elemen->update($r->validated());
 
+        activity()->performedOn($elemen)->event('updated')
+            ->withProperties(['nama' => $elemen->nama])
+            ->log('Elemen P5BK diperbarui');
+
         return back()->with('status', 'Elemen diperbarui.');
     }
 
     public function elemenDestroy(Elemen $elemen)
     {
+        $nama = $elemen->nama;
         $elemen->delete();
+
+        activity()->performedOn($elemen)->event('deleted')
+            ->withProperties(['nama' => $nama])
+            ->log('Elemen P5BK dihapus');
 
         return back()->with('status', 'Elemen dihapus.');
     }
 
     public function subStore(StoreSubElemenRequest $r)
     {
-        SubElemen::create($r->validated());
+        $sub = SubElemen::create($r->validated());
+
+        activity()->performedOn($sub)->event('created')
+            ->withProperties(['nama' => $sub->nama])
+            ->log('Sub-elemen P5BK ditambahkan');
 
         return back()->with('status', 'Sub-elemen ditambahkan.');
     }
@@ -85,26 +117,66 @@ class P5bkController extends Controller
     {
         $subElemen->update($r->validated());
 
+        activity()->performedOn($subElemen)->event('updated')
+            ->withProperties(['nama' => $subElemen->nama])
+            ->log('Sub-elemen P5BK diperbarui');
+
         return back()->with('status', 'Sub-elemen diperbarui.');
     }
 
     public function subDestroy(SubElemen $subElemen)
     {
+        $nama = $subElemen->nama;
         $subElemen->delete();
+
+        activity()->performedOn($subElemen)->event('deleted')
+            ->withProperties(['nama' => $nama])
+            ->log('Sub-elemen P5BK dihapus');
 
         return back()->with('status', 'Sub-elemen dihapus.');
     }
 
-    public function tema()
+    public function tema(Request $request)
     {
-        $temas = ProyekTema::latest()->get();
+        $sekolah = Sekolah::first();
+        $tpId = session('selected_tahun', $sekolah?->tahun_aktif);
+        $semesterId = session('selected_semester', $sekolah?->semester_aktif);
+
+        $query = ProyekTema::where('tahun_pelajaran_id', $tpId)
+            ->where('semester_id', $semesterId);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_tema', 'like', "%{$search}%")
+                    ->orWhere('keterangan', 'like', "%{$search}%");
+            });
+        }
+
+        $perPage = $request->input('per_page', 15);
+        if ($perPage === 'all') {
+            $temas = $query->latest()->get();
+        } else {
+            $temas = $query->latest()->paginate((int) $perPage)->withQueryString();
+        }
 
         return view('tu.p5bk.tema', compact('temas'));
     }
 
     public function temaStore(StoreTemaRequest $r)
     {
-        ProyekTema::create($r->validated());
+        $sekolah = Sekolah::first();
+        $data = $r->validated();
+        $data['tahun_pelajaran_id'] = $data['tahun_pelajaran_id'] ?? session('selected_tahun', $sekolah?->tahun_aktif);
+        $data['semester_id'] = $data['semester_id'] ?? session('selected_semester', $sekolah?->semester_aktif);
+
+        $tema = ProyekTema::create($data);
+
+        activity()
+            ->performedOn($tema)
+            ->event('created')
+            ->withProperties(['nama' => $tema->nama_tema])
+            ->log('Tema P5 ditambahkan');
 
         return back()->with('status', 'Tema ditambahkan.');
     }
@@ -113,12 +185,25 @@ class P5bkController extends Controller
     {
         $proyekTema->update($r->validated());
 
+        activity()
+            ->performedOn($proyekTema)
+            ->event('updated')
+            ->withProperties(['nama' => $proyekTema->nama_tema])
+            ->log('Tema P5 diperbarui');
+
         return back()->with('status', 'Tema diperbarui.');
     }
 
     public function temaDestroy(ProyekTema $proyekTema)
     {
+        $nama = $proyekTema->nama_tema;
         $proyekTema->delete();
+
+        activity()
+            ->performedOn($proyekTema)
+            ->event('deleted')
+            ->withProperties(['nama' => $nama])
+            ->log('Tema P5 dihapus');
 
         return back()->with('status', 'Tema dihapus.');
     }

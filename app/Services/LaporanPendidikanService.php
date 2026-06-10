@@ -26,7 +26,7 @@ class LaporanPendidikanService
             ->orderBy('nama_kelas')
             ->get();
 
-        $mapelList = Mapel::orderBy('nama_mapel')->get();
+        $mapelList = Mapel::orderBy('urutan')->get();
 
         $nilaiPerMapel = $this->rataRataPerMapel($tahunId, $semesterId);
 
@@ -56,7 +56,7 @@ class LaporanPendidikanService
             ->get()
             ->keyBy('mapel_id');
 
-        return Mapel::orderBy('nama_mapel')->get()->map(function (Mapel $m) use ($rows) {
+        return Mapel::orderBy('urutan')->get()->map(function (Mapel $m) use ($rows) {
             $stat = $rows->get($m->id);
 
             return [

@@ -45,11 +45,30 @@
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
 
-        function openSidebar()  { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
-        function closeSidebar() { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); }
+        function openSidebar()  {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
 
         document.querySelectorAll('[data-toggle-sidebar]').forEach(el => el.addEventListener('click', openSidebar));
         document.querySelectorAll('[data-close-sidebar]').forEach(el => el.addEventListener('click', closeSidebar));
+
+        // Auto-close sidebar when clicking a menu link
+        document.querySelectorAll('.sidebar-link').forEach(el => el.addEventListener('click', closeSidebar));
+
+        // Touch swipe left to close sidebar
+        let touchStartX = 0;
+        sidebar.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+        sidebar.addEventListener('touchend', e => {
+            const diff = touchStartX - e.changedTouches[0].clientX;
+            if (diff > 80) closeSidebar();
+        }, { passive: true });
 
         // ── Dropdown ──
         const dropdown = document.getElementById('user-dropdown');
@@ -71,6 +90,8 @@
     </script>
 
     <script src="{{ asset('js/pwa.js') }}"></script>
+
+    <x-pwa-update-prompt />
 
     {{-- Tailwind JIT safelist --}}
     <div class="hidden hover:shadow-accent-glow hover:shadow-teal-glow hover:shadow-coral-glow hover:bg-teal-bg hover:bg-coral/5 hover:scale-[1.02] active:scale-95"></div>

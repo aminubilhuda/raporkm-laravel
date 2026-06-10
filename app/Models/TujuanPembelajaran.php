@@ -32,4 +32,9 @@ class TujuanPembelajaran extends Model
     {
         return $this->belongsTo(Semester::class);
     }
+
+    public function nilaiFormatif()
+    {
+        return $this->hasMany(NilaiFormatif::class);
+    }
 }

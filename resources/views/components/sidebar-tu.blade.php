@@ -16,6 +16,8 @@
         </button>
     </div>
 
+    <x-semester-switcher route="tu.set-semester" />
+
     <nav class="flex-1 overflow-y-auto no-scrollbar py-4">
         <div class="px-4 mb-3">
             <span class="sidebar-section-title border-teal-light/30 text-teal-light/70">
@@ -112,6 +114,7 @@
             ['route' => 'tu.prakerin.index', 'icon' => 'o-building-office-2', 'label' => 'Prakerin'],
             ['route' => 'tu.piket-harian.index', 'icon' => 'o-calendar-days', 'label' => 'Piket Harian'],
             ['route' => 'tu.organisasi.index', 'icon' => 'o-flag', 'label' => 'Organisasi'],
+            ['route' => 'tu.absensi-guru.index', 'icon' => 'o-map-pin', 'label' => 'Absensi GPS'],
         ] as $item)
             <a href="{{ route($item['route']) }}" class="sidebar-link {{ request()->routeIs($item['route']) ? 'sidebar-link-active' : 'hover:bg-white/10' }}">
                 <x-dynamic-component :component="'heroicon-'.$item['icon']" class="w-5 h-5" />
@@ -128,6 +131,7 @@
 
         @foreach([
             ['route' => 'tu.presensi.rekap', 'icon' => 'o-table-cells', 'label' => 'Rekap Presensi'],
+            ['route' => 'tu.absensi-guru.rekap', 'icon' => 'o-clipboard-document-list', 'label' => 'Rekap Absensi GPS'],
             ['route' => 'tu.pengingat.index', 'icon' => 'o-bell-alert', 'label' => 'Pengingat'],
             ['route' => 'tu.rapor.pilih', 'icon' => 'o-document-text', 'label' => 'Cetak Rapor'],
             ['route' => 'tu.laporan.pendidikan', 'icon' => 'o-document-chart-bar', 'label' => 'Laporan Pendidikan'],

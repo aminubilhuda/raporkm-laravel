@@ -82,7 +82,8 @@ class LulusanTest extends TestCase
             ->delete(route('tu.lulusan.destroy', $l))
             ->assertRedirect();
 
-        $this->assertDatabaseMissing('lulusan', ['id' => $l->id]);
+        $this->assertDatabaseHas('lulusan', ['id' => $l->id]);
+        $this->assertNotNull($l->fresh()->deleted_at);
     }
 
     public function test_guru_cannot_access_tu_lulusan(): void

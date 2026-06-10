@@ -35,8 +35,8 @@ class NaikKelasController extends Controller
                 $siswaKelas->update(['status' => 'naik']);
 
                 $sekolah = Sekolah::first();
-                $tahunId = $siswaKelas->tahun_pelajaran_id ?? $sekolah?->tahun_aktif;
-                $semesterId = $siswaKelas->semester_id ?? $sekolah?->semester_aktif;
+                $tahunId = $siswaKelas->tahun_pelajaran_id ?? session('selected_tahun', $sekolah?->tahun_aktif);
+                $semesterId = $siswaKelas->semester_id ?? session('selected_semester', $sekolah?->semester_aktif);
 
                 SiswaKelas::create([
                     'siswa_id' => $siswaKelas->siswa_id,
@@ -49,17 +49,10 @@ class NaikKelasController extends Controller
             }
         }
 
+        activity()
+            ->withProperties(['nama' => "{$count} siswa"])
+            ->log('Naik kelas diproses');
+
         return back()->with('status', "{$count} siswa berhasil dinaikkan ke kelas baru.");
-    }
-
-    public function getSiswa(Kelas $kelas)
-    {
-        $siswa = SiswaKelas::with('siswa')
-            ->where('kelas_id', $kelas->id)
-            ->where('status', 'aktif')
-            ->whereNull('deleted_at')
-            ->get();
-
-        return response()->json($siswa);
     }
 }

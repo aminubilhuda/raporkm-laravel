@@ -1,0 +1,62 @@
+site_name: E-Rapor KM Documentation
+site_description: Panduan Penggunaan Aplikasi E-Rapor Kurikulum Merdeka
+site_url: https://docs.smkabdinegara.sch.id
+theme:
+  name: material
+  language: id
+  palette:
+    - scheme: default
+      primary: teal
+      accent: coral
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - content.code.copy
+    - content.code.annotate
+    - search.highlight
+    - search.share
+
+nav:
+  - Beranda: index.md
+  - Manual TU (Admin): manual-tu/index.md
+    - Persiapan Awal: manual-tu/01-persiapan.md
+    - Manajemen Pengguna: manual-tu/02-manajemen-pengguna.md
+    - Manajemen Siswa: manual-tu/03-manajemen-siswa.md
+    - Manajemen Kurikulum: manual-tu/04-manajemen-kurikulum.md
+    - P5 & Kokurikuler: manual-tu/05-p5-kokurikuler.md
+    - Ekstrakurikuler & Organisasi: manual-tu/06-ekstra-organisasi.md
+    - Prakerin: manual-tu/07-prakerin.md
+    - Rapor & Cetak: manual-tu/08-rapor-cetak.md
+    - Ekspor & Laporan: manual-tu/09-ekspor-laporan.md
+    - Dapodik Sync: manual-tu/10-dapodik-sync.md
+  - Manual Guru: manual-guru/index.md
+    - Mulai: manual-guru/01-mulai.md
+    - Kelas Saya: manual-guru/02-kelas-saya.md
+    - Penilaian Akademik: manual-guru/03-penilaian-akademik.md
+    - Catatan Rapor: manual-guru/04-catatan-rapor.md
+    - P5 & Profil Pancasila: manual-guru/05-p5-profil-pancasila.md
+    - Kokurikuler: manual-guru/06-kokurikuler.md
+    - Ekstrakurikuler & Presensi: manual-guru/07-ekstra-presensi.md
+    - Prakerin: manual-guru/08-prakerin.md
+    - Piket & Organisasi: manual-guru/09-piket-organisasi.md
+    - Cetak Rapor: manual-guru/10-cetak-rapor.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - admonition
+  - pymdownx.details
+  - pymdownx.tasklist
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+
+extra:
+  generator: false

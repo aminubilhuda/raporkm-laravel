@@ -16,8 +16,8 @@ class StoreTemaRequest extends FormRequest
         return [
             'nama_tema' => 'required|string|max:200',
             'keterangan' => 'nullable|string',
-            'tahun_pelajaran_id' => 'required|integer|exists:tahun_pelajaran,id',
-            'semester_id' => 'required|integer|exists:semester,id',
+            'tahun_pelajaran_id' => 'nullable|integer|exists:tahun_pelajaran,id',
+            'semester_id' => 'nullable|integer|exists:semester,id',
         ];
     }
 }
