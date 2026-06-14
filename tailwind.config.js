@@ -31,6 +31,13 @@ export default {
         'sidebar-section-title', 'sidebar-overlay', 'sidebar-panel',
         'flash-message', 'btn-primary', 'btn-secondary', 'btn-danger',
         'animate-bounce-in',
+        // Dynamic Alpine.js :class bindings
+        'bg-red-100', 'bg-red-600', 'hover:bg-red-700', 'text-red-600',
+        'bg-amber-100', 'text-amber-700',
+        'ring-coral/40', 'ring-red-400/40',
+        'bg-gray-500', 'hover:bg-gray-600',
+        'bg-green-600', 'hover:bg-green-700',
+        'bg-red-500', 'hover:bg-red-600',
     ],
 
     theme: {

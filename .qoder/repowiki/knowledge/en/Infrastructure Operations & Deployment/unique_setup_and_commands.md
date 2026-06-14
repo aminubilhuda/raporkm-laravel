@@ -1,0 +1,3 @@
+- **Deployment**: Triggered by pushing to `master`, builds frontend assets, and executes `deploy.sh` on the remote server via SSH.
+- **Testing**: Runs PHPUnit against a MySQL 8.0 service and Laravel Dusk browser tests with ChromeDriver.
+- **Backup**: Configured via cron (`0 3 * * *`) to execute `scripts/backup-db.sh`, storing compressed dumps in `/www/backup/raporkm` with a 7-day retention.

@@ -1,0 +1,1 @@
+The `composer run dev` command concurrently boots the web server, queue listener, log tailed, and Vite development server.

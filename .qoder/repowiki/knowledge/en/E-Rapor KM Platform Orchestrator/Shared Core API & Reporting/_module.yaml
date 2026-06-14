@@ -1,0 +1,15 @@
+schema_version: 1
+module_path: laravel_backend/shared_core
+title: Shared Core API & Reporting
+scope:
+    - app/Http/Controllers/Api/V1/AuthController.php
+    - app/Http/Controllers/Api/V1/ProfileController.php
+    - app/Http/Controllers/Api/V1/ReferensiController.php
+    - app/Http/Controllers/Api/V1/SekolahController.php
+    - app/Http/Controllers/Controller.php
+    - app/Http/Controllers/RaporController.php
+    - routes/
+    - config/
+source_files: []
+depends_on: []
+related_to: []

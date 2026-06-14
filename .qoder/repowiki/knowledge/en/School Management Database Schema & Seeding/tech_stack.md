@@ -1,0 +1,1 @@
+Laravel Eloquent ORM with SQLite default connection (`database.sqlite`); uses Laravel's built-in migration, factory, and seeder infrastructure.

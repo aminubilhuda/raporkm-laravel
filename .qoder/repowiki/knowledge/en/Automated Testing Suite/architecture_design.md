@@ -1,0 +1,4 @@
+- The module is structured into three primary layers: `Unit` for isolated service logic verification, `Feature` for HTTP endpoint and workflow integration tests, and `Browser` for end-to-end UI automation using Laravel Dusk.
+- `tests/TestCase.php` serves as the base class for standard PHPUnit tests, while `tests/DuskTestCase.php` configures the ChromeDriver environment for browser automation.
+- `tests/Browser/UatBase.php` establishes a shared context for User Acceptance Tests (UAT), providing role-specific login helpers (e.g., `loginAsGuru`, `loginAsTu`) to streamline scenario setup.
+- Feature tests are further organized by domain (e.g., `Auth`, `Api/V1`, `Guru`, `Tu`) to mirror the application's functional modules, ensuring clear separation of concerns.

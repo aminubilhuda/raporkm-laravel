@@ -1,0 +1,9 @@
+schema_version: 1
+module_path: database_layer
+title: School Management Database Schema & Seeding
+scope:
+    - database/
+source_files: []
+depends_on: []
+related_to:
+    - path: laravel_backend

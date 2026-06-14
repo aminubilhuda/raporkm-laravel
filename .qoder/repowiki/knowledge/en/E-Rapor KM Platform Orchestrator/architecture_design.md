@@ -1,0 +1,3 @@
+- Role-Based Routing: The `EnsureRole` middleware enforces strict separation between TU (role:2) and Guru (roles:3,4) panels across both `routes/web.php` and `routes/api.php`, directing users to domain-specific controllers.
+- Multi-Client Authentication: Supports traditional web sessions for the admin dashboard and a custom `PwaAuth` middleware for React Native/PWA clients, using a dedicated `PwaToken` model for stateless API access.
+- Shared Service Layer: Domain-specific controllers in `App\Http\Controllers\Guru` and `App\Http\Controllers\TU` delegate complex business logic (e.g., report generation, Dapodik sync) to a common `App\Services` layer, ensuring consistent data handling across roles.

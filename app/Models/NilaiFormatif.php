@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['tahun_pelajaran_id', 'semester_id', 'kelas_id', 'mapel_id', 'tujuan_pembelajaran_id', 'siswa_id', 'nilai', 'middle', 'nas'])]
+#[Fillable(['tahun_pelajaran_id', 'semester_id', 'kelas_id', 'mapel_id', 'tujuan_pembelajaran_id', 'siswa_id', 'nilai'])]
 class NilaiFormatif extends Model
 {
     use HasFactory;
@@ -17,8 +17,6 @@ class NilaiFormatif extends Model
     {
         return [
             'nilai' => 'integer',
-            'middle' => 'integer',
-            'nas' => 'integer',
         ];
     }
 

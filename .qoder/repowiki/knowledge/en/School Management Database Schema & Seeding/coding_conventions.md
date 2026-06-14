@@ -1,0 +1,4 @@
+- All migrations define both `up()` and `down()` methods with explicit `Schema::dropIfExists()` calls for rollback safety.
+- Reference tables are prefixed with `ref_` (e.g., `ref_agama`, `ref_jenis_kelamin`) to distinguish static lookup data from transactional entities.
+- Factories use `fake()` helpers for realistic test data and define `protected $model` properties linking to their corresponding Eloquent models.
+- Core entity tables include `timestamps()` and `softDeletes()` columns, enabling automatic audit trails and logical deletion across the schema.

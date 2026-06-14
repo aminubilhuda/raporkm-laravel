@@ -1,0 +1,1 @@
+Provides foundational API endpoints for authentication, profile management, and reference data, alongside legacy web-based report generation.

@@ -12,10 +12,15 @@ use App\Models\NilaiSumatifTs;
 use App\Models\Sekolah;
 use App\Models\SiswaKelas;
 use App\Models\TujuanPembelajaran;
-use Illuminate\Database\Eloquent\Model;
+use App\Services\PenilaianService;
+use Illuminate\Http\Request;
 
 class PenilaianController extends Controller
 {
+    public function __construct(private PenilaianService $penilaianService)
+    {
+    }
+
     public function index(?Kelas $kelas = null, ?Mapel $mapel = null)
     {
         $user = auth()->user();
@@ -40,46 +45,7 @@ class PenilaianController extends Controller
         $nilaiSumatifAs = collect();
 
         if ($authorized) {
-            $siswa = SiswaKelas::where('kelas_id', $kelas->id)
-                ->when($taId, fn ($q) => $q->where('tahun_pelajaran_id', $taId))
-                ->when($semesterId, fn ($q) => $q->where('semester_id', $semesterId))
-                ->with('siswa')
-                ->get();
-
-            $tujuanPembelajaran = TujuanPembelajaran::where('mapel_id', $mapel->id)
-                ->where('kelas_id', $kelas->id)
-                ->when($taId, fn ($q) => $q->where('tahun_pelajaran_id', $taId))
-                ->when($semesterId, fn ($q) => $q->where('semester_id', $semesterId))
-                ->get();
-
-            $siswaIds = $siswa->pluck('siswa_id');
-            $tpIds = $tujuanPembelajaran->pluck('id');
-
-            $nilaiFormatif = NilaiFormatif::whereIn('siswa_id', $siswaIds)
-                ->whereIn('tujuan_pembelajaran_id', $tpIds)
-                ->where('mapel_id', $mapel->id)
-                ->where('kelas_id', $kelas->id)
-                ->get()
-                ->keyBy(fn ($n) => "{$n->siswa_id}_{$n->tujuan_pembelajaran_id}");
-
-            $nilaiSumatifPh = NilaiSumatifPh::whereIn('siswa_id', $siswaIds)
-                ->whereIn('tujuan_pembelajaran_id', $tpIds)
-                ->where('mapel_id', $mapel->id)
-                ->where('kelas_id', $kelas->id)
-                ->get()
-                ->keyBy(fn ($n) => "{$n->siswa_id}_{$n->tujuan_pembelajaran_id}");
-
-            $nilaiSumatifTs = NilaiSumatifTs::whereIn('siswa_id', $siswaIds)
-                ->where('mapel_id', $mapel->id)
-                ->where('kelas_id', $kelas->id)
-                ->get()
-                ->keyBy(fn ($n) => "{$n->siswa_id}");
-
-            $nilaiSumatifAs = NilaiSumatifAs::whereIn('siswa_id', $siswaIds)
-                ->where('mapel_id', $mapel->id)
-                ->where('kelas_id', $kelas->id)
-                ->get()
-                ->keyBy(fn ($n) => "{$n->siswa_id}");
+            [$siswa, $tujuanPembelajaran, $nilaiFormatif, $nilaiSumatifPh, $nilaiSumatifTs, $nilaiSumatifAs] = $this->loadPenilaianData($kelas, $mapel, $taId, $semesterId);
         }
 
         return view('guru.penilaian.index', compact(
@@ -89,110 +55,85 @@ class PenilaianController extends Controller
         ));
     }
 
-    public function storeFormatif()
+    public function storeFormatif(Request $request)
     {
-        return $this->batchStore(NilaiFormatif::class, ['nilai', 'middle', 'nas'], tpKeyed: true);
+        return $this->handleBatchStore($request, NilaiFormatif::class, ['nilai'], tpKeyed: true);
     }
 
-    public function storeSumatifPh()
+    public function storeSumatifPh(Request $request)
     {
-        return $this->batchStore(NilaiSumatifPh::class, ['nilai', 'deskripsi'], tpKeyed: true);
+        return $this->handleBatchStore($request, NilaiSumatifPh::class, ['nilai', 'deskripsi'], tpKeyed: true);
     }
 
-    public function storeSumatifTs()
+    public function storeSumatifTs(Request $request)
     {
-        return $this->batchStore(NilaiSumatifTs::class, ['nilai', 'deskripsi']);
+        return $this->handleBatchStore($request, NilaiSumatifTs::class, ['nilai', 'deskripsi']);
     }
 
-    public function storeSumatifAs()
+    public function storeSumatifAs(Request $request)
     {
-        return $this->batchStore(NilaiSumatifAs::class, ['nilai', 'deskripsi']);
+        return $this->handleBatchStore($request, NilaiSumatifAs::class, ['nilai', 'deskripsi']);
     }
 
     /**
-     * @param  class-string<Model>  $model
-     * @param  array<int, string>  $columns
+     * Load all penilaian data for a class/mapel combination.
+     *
+     * @return array<\Illuminate\Support\Collection>
      */
-    private function batchStore(string $model, array $columns, bool $tpKeyed = false)
+    private function loadPenilaianData(Kelas $kelas, Mapel $mapel, ?int $taId, ?int $semesterId): array
     {
-        $user = auth()->user();
-        $sekolah = Sekolah::first();
+        $siswa = SiswaKelas::where('kelas_id', $kelas->id)
+            ->when($taId, fn ($q) => $q->where('tahun_pelajaran_id', $taId))
+            ->when($semesterId, fn ($q) => $q->where('semester_id', $semesterId))
+            ->with('siswa')
+            ->get();
 
-        $rules = [
-            'kelas_id' => 'required|exists:kelas,id',
-            'mapel_id' => 'required|exists:mapel,id',
-            'siswa_id' => 'required|array',
-            'siswa_id.*' => 'exists:siswa,id',
-        ];
+        $tujuanPembelajaran = TujuanPembelajaran::where('mapel_id', $mapel->id)
+            ->where('kelas_id', $kelas->id)
+            ->when($taId, fn ($q) => $q->where('tahun_pelajaran_id', $taId))
+            ->when($semesterId, fn ($q) => $q->where('semester_id', $semesterId))
+            ->get();
 
-        foreach ($columns as $col) {
-            $rules["{$col}.*"] = $col === 'deskripsi'
-                ? 'nullable|string'
-                : 'nullable|integer|min:0|max:100';
-        }
+        $siswaIds = $siswa->pluck('siswa_id');
+        $tpIds = $tujuanPembelajaran->pluck('id');
 
-        $data = request()->validate($rules);
+        $nilaiFormatif = NilaiFormatif::whereIn('siswa_id', $siswaIds)
+            ->whereIn('tujuan_pembelajaran_id', $tpIds)
+            ->where('mapel_id', $mapel->id)
+            ->where('kelas_id', $kelas->id)
+            ->get()
+            ->keyBy(fn ($n) => "{$n->siswa_id}_{$n->tujuan_pembelajaran_id}");
 
-        abort_unless(
-            $user->mapelKelas()->where('mapel_id', $data['mapel_id'])->where('kelas_id', $data['kelas_id'])->exists(),
-            403
-        );
+        $nilaiSumatifPh = NilaiSumatifPh::whereIn('siswa_id', $siswaIds)
+            ->whereIn('tujuan_pembelajaran_id', $tpIds)
+            ->where('mapel_id', $mapel->id)
+            ->where('kelas_id', $kelas->id)
+            ->get()
+            ->keyBy(fn ($n) => "{$n->siswa_id}_{$n->tujuan_pembelajaran_id}");
 
-        $base = [
-            'tahun_pelajaran_id' => session('selected_tahun', $sekolah?->tahun_aktif),
-            'semester_id' => session('selected_semester', $sekolah?->semester_aktif),
-            'kelas_id' => $data['kelas_id'],
-            'mapel_id' => $data['mapel_id'],
-        ];
+        $nilaiSumatifTs = NilaiSumatifTs::whereIn('siswa_id', $siswaIds)
+            ->where('mapel_id', $mapel->id)
+            ->where('kelas_id', $kelas->id)
+            ->get()
+            ->keyBy(fn ($n) => "{$n->siswa_id}");
 
-        $saved = 0;
-        foreach ($data['siswa_id'] as $siswaId) {
-            $tpIds = $tpKeyed
-                ? array_keys(request()->input('nilai', []))
-                : [null];
+        $nilaiSumatifAs = NilaiSumatifAs::whereIn('siswa_id', $siswaIds)
+            ->where('mapel_id', $mapel->id)
+            ->where('kelas_id', $kelas->id)
+            ->get()
+            ->keyBy(fn ($n) => "{$n->siswa_id}");
 
-            foreach ($tpIds as $tpId) {
-                $values = ['siswa_id' => $siswaId];
-                if ($tpKeyed && $tpId !== null) {
-                    $values['tujuan_pembelajaran_id'] = (int) $tpId;
-                }
+        return [$siswa, $tujuanPembelajaran, $nilaiFormatif, $nilaiSumatifPh, $nilaiSumatifTs, $nilaiSumatifAs];
+    }
 
-                $hasValue = false;
-                foreach ($columns as $col) {
-                    $key = $tpKeyed ? $tpId : $siswaId;
-                    $payload = request()->input($col, []);
-                    if (! is_array($payload)) {
-                        continue;
-                    }
-                    if (array_key_exists((string) $key, $payload)) {
-                        $values[$col] = $payload[(string) $key];
-                        $hasValue = true;
-                    } elseif (array_key_exists((int) $key, $payload)) {
-                        $values[$col] = $payload[(int) $key];
-                        $hasValue = true;
-                    }
-                }
+    private function handleBatchStore(Request $request, string $model, array $columns, bool $tpKeyed = false)
+    {
+        $saved = $this->penilaianService->batchStore($request, $model, $columns, $tpKeyed);
 
-                if (! $hasValue) {
-                    continue;
-                }
-
-                $lookup = array_merge($base, ['siswa_id' => $siswaId]);
-                if ($tpKeyed && $tpId !== null) {
-                    $lookup['tujuan_pembelajaran_id'] = (int) $tpId;
-                }
-
-                $record = $model::where($lookup)->first();
-                if ($record) {
-                    $record->update($values);
-                } else {
-                    $model::create(array_merge($base, $values));
-                }
-                $saved++;
-            }
-        }
-
-        return redirect()->route('guru.penilaian.index', ['kelas' => $data['kelas_id'], 'mapel' => $data['mapel_id']])
-            ->with('status', "{$saved} nilai berhasil disimpan.");
+        return redirect()->route('guru.penilaian.index', [
+            'kelas' => $request->input('kelas_id'),
+            'mapel' => $request->input('mapel_id'),
+        ])->with('status', "{$saved} nilai berhasil disimpan.")
+          ->with('scroll_to', $request->input('_section', ''));
     }
 }

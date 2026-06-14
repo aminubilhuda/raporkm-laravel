@@ -27,10 +27,10 @@
         </div>
 
         @foreach([
-            ['route' => 'guru.dashboard', 'slug' => 'dashboard', 'icon' => 'o-chart-bar', 'label' => 'Dashboard'],
-            ['route' => 'guru.kelas-ku.index', 'slug' => 'kelas-ku', 'icon' => 'o-building-office-2', 'label' => 'Kelas Saya'],
+            ['route' => 'guru.dashboard', 'slug' => 'dashboard', 'icon' => 'o-chart-bar', 'label' => 'Dashboard', 'permission' => null],
+            ['route' => 'guru.kelas-ku.index', 'slug' => 'kelas-ku', 'icon' => 'o-building-office-2', 'label' => 'Kelas Saya', 'permission' => 'kelas.view'],
         ] as $item)
-            @if(in_array($item['slug'], $guruMenus ?? []))
+            @if(in_array($item['slug'], $guruMenus ?? []) && (!$item['permission'] || auth()->user()->can($item['permission'])))
             <a href="{{ route($item['route']) }}" class="sidebar-link {{ request()->routeIs($item['route']) ? 'sidebar-link-active-coral' : 'hover:bg-white/10' }}">
                 <x-dynamic-component :component="'heroicon-'.$item['icon']" class="w-5 h-5" />
                 <span>{{ $item['label'] }}</span>
@@ -40,13 +40,13 @@
 
         @php
             $penilaianMenus = [
-                ['route' => 'guru.tujuan-pembelajaran.index', 'slug' => 'tujuan-pembelajaran', 'icon' => 'o-check-badge', 'label' => 'Tujuan Pembelajaran'],
-                ['route' => 'guru.penilaian.index', 'slug' => 'penilaian', 'icon' => 'o-pencil-square', 'label' => 'Penilaian'],
-                ['route' => 'guru.lager-nilai-kelas.index', 'slug' => 'lager-nilai', 'icon' => 'o-document-chart-bar', 'label' => 'Lager Nilai'],
-                ['route' => 'guru.catatan-rapor.index', 'slug' => 'catatan-rapor', 'icon' => 'o-clipboard-document-list', 'label' => 'Catatan Rapor'],
-                ['route' => 'guru.cetak-rapor.index', 'slug' => 'cetak-rapor', 'icon' => 'o-printer', 'label' => 'Cetak Rapor'],
+                ['route' => 'guru.tujuan-pembelajaran.index', 'slug' => 'tujuan-pembelajaran', 'icon' => 'o-check-badge', 'label' => 'Tujuan Pembelajaran', 'permission' => 'nilai.view'],
+                ['route' => 'guru.penilaian.index', 'slug' => 'penilaian', 'icon' => 'o-pencil-square', 'label' => 'Penilaian', 'permission' => 'nilai.input'],
+                ['route' => 'guru.lager-nilai-kelas.index', 'slug' => 'lager-nilai', 'icon' => 'o-document-chart-bar', 'label' => 'Lager Nilai', 'permission' => 'nilai.view'],
+                ['route' => 'guru.catatan-rapor.index', 'slug' => 'catatan-rapor', 'icon' => 'o-clipboard-document-list', 'label' => 'Catatan Rapor', 'permission' => 'rapor.view'],
+                ['route' => 'guru.cetak-rapor.index', 'slug' => 'cetak-rapor', 'icon' => 'o-printer', 'label' => 'Cetak Rapor', 'permission' => 'rapor.print'],
             ];
-            $visiblePenilaian = collect($penilaianMenus)->filter(fn ($m) => in_array($m['slug'], $guruMenus ?? []));
+            $visiblePenilaian = collect($penilaianMenus)->filter(fn ($m) => in_array($m['slug'], $guruMenus ?? []) && (!$m['permission'] || auth()->user()->can($m['permission'])));
         @endphp
 
         @if($visiblePenilaian->isNotEmpty())
@@ -67,16 +67,16 @@
 
         @php
             $p5Menus = [
-                ['route' => 'guru.project-kelas.index', 'slug' => 'project-kelas', 'icon' => 'o-sparkles', 'label' => 'Project Kelas'],
-                ['route' => 'guru.p5bk.index', 'slug' => 'p5bk', 'icon' => 'o-star', 'label' => 'P5BK'],
-                ['route' => 'guru.kokurikuler.index', 'slug' => 'kokurikuler', 'icon' => 'o-sparkles', 'label' => 'Kokurikuler'],
-                ['route' => 'guru.penilaian-kokurikuler.index', 'slug' => 'penilaian-kokurikuler', 'icon' => 'o-pencil-square', 'label' => 'Nilai Kokurikuler'],
-                ['route' => 'guru.ekstra.index', 'slug' => 'ekstra', 'icon' => 'o-trophy', 'label' => 'Ekstrakurikuler'],
-                ['route' => 'guru.presensi.index', 'slug' => 'presensi', 'icon' => 'o-clipboard-document-check', 'label' => 'Presensi'],
-                ['route' => 'guru.presensi.rekap', 'slug' => 'rekap-presensi', 'icon' => 'o-clipboard-document-list', 'label' => 'Rekap Presensi'],
-                ['route' => 'guru.absensi-bk.index', 'slug' => 'absensi-bk', 'icon' => 'o-clipboard-document', 'label' => 'Absensi BK'],
+                ['route' => 'guru.project-kelas.index', 'slug' => 'project-kelas', 'icon' => 'o-sparkles', 'label' => 'Project Kelas', 'permission' => 'p5bk.view'],
+                ['route' => 'guru.p5bk.index', 'slug' => 'p5bk', 'icon' => 'o-star', 'label' => 'P5BK', 'permission' => 'p5bk.view'],
+                ['route' => 'guru.kokurikuler.index', 'slug' => 'kokurikuler', 'icon' => 'o-sparkles', 'label' => 'Kokurikuler', 'permission' => 'p5bk.view'],
+                ['route' => 'guru.penilaian-kokurikuler.index', 'slug' => 'penilaian-kokurikuler', 'icon' => 'o-pencil-square', 'label' => 'Nilai Kokurikuler', 'permission' => 'p5bk.input'],
+                ['route' => 'guru.ekstra.index', 'slug' => 'ekstra', 'icon' => 'o-trophy', 'label' => 'Ekstrakurikuler', 'permission' => 'ekskul.view'],
+                ['route' => 'guru.presensi.index', 'slug' => 'presensi', 'icon' => 'o-clipboard-document-check', 'label' => 'Presensi', 'permission' => 'presensi.input'],
+                ['route' => 'guru.presensi.rekap', 'slug' => 'rekap-presensi', 'icon' => 'o-clipboard-document-list', 'label' => 'Rekap Presensi', 'permission' => 'presensi.view'],
+                ['route' => 'guru.absensi-bk.index', 'slug' => 'absensi-bk', 'icon' => 'o-clipboard-document', 'label' => 'Absensi BK', 'permission' => 'presensi.view'],
             ];
-            $visibleP5 = collect($p5Menus)->filter(fn ($m) => in_array($m['slug'], $guruMenus ?? []));
+            $visibleP5 = collect($p5Menus)->filter(fn ($m) => in_array($m['slug'], $guruMenus ?? []) && (!$m['permission'] || auth()->user()->can($m['permission'])));
         @endphp
 
         @if($visibleP5->isNotEmpty())
@@ -97,14 +97,14 @@
 
         @php
             $lainnyaMenus = [
-                ['route' => 'guru.prakerin.index', 'slug' => 'prakerin', 'icon' => 'o-building-office', 'label' => 'Prakerin'],
-                ['route' => 'guru.nilai-prakerin.index', 'slug' => 'nilai-prakerin', 'icon' => 'o-pencil-square', 'label' => 'Nilai Prakerin'],
-                ['route' => 'guru.rapor-pkl.index', 'slug' => 'rapor-pkl', 'icon' => 'o-document-text', 'label' => 'Rapor PKL'],
-                ['route' => 'guru.piket-harian.index', 'slug' => 'piket-harian', 'icon' => 'o-calendar-days', 'label' => 'Piket Harian'],
-                ['route' => 'guru.organisasi.index', 'slug' => 'organisasi', 'icon' => 'o-user-group', 'label' => 'Organisasi'],
-                ['route' => 'guru.absensi-guru.index', 'slug' => 'absensi-guru', 'icon' => 'o-map-pin', 'label' => 'Absensi GPS'],
+                ['route' => 'guru.prakerin.index', 'slug' => 'prakerin', 'icon' => 'o-building-office', 'label' => 'Prakerin', 'permission' => 'prakerin.view'],
+                ['route' => 'guru.nilai-prakerin.index', 'slug' => 'nilai-prakerin', 'icon' => 'o-pencil-square', 'label' => 'Nilai Prakerin', 'permission' => 'prakerin.input'],
+                ['route' => 'guru.rapor-pkl.index', 'slug' => 'rapor-pkl', 'icon' => 'o-document-text', 'label' => 'Rapor PKL', 'permission' => 'rapor.view'],
+                ['route' => 'guru.piket-harian.index', 'slug' => 'piket-harian', 'icon' => 'o-calendar-days', 'label' => 'Piket Harian', 'permission' => 'presensi.view'],
+                ['route' => 'guru.organisasi.index', 'slug' => 'organisasi', 'icon' => 'o-user-group', 'label' => 'Organisasi', 'permission' => 'siswa.view'],
+                ['route' => 'guru.absensi-guru.index', 'slug' => 'absensi-guru', 'icon' => 'o-map-pin', 'label' => 'Absensi GPS', 'permission' => 'presensi.view'],
             ];
-            $visibleLainnya = collect($lainnyaMenus)->filter(fn ($m) => in_array($m['slug'], $guruMenus ?? []));
+            $visibleLainnya = collect($lainnyaMenus)->filter(fn ($m) => in_array($m['slug'], $guruMenus ?? []) && (!$m['permission'] || auth()->user()->can($m['permission'])));
         @endphp
 
         @if($visibleLainnya->isNotEmpty())

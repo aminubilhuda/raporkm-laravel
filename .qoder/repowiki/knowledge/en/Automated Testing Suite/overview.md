@@ -1,0 +1,1 @@
+Provides a comprehensive testing infrastructure for unit, feature, and browser-level validation of the application's business logic and user interfaces.

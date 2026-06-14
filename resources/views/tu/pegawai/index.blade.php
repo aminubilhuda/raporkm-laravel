@@ -46,8 +46,11 @@
                         <td class="px-4 py-3 text-gray-600 hidden md:table-cell">{{ $p->username }}</td>
                         <td class="px-4 py-3 hidden sm:table-cell">
                             <span class="px-2 py-0.5 text-xs font-bold rounded-pill {{ $p->jabatan == 2 ? 'bg-teal-primary/10 text-teal-primary' : ($p->jabatan == 4 ? 'bg-gold/10 text-gold-dark' : 'bg-coral/10 text-coral') }}">
-                                {{ $p->jabatan == 2 ? 'TU' : ($p->jabatan == 4 ? 'Kepsek' : 'Guru') }}
+                                {{ $p->getRoleName() ?? ($p->jabatan == 2 ? 'TU' : ($p->jabatan == 4 ? 'Kepsek' : 'Guru')) }}
                             </span>
+                            @if($p->roles->count() > 1)
+                                <span class="text-xs text-gray-400">+{{ $p->roles->count() - 1 }}</span>
+                            @endif
                         </td>
                         <td class="px-4 py-3 text-gray-500 hidden lg:table-cell">{{ $p->kontak ?? '-' }}</td>
                         <td class="px-4 py-3">

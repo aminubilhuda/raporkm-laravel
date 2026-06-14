@@ -632,8 +632,6 @@ class DemoDataSeeder extends Seeder
                         'tujuan_pembelajaran_id' => $tp->id,
                         'siswa_id' => $siswaId,
                         'nilai' => max(50, min(100, $baseScore + fake()->numberBetween(-10, 10))),
-                        'middle' => max(50, min(100, $baseScore + fake()->numberBetween(-8, 8))),
-                        'nas' => max(50, min(100, $baseScore + fake()->numberBetween(-5, 5))),
                     ]);
 
                     NilaiSumatifPh::create([

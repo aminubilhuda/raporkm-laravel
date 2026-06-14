@@ -103,14 +103,6 @@ class PenilaianFormatifTest extends TestCase
                 $this->tp1->id => 85,
                 $this->tp2->id => 90,
             ],
-            'middle' => [
-                $this->tp1->id => 80,
-                $this->tp2->id => 88,
-            ],
-            'nas' => [
-                $this->tp1->id => 82,
-                $this->tp2->id => 89,
-            ],
         ]);
 
         $response->assertRedirect();
@@ -121,8 +113,6 @@ class PenilaianFormatifTest extends TestCase
             'mapel_id' => $this->mapel->id,
             'kelas_id' => $this->kelas->id,
             'nilai' => 85,
-            'middle' => 80,
-            'nas' => 82,
         ]);
 
         $this->assertDatabaseHas('nilai_formatif', [

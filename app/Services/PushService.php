@@ -101,9 +101,13 @@ class PushService
         return $allResults;
     }
 
-    public function sendToRole(int $jabatan, string $title, string $body, ?string $url = null): array
+    public function sendToRole(int|string $role, string $title, string $body, ?string $url = null): array
     {
-        $users = User::where('jabatan', $jabatan)->get();
+        // Support both role name (TU, Guru, Kepsek) and jabatan number (2,3,4)
+        $roleMap = [2 => 'TU', 3 => 'Guru', 4 => 'Kepsek'];
+        $roleName = is_int($role) ? ($roleMap[$role] ?? 'Guru') : $role;
+
+        $users = User::role($roleName)->get();
 
         return $this->sendToUsers($users, $title, $body, $url);
     }

@@ -1,0 +1,1 @@
+Provides Progressive Web App entry points, service worker logic, and static assets for offline-capable educational reporting.

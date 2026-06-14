@@ -26,8 +26,6 @@ class NilaiFormatifFactory extends Factory
             'tujuan_pembelajaran_id' => TujuanPembelajaran::factory(),
             'siswa_id' => Siswa::factory(),
             'nilai' => fake()->numberBetween(60, 100),
-            'middle' => fake()->numberBetween(60, 100),
-            'nas' => fake()->numberBetween(60, 100),
         ];
     }
 }

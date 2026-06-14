@@ -6,6 +6,10 @@ select2(window, $);
 
 import 'select2/dist/css/select2.min.css';
 
+import Alpine from 'alpinejs';
+window.Alpine = Alpine;
+Alpine.start();
+
 document.dispatchEvent(new Event('jquery-ready'));
 
 import { Chart, registerables } from 'chart.js';

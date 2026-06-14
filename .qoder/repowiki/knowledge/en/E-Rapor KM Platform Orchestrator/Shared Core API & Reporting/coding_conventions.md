@@ -1,0 +1,3 @@
+- Controllers return standardized JSON responses with a `success` boolean and a `data` payload.
+- API controllers utilize explicit request validation via `$request->validate()` before processing business logic.
+- Role-based access control is enforced at the route level using custom `role:` middleware prefixes.

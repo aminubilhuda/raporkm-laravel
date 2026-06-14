@@ -1,0 +1,4 @@
+- Entry point: `routes/api.php` defines versioned (`v1`) RESTful routes with middleware-bound role segregation (TU vs Guru).
+- Controllers: `AuthController`, `ProfileController`, `ReferensiController`, and `SekolahController` handle shared business logic, extending a base `Controller`.
+- Legacy Integration: `RaporController` operates outside the API v1 structure, using session-based state and direct PDF streaming via `RaporService`.
+- Configuration: `config/sanctum.php` manages stateless API token authentication, while `config/e-rapor.php` and `config/dompdf.php` support the reporting subsystem.

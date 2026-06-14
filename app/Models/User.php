@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable([
     'jabatan', 'nama', 'ptk_id', 'username', 'email', 'password',
@@ -19,7 +20,7 @@ class User extends Authenticatable
 {
     protected $table = 'users';
 
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable, SoftDeletes;
 
     public function findForPassport(string $username): self
     {
@@ -46,17 +47,32 @@ class User extends Authenticatable
 
     public function isTU(): bool
     {
-        return $this->jabatan === 2;
+        return $this->hasRole('TU') || $this->jabatan === 2;
     }
 
     public function isGuru(): bool
     {
-        return $this->jabatan === 3;
+        return $this->hasRole('Guru') || $this->jabatan === 3;
     }
 
     public function isKepsek(): bool
     {
-        return $this->jabatan === 4;
+        return $this->hasRole('Kepsek') || $this->jabatan === 4;
+    }
+
+    public function canAccess(string $permission): bool
+    {
+        return $this->can($permission);
+    }
+
+    public function getRoleName(): ?string
+    {
+        return $this->roles->first()?->name ?? match ($this->jabatan) {
+            2 => 'TU',
+            3 => 'Guru',
+            4 => 'Kepsek',
+            default => null,
+        };
     }
 
     public function ptk()

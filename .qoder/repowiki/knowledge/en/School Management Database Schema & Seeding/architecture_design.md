@@ -1,0 +1,5 @@
+- Organized into three standard Laravel sub-packages: `migrations/` for schema evolution, `factories/` for Eloquent model test data generation, and `seeders/` for initial/reference data population.
+- Schema is layered into reference tables (`ref_*` for static lookups like religion, gender), core academic entities (`siswa`, `kelas`, `mapel`, `tahun_pelajaran`), and transactional grade records (`nilai_*`, `presensi`).
+- Migrations use anonymous classes extending `Illuminate\Database\Migrations\Migration` with explicit `up()` and `down()` methods, ensuring reversible schema changes.
+- Factories extend `Illuminate\Database\Eloquent\Factories\Factory` with typed `@extends` annotations and `definition()` arrays, supporting state-based customization (e.g., `UserFactory::guru()`).
+- Seeders coordinate data loading via `$this->call()` chains in `DatabaseSeeder`, allowing environment-specific seeding (e.g., demo data for local/testing).

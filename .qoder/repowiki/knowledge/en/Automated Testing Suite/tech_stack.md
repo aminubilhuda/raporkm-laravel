@@ -1,0 +1,1 @@
+Uses Laravel Dusk with ChromeDriver for headless browser automation and Livewire Volt component testing for interactive UI verification.

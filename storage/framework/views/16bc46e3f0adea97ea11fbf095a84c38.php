@@ -65,11 +65,13 @@
         </div>
 
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-            ['route' => 'tu.dashboard', 'icon' => 'o-chart-bar', 'label' => 'Dashboard'],
-            ['route' => 'tu.sekolah.index', 'icon' => 'o-building-office-2', 'label' => 'Profil Sekolah'],
-            ['route' => 'tu.pengaturan.index', 'icon' => 'o-cog-6-tooth', 'label' => 'Pengaturan'],
-            ['route' => 'tu.pegawai.index', 'icon' => 'o-users', 'label' => 'Pegawai/Guru'],
+            ['route' => 'tu.dashboard', 'icon' => 'o-chart-bar', 'label' => 'Dashboard', 'permission' => null],
+            ['route' => 'tu.sekolah.index', 'icon' => 'o-building-office-2', 'label' => 'Profil Sekolah', 'permission' => 'sekolah.view'],
+            ['route' => 'tu.pengaturan.index', 'icon' => 'o-cog-6-tooth', 'label' => 'Pengaturan', 'permission' => 'sekolah.edit'],
+            ['route' => 'tu.pegawai.index', 'icon' => 'o-users', 'label' => 'Pegawai/Guru', 'permission' => 'user.view'],
+            ['route' => 'tu.roles.index', 'icon' => 'o-shield-check', 'label' => 'Manajemen Role', 'permission' => 'user.edit'],
         ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$item['permission'] || auth()->user()->can($item['permission'])): ?>
             <a href="<?php echo e(route($item['route'])); ?>" class="sidebar-link <?php echo e(request()->routeIs($item['route']) ? 'sidebar-link-active' : 'hover:bg-white/10'); ?>">
                 <?php if (isset($component)) { $__componentOriginal511d4862ff04963c3c16115c05a86a9d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal511d4862ff04963c3c16115c05a86a9d = $attributes; } ?>
@@ -93,6 +95,7 @@
 <?php endif; ?>
                 <span><?php echo e($item['label']); ?></span>
             </a>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <div class="px-4 mt-5 mb-3">
@@ -122,12 +125,13 @@
         </div>
 
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-            ['route' => 'tu.mapel.index', 'icon' => 'o-book-open', 'label' => 'Mata Pelajaran'],
-            ['route' => 'tu.kelompok-mapel.index', 'icon' => 'o-rectangle-stack', 'label' => 'Kelompok Mapel'],
-            ['route' => 'tu.kompetensi.index', 'icon' => 'o-wrench-screwdriver', 'label' => 'Kompetensi Keahlian'],
-            ['route' => 'tu.tingkat.index', 'icon' => 'o-numbered-list', 'label' => 'Tingkat'],
-            ['route' => 'tu.deskripsi-rapor.index', 'icon' => 'o-pencil-square', 'label' => 'Deskripsi Rapor'],
+            ['route' => 'tu.mapel.index', 'icon' => 'o-book-open', 'label' => 'Mata Pelajaran', 'permission' => 'mapel.view'],
+            ['route' => 'tu.kelompok-mapel.index', 'icon' => 'o-rectangle-stack', 'label' => 'Kelompok Mapel', 'permission' => 'mapel.view'],
+            ['route' => 'tu.kompetensi.index', 'icon' => 'o-wrench-screwdriver', 'label' => 'Kompetensi Keahlian', 'permission' => 'mapel.view'],
+            ['route' => 'tu.tingkat.index', 'icon' => 'o-numbered-list', 'label' => 'Tingkat', 'permission' => 'kelas.view'],
+            ['route' => 'tu.deskripsi-rapor.index', 'icon' => 'o-pencil-square', 'label' => 'Deskripsi Rapor', 'permission' => 'nilai.view'],
         ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->user()->can($item['permission'])): ?>
             <a href="<?php echo e(route($item['route'])); ?>" class="sidebar-link <?php echo e(request()->routeIs($item['route']) ? 'sidebar-link-active' : 'hover:bg-white/10'); ?>">
                 <?php if (isset($component)) { $__componentOriginal511d4862ff04963c3c16115c05a86a9d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal511d4862ff04963c3c16115c05a86a9d = $attributes; } ?>
@@ -151,6 +155,7 @@
 <?php endif; ?>
                 <span><?php echo e($item['label']); ?></span>
             </a>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <div class="px-4 mt-5 mb-3">
@@ -180,17 +185,18 @@
         </div>
 
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-            ['route' => 'tu.kesiswaan.index', 'icon' => 'o-academic-cap', 'label' => 'Data Siswa'],
-            ['route' => 'tu.rombel.index', 'icon' => 'o-building-office', 'label' => 'Kelas/Rombel'],
-            ['route' => 'tu.anggota-kelas.index', 'icon' => 'o-user-group', 'label' => 'Anggota Kelas'],
-            ['route' => 'tu.mapel-kelas.index', 'icon' => 'o-squares-plus', 'label' => 'Mapel-Kelas'],
-            ['route' => 'tu.mapel-siswa.index', 'icon' => 'o-user-plus', 'label' => 'Mapel-Siswa'],
-            ['route' => 'tu.naik-kelas.index', 'icon' => 'o-arrow-up-on-square', 'label' => 'Naik Kelas'],
-            ['route' => 'tu.mutasi-masuk.index', 'icon' => 'o-arrow-left-on-rectangle', 'label' => 'Mutasi Masuk'],
-            ['route' => 'tu.mutasi-keluar.index', 'icon' => 'o-arrow-right-on-rectangle', 'label' => 'Mutasi Keluar'],
-            ['route' => 'tu.lulusan.index', 'icon' => 'o-academic-cap', 'label' => 'Lulusan'],
-            ['route' => 'tu.prestasi.index', 'icon' => 'o-trophy', 'label' => 'Prestasi'],
+            ['route' => 'tu.kesiswaan.index', 'icon' => 'o-academic-cap', 'label' => 'Data Siswa', 'permission' => 'siswa.view'],
+            ['route' => 'tu.rombel.index', 'icon' => 'o-building-office', 'label' => 'Kelas/Rombel', 'permission' => 'kelas.view'],
+            ['route' => 'tu.anggota-kelas.index', 'icon' => 'o-user-group', 'label' => 'Anggota Kelas', 'permission' => 'kelas.view'],
+            ['route' => 'tu.mapel-kelas.index', 'icon' => 'o-squares-plus', 'label' => 'Mapel-Kelas', 'permission' => 'mapel.view'],
+            ['route' => 'tu.mapel-siswa.index', 'icon' => 'o-user-plus', 'label' => 'Mapel-Siswa', 'permission' => 'mapel.view'],
+            ['route' => 'tu.naik-kelas.index', 'icon' => 'o-arrow-up-on-square', 'label' => 'Naik Kelas', 'permission' => 'kelas.edit'],
+            ['route' => 'tu.mutasi-masuk.index', 'icon' => 'o-arrow-left-on-rectangle', 'label' => 'Mutasi Masuk', 'permission' => 'siswa.edit'],
+            ['route' => 'tu.mutasi-keluar.index', 'icon' => 'o-arrow-right-on-rectangle', 'label' => 'Mutasi Keluar', 'permission' => 'siswa.delete'],
+            ['route' => 'tu.lulusan.index', 'icon' => 'o-academic-cap', 'label' => 'Lulusan', 'permission' => 'siswa.edit'],
+            ['route' => 'tu.prestasi.index', 'icon' => 'o-trophy', 'label' => 'Prestasi', 'permission' => 'siswa.view'],
         ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->user()->can($item['permission'])): ?>
             <a href="<?php echo e(route($item['route'])); ?>" class="sidebar-link <?php echo e(request()->routeIs($item['route']) ? 'sidebar-link-active' : 'hover:bg-white/10'); ?>">
                 <?php if (isset($component)) { $__componentOriginal511d4862ff04963c3c16115c05a86a9d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal511d4862ff04963c3c16115c05a86a9d = $attributes; } ?>
@@ -214,6 +220,7 @@
 <?php endif; ?>
                 <span><?php echo e($item['label']); ?></span>
             </a>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <div class="px-4 mt-5 mb-3">
@@ -243,11 +250,12 @@
         </div>
 
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-            ['route' => 'tu.p5bk.index', 'icon' => 'o-star', 'label' => 'P5BK Dimensi'],
-            ['route' => 'tu.p5bk.tema.index', 'icon' => 'o-sparkles', 'label' => 'P5BK Tema'],
-            ['route' => 'tu.p5bk.proyek.index', 'icon' => 'o-rocket-launch', 'label' => 'P5BK Proyek'],
-            ['route' => 'tu.kokurikuler.index', 'icon' => 'o-bookmark', 'label' => 'Kokurikuler'],
+            ['route' => 'tu.p5bk.index', 'icon' => 'o-star', 'label' => 'P5BK Dimensi', 'permission' => 'p5bk.view'],
+            ['route' => 'tu.p5bk.tema.index', 'icon' => 'o-sparkles', 'label' => 'P5BK Tema', 'permission' => 'p5bk.view'],
+            ['route' => 'tu.p5bk.proyek.index', 'icon' => 'o-rocket-launch', 'label' => 'P5BK Proyek', 'permission' => 'p5bk.view'],
+            ['route' => 'tu.kokurikuler.index', 'icon' => 'o-bookmark', 'label' => 'Kokurikuler', 'permission' => 'p5bk.view'],
         ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->user()->can($item['permission'])): ?>
             <a href="<?php echo e(route($item['route'])); ?>" class="sidebar-link <?php echo e(request()->routeIs($item['route']) ? 'sidebar-link-active' : 'hover:bg-white/10'); ?>">
                 <?php if (isset($component)) { $__componentOriginal511d4862ff04963c3c16115c05a86a9d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal511d4862ff04963c3c16115c05a86a9d = $attributes; } ?>
@@ -271,6 +279,7 @@
 <?php endif; ?>
                 <span><?php echo e($item['label']); ?></span>
             </a>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <div class="px-4 mt-5 mb-3">
@@ -300,12 +309,13 @@
         </div>
 
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-            ['route' => 'tu.ekstra.index', 'icon' => 'o-trophy', 'label' => 'Ekstrakurikuler'],
-            ['route' => 'tu.prakerin.index', 'icon' => 'o-building-office-2', 'label' => 'Prakerin'],
-            ['route' => 'tu.piket-harian.index', 'icon' => 'o-calendar-days', 'label' => 'Piket Harian'],
-            ['route' => 'tu.organisasi.index', 'icon' => 'o-flag', 'label' => 'Organisasi'],
-            ['route' => 'tu.absensi-guru.index', 'icon' => 'o-map-pin', 'label' => 'Absensi GPS'],
+            ['route' => 'tu.ekstra.index', 'icon' => 'o-trophy', 'label' => 'Ekstrakurikuler', 'permission' => 'ekskul.view'],
+            ['route' => 'tu.prakerin.index', 'icon' => 'o-building-office-2', 'label' => 'Prakerin', 'permission' => 'prakerin.view'],
+            ['route' => 'tu.piket-harian.index', 'icon' => 'o-calendar-days', 'label' => 'Piket Harian', 'permission' => 'presensi.view'],
+            ['route' => 'tu.organisasi.index', 'icon' => 'o-flag', 'label' => 'Organisasi', 'permission' => 'siswa.view'],
+            ['route' => 'tu.absensi-guru.index', 'icon' => 'o-map-pin', 'label' => 'Absensi GPS', 'permission' => 'presensi.view'],
         ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->user()->can($item['permission'])): ?>
             <a href="<?php echo e(route($item['route'])); ?>" class="sidebar-link <?php echo e(request()->routeIs($item['route']) ? 'sidebar-link-active' : 'hover:bg-white/10'); ?>">
                 <?php if (isset($component)) { $__componentOriginal511d4862ff04963c3c16115c05a86a9d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal511d4862ff04963c3c16115c05a86a9d = $attributes; } ?>
@@ -329,6 +339,7 @@
 <?php endif; ?>
                 <span><?php echo e($item['label']); ?></span>
             </a>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <div class="px-4 mt-5 mb-3">
@@ -358,13 +369,14 @@
         </div>
 
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-            ['route' => 'tu.presensi.rekap', 'icon' => 'o-table-cells', 'label' => 'Rekap Presensi'],
-            ['route' => 'tu.absensi-guru.rekap', 'icon' => 'o-clipboard-document-list', 'label' => 'Rekap Absensi GPS'],
-            ['route' => 'tu.pengingat.index', 'icon' => 'o-bell-alert', 'label' => 'Pengingat'],
-            ['route' => 'tu.rapor.pilih', 'icon' => 'o-document-text', 'label' => 'Cetak Rapor'],
-            ['route' => 'tu.laporan.pendidikan', 'icon' => 'o-document-chart-bar', 'label' => 'Laporan Pendidikan'],
-            ['route' => 'tu.ekspor.index', 'icon' => 'o-arrow-down-tray', 'label' => 'Ekspor Data'],
+            ['route' => 'tu.presensi.rekap', 'icon' => 'o-table-cells', 'label' => 'Rekap Presensi', 'permission' => 'presensi.view'],
+            ['route' => 'tu.absensi-guru.rekap', 'icon' => 'o-clipboard-document-list', 'label' => 'Rekap Absensi GPS', 'permission' => 'presensi.view'],
+            ['route' => 'tu.pengingat.index', 'icon' => 'o-bell-alert', 'label' => 'Pengingat', 'permission' => 'laporan.view'],
+            ['route' => 'tu.rapor.pilih', 'icon' => 'o-document-text', 'label' => 'Cetak Rapor', 'permission' => 'rapor.print'],
+            ['route' => 'tu.laporan.pendidikan', 'icon' => 'o-document-chart-bar', 'label' => 'Laporan Pendidikan', 'permission' => 'laporan.view'],
+            ['route' => 'tu.ekspor.index', 'icon' => 'o-arrow-down-tray', 'label' => 'Ekspor Data', 'permission' => 'laporan.view'],
         ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->user()->can($item['permission'])): ?>
             <a href="<?php echo e(route($item['route'])); ?>" class="sidebar-link <?php echo e(request()->routeIs($item['route']) ? 'sidebar-link-active' : 'hover:bg-white/10'); ?>">
                 <?php if (isset($component)) { $__componentOriginal511d4862ff04963c3c16115c05a86a9d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal511d4862ff04963c3c16115c05a86a9d = $attributes; } ?>
@@ -388,6 +400,7 @@
 <?php endif; ?>
                 <span><?php echo e($item['label']); ?></span>
             </a>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <div class="px-4 mt-5 mb-3">
@@ -417,8 +430,9 @@
         </div>
 
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
-            ['route' => 'tu.dapodik.index', 'icon' => 'o-cloud-arrow-down', 'label' => 'Dapodik'],
+            ['route' => 'tu.dapodik.index', 'icon' => 'o-cloud-arrow-down', 'label' => 'Dapodik', 'permission' => 'dapodik.sync'],
         ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->user()->can($item['permission'])): ?>
             <a href="<?php echo e(route($item['route'])); ?>" class="sidebar-link <?php echo e(request()->routeIs($item['route']) ? 'sidebar-link-active' : 'hover:bg-white/10'); ?>">
                 <?php if (isset($component)) { $__componentOriginal511d4862ff04963c3c16115c05a86a9d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal511d4862ff04963c3c16115c05a86a9d = $attributes; } ?>
@@ -442,6 +456,7 @@
 <?php endif; ?>
                 <span><?php echo e($item['label']); ?></span>
             </a>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </nav>
 

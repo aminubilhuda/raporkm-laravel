@@ -1,0 +1,1 @@
+Laravel 13, Livewire 3, Laravel Sanctum, OpenSpout, Laravel DOMPDF

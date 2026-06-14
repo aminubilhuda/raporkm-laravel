@@ -1,0 +1,4 @@
+- Centralized routing in `routes/web.php` and `routes/api.php` directs traffic to distinct `Guru` (Teacher) and `TU` (Administrative Officer) controller namespaces.
+- The `EnsureRole` middleware, registered in `bootstrap/app.php`, enforces isolation between the two panels by validating the user's `jabatan` attribute against route-specific role requirements.
+- Shared infrastructure, including the `DapodikService` for external data synchronization and `RaporService` for report generation, is consumed by both panels via dependency injection.
+- The application bootstraps via `bootstrap/app.php`, which configures middleware aliases and exception handling for both web and API contexts.

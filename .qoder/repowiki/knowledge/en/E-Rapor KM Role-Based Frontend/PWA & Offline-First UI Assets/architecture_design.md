@@ -1,0 +1,4 @@
+- Entry point: `public/index.php` bootstraps the Laravel application.
+- PWA Core: `public/sw.js` implements network-first caching, push notifications, and background sync for grade data using IndexedDB.
+- Client Integration: `public/js/pwa.js` exposes global helpers (`pwaLogin`, `pwaQueueForSync`) to bridge the UI with the service worker and backend APIs.
+- Manifest & Icons: `public/manifest.json` and `public/icons/` define installability and branding for the 'E-Rapor KM' application.

@@ -1,0 +1,8 @@
+schema_version: 1
+module_path: laravel_frontend/shared_ui
+title: PWA & Offline-First UI Assets
+scope:
+    - public/
+source_files: []
+depends_on: []
+related_to: []

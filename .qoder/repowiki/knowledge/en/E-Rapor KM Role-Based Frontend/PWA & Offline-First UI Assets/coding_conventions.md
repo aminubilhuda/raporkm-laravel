@@ -1,0 +1,2 @@
+- Global PWA utilities are exposed on the `window` object (e.g., `window.pwaLogin`, `window.pwaQueueForSync`) for broad accessibility across views.
+- API interactions consistently include `X-Requested-With: XMLHttpRequest` and custom `X-PWA-Token` headers for stateless authentication and AJAX identification.

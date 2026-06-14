@@ -1,0 +1,1 @@
+Orchestrates role-based academic administration by routing requests to distinct Teacher and Administrative Officer (TU) domains via shared middleware and centralized service contracts.

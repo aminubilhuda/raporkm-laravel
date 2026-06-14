@@ -6,6 +6,7 @@ use App\Models\Sekolah;
 use App\Models\Semester;
 use App\Models\TahunPelajaran;
 use App\Services\GuruMenuService;
+use App\Services\SekolahService;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
@@ -69,6 +70,6 @@ class SekolahComposer
             return [];
         }
 
-        return (new GuruMenuService)->getVisibleMenus($user, $taId, $semesterId);
+        return app(GuruMenuService::class)->getVisibleMenus($user, $taId, $semesterId);
     }
 }

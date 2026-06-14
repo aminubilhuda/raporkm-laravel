@@ -1,0 +1,1 @@
+Laravel 11 (implied by structure), Sanctum for API token management, Livewire for reactive UI components, DomPDF for server-side report rendering.

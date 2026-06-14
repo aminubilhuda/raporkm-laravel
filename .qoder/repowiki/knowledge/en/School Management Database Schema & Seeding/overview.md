@@ -1,0 +1,1 @@
+Defines the complete database schema, reference data, and test factories for a vocational school report card management system.

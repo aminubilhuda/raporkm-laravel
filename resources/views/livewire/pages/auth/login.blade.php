@@ -42,7 +42,7 @@ new #[Layout('layouts.guest')] class extends Component
             default => '/dashboard',
         };
 
-        $this->redirect($redirectTo, navigate: true);
+        $this->redirect($redirectTo, navigate: false);
     }
 }; ?>
 

@@ -7,7 +7,6 @@ use App\Models\NilaiMapel;
 use App\Models\NilaiPrakerin;
 use App\Models\NilaiSumatifTs;
 use App\Models\Presensi;
-use App\Models\Sekolah;
 use App\Models\Semester;
 use App\Models\Siswa;
 use App\Models\SiswaEskul;
@@ -17,6 +16,9 @@ use App\Models\TahunPelajaran;
 
 class RaporService
 {
+    public function __construct(private SekolahService $sekolahService)
+    {
+    }
     public function getDataRaporSemester(int $siswaId, int $tahunId, int $semesterId): array
     {
         $siswa = Siswa::findOrFail($siswaId);
@@ -58,7 +60,7 @@ class RaporService
 
         return [
             'siswa' => $siswa,
-            'sekolah' => Sekolah::first(),
+            'sekolah' => $this->sekolahService->get(),
             'kelas' => $kelasAktif?->kelas,
             'kelas_aktif' => $kelasAktif,
             'tahun' => TahunPelajaran::find($tahunId),
@@ -91,7 +93,7 @@ class RaporService
 
         return [
             'siswa' => $siswa,
-            'sekolah' => Sekolah::first(),
+            'sekolah' => $this->sekolahService->get(),
             'kelas' => $kelasAktif?->kelas,
             'kelas_aktif' => $kelasAktif,
             'tahun' => TahunPelajaran::find($tahunId),
@@ -114,7 +116,7 @@ class RaporService
             'siswa' => $siswaPrakerin->siswa,
             'prakerin' => $siswaPrakerin->prakerin,
             'kelas' => $siswaPrakerin->kelas,
-            'sekolah' => Sekolah::first(),
+            'sekolah' => $this->sekolahService->get(),
             'nilai_prakerin' => $nilaiPrakerin,
         ];
     }

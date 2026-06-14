@@ -4,15 +4,17 @@ namespace App\Http\Controllers\TU;
 
 use App\Http\Controllers\Controller;
 use App\Models\GuruMenuAkses;
-use App\Models\Ptk;
 use App\Models\User;
-use App\Services\GuruMenuService;
+use App\Services\PegawaiService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class PegawaiController extends Controller
 {
+    public function __construct(private PegawaiService $pegawaiService)
+    {
+    }
+
     public function index(Request $request)
     {
         $query = User::withTrashed()->with('ptk');
@@ -47,51 +49,9 @@ class PegawaiController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama' => ['required', 'string', 'max:100'],
-            'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')],
-            'email' => ['nullable', 'email', 'max:100', Rule::unique('users', 'email')],
-            'password' => ['required', 'string', 'min:6'],
-            'jabatan' => ['required', 'in:2,3,4'],
-            'kontak' => ['nullable', 'string', 'max:20'],
-            'id_tugas_tambahan' => ['nullable', 'integer'],
-            'moto' => ['nullable', 'string'],
-            // GTK fields
-            'nip' => ['nullable', 'string', 'max:30'],
-            'nuptk' => ['nullable', 'string', 'max:30'],
-            'kelamin' => ['nullable', 'integer'],
-            'agama' => ['nullable', 'integer'],
-        ]);
+        $validated = $this->validatePegawai($request);
 
-        $password = Hash::make($validated['password']);
-
-        $user = User::create([
-            'nama' => $validated['nama'],
-            'username' => $validated['username'],
-            'email' => $validated['email'] ?? null,
-            'password' => $password,
-            'jabatan' => $validated['jabatan'],
-            'kontak' => $validated['kontak'] ?? null,
-            'id_tugas_tambahan' => $validated['id_tugas_tambahan'] ?? null,
-            'moto' => $validated['moto'] ?? null,
-        ]);
-
-        // Buat GTK record jika ada data GTK
-        if (! empty($validated['nip']) || ! empty($validated['nuptk'])) {
-            Ptk::create([
-                'user_id' => $user->id,
-                'nip' => $validated['nip'] ?? null,
-                'nuptk' => $validated['nuptk'] ?? null,
-                'kelamin' => $validated['kelamin'] ?? null,
-                'agama' => $validated['agama'] ?? null,
-            ]);
-            $user->update(['ptk_id' => Ptk::where('user_id', $user->id)->first()->id]);
-        }
-
-        // Save menu overrides for guru/kepsek
-        if ($user->isGuru() || $user->isKepsek()) {
-            $this->syncMenuAkses($user, $request);
-        }
+        $user = $this->pegawaiService->createPegawai($validated);
 
         activity()
             ->performedOn($user)
@@ -116,60 +76,9 @@ class PegawaiController extends Controller
 
     public function update(Request $request, User $pegawai)
     {
-        $validated = $request->validate([
-            'nama' => ['required', 'string', 'max:100'],
-            'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($pegawai->id)],
-            'email' => ['nullable', 'email', 'max:100', Rule::unique('users', 'email')->ignore($pegawai->id)],
-            'password' => ['nullable', 'string', 'min:6'],
-            'jabatan' => ['required', 'in:2,3,4'],
-            'kontak' => ['nullable', 'string', 'max:20'],
-            'id_tugas_tambahan' => ['nullable', 'integer'],
-            'moto' => ['nullable', 'string'],
-            // GTK fields
-            'nip' => ['nullable', 'string', 'max:30'],
-            'nuptk' => ['nullable', 'string', 'max:30'],
-            'kelamin' => ['nullable', 'integer'],
-            'agama' => ['nullable', 'integer'],
-        ]);
+        $validated = $this->validatePegawai($request, $pegawai);
 
-        // Update user
-        $userData = [
-            'nama' => $validated['nama'],
-            'username' => $validated['username'],
-            'email' => $validated['email'] ?? null,
-            'jabatan' => $validated['jabatan'],
-            'kontak' => $validated['kontak'] ?? null,
-            'id_tugas_tambahan' => $validated['id_tugas_tambahan'] ?? null,
-            'moto' => $validated['moto'] ?? null,
-        ];
-
-        if (! empty($validated['password'])) {
-            $userData['password'] = Hash::make($validated['password']);
-        }
-
-        $pegawai->update($userData);
-
-        // Update atau buat PTK record
-        $ptkData = [
-            'nip' => $validated['nip'] ?? null,
-            'nuptk' => $validated['nuptk'] ?? null,
-            'kelamin' => $validated['kelamin'] ?? null,
-            'agama' => $validated['agama'] ?? null,
-        ];
-
-        if ($pegawai->ptk) {
-            $pegawai->ptk->update($ptkData);
-        } elseif (! empty($validated['nip']) || ! empty($validated['nuptk'])) {
-            $ptk = Ptk::create(array_merge($ptkData, ['user_id' => $pegawai->id]));
-            $pegawai->update(['ptk_id' => $ptk->id]);
-        }
-
-        // Save menu overrides for guru/kepsek
-        if ($pegawai->isGuru() || $pegawai->isKepsek()) {
-            $this->syncMenuAkses($pegawai, $request);
-        } else {
-            GuruMenuAkses::where('user_id', $pegawai->id)->delete();
-        }
+        $this->pegawaiService->updatePegawai($pegawai, $validated);
 
         activity()
             ->performedOn($pegawai)
@@ -201,28 +110,29 @@ class PegawaiController extends Controller
         return back()->with('status', 'Pegawai berhasil diaktifkan kembali.');
     }
 
-    private function syncMenuAkses(User $user, Request $request): void
+    /**
+     * @return array<string, mixed>
+     */
+    private function validatePegawai(Request $request, ?User $pegawai = null): array
     {
-        $menuOverrides = $request->input('menu_akses', []);
-        $records = [];
+        $ignoreId = $pegawai?->id;
 
-        foreach (GuruMenuService::MENU_SLUGS as $slug) {
-            $tipe = $menuOverrides[$slug] ?? null;
-            if ($tipe && in_array($tipe, ['grant', 'revoke'])) {
-                $records[] = [
-                    'user_id' => $user->id,
-                    'menu_slug' => $slug,
-                    'tipe' => $tipe,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-            }
-        }
-
-        GuruMenuAkses::where('user_id', $user->id)->delete();
-
-        if ($records) {
-            GuruMenuAkses::insert($records);
-        }
+        return $request->validate([
+            'nama' => ['required', 'string', 'max:100'],
+            'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($ignoreId)],
+            'email' => ['nullable', 'email', 'max:100', Rule::unique('users', 'email')->ignore($ignoreId)],
+            'password' => ['nullable', 'string', 'min:6'],
+            'jabatan' => ['required', 'in:2,3,4'],
+            'kontak' => ['nullable', 'string', 'max:20'],
+            'id_tugas_tambahan' => ['nullable', 'integer'],
+            'moto' => ['nullable', 'string'],
+            // GTK fields
+            'nip' => ['nullable', 'string', 'max:30'],
+            'nuptk' => ['nullable', 'string', 'max:30'],
+            'kelamin' => ['nullable', 'integer'],
+            'agama' => ['nullable', 'integer'],
+            // Menu access overrides
+            'menu_akses' => ['nullable', 'array'],
+        ]);
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.guru')
 
 @section('content')
-<div class="space-y-6">
+<div class="space-y-6" x-data="{ deleteModal: false, deleteId: null, deleteAction: null, hasNilai: false, nilaiCount: 0, tpKode: '' }">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
             <h1 class="text-2xl md:text-3xl font-extrabold text-coral-dark flex items-center gap-2">
@@ -62,6 +62,7 @@
                         <tr>
                             <th class="px-4 py-3 font-extrabold text-gray-500 text-xs uppercase tracking-wider w-32">Kode</th>
                             <th class="px-4 py-3 font-extrabold text-gray-500 text-xs uppercase tracking-wider">Deskripsi</th>
+                            <th class="px-4 py-3 font-extrabold text-gray-500 text-xs uppercase tracking-wider text-center w-24">Nilai</th>
                             <th class="px-4 py-3 text-right font-extrabold text-gray-500 text-xs uppercase tracking-wider w-20">Aksi</th>
                         </tr>
                     </thead>
@@ -70,18 +71,26 @@
                         <tr class="hover:bg-coral/5 transition-colors">
                             <td class="px-4 py-3 font-bold text-coral">{{ $tp->kode_tp }}</td>
                             <td class="px-4 py-3 text-gray-600">{{ $tp->nama_tp }}</td>
+                            <td class="px-4 py-3 text-center">
+                                @if($tp->nilai_formatif_count > 0)
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700">
+                                        {{ $tp->nilai_formatif_count }}
+                                    </span>
+                                @else
+                                    <span class="text-xs text-gray-400">—</span>
+                                @endif
+                            </td>
                             <td class="px-4 py-3 text-right">
-                                <form method="POST" action="{{ route('guru.tujuan-pembelajaran.destroy', $tp) }}" class="inline" onsubmit="return confirm('Hapus TP ini?')">
-                                    @csrf @method('DELETE')
-                                    <button class="p-1.5 text-coral hover:bg-coral/5 rounded-lg transition-colors" title="Hapus">
-                                        <x-heroicon-o-trash class="w-4 h-4" />
-                                    </button>
-                                </form>
+                                <button type="button"
+                                    @click="deleteId = {{ $tp->id }}; deleteAction = '{{ route('guru.tujuan-pembelajaran.destroy', $tp) }}'; hasNilai = {{ $tp->nilai_formatif_count > 0 ? 'true' : 'false' }}; nilaiCount = {{ $tp->nilai_formatif_count }}; tpKode = '{{ $tp->kode_tp }}'; deleteModal = true"
+                                    class="p-1.5 text-coral hover:bg-coral/5 rounded-lg transition-colors" title="Hapus">
+                                    <x-heroicon-o-trash class="w-4 h-4" />
+                                </button>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="3" class="px-4 py-12 text-center text-gray-400">Belum ada tujuan pembelajaran.</td>
+                            <td colspan="4" class="px-4 py-12 text-center text-gray-400">Belum ada tujuan pembelajaran.</td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -100,5 +109,44 @@
             <p class="text-gray-400">Anda belum terdaftar sebagai pengajar mapel apapun.</p>
         </div>
     @endif
+
+    {{-- Delete Confirmation Modal --}}
+    <div x-show="deleteModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4" x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+        {{-- Backdrop --}}
+        <div class="fixed inset-0 bg-black/50" @click="deleteModal = false" x-transition:leave="ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"></div>
+
+        {{-- Modal Content --}}
+        <div class="relative bg-white rounded-xl shadow-2xl max-w-md w-full p-6 z-10" x-show="deleteModal" x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center" :class="hasNilai ? 'bg-red-100' : 'bg-gray-100'">
+                    <span :class="hasNilai ? 'text-red-600' : 'text-gray-500'">
+                        <x-heroicon-o-exclamation-triangle class="w-6 h-6" />
+                    </span>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-lg font-extrabold text-gray-800" x-text="hasNilai ? 'Hapus TP dengan Nilai?' : 'Hapus TP ini?'"></h3>
+                    <p class="mt-2 text-sm text-gray-600">
+                        <template x-if="hasNilai">
+                            <span>TP <strong class="text-coral" x-text="tpKode"></strong> memiliki <strong class="text-red-600" x-text="nilaiCount + ' nilai'"></strong> yang akan <strong class="text-red-600">ikut terhapus permanen</strong> dan tidak dapat dikembalikan.</span>
+                        </template>
+                        <template x-if="!hasNilai">
+                            <span>TP <strong class="text-coral" x-text="tpKode"></strong> akan dihapus. Tindakan ini tidak dapat dibatalkan.</span>
+                        </template>
+                    </p>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end gap-3">
+                <button type="button" @click="deleteModal = false" class="px-4 py-2 text-sm font-bold text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                    Batal
+                </button>
+                <form :action="deleteAction" method="POST">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="px-4 py-2 text-sm font-bold text-white rounded-lg transition-colors" :class="hasNilai ? 'bg-red-600 hover:bg-red-700' : 'bg-coral hover:bg-coral-dark'">
+                        <span x-text="hasNilai ? 'Ya, Hapus Semua' : 'Ya, Hapus'"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

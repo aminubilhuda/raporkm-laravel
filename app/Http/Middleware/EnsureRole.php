@@ -14,7 +14,16 @@ class EnsureRole
             return redirect()->route('login');
         }
 
-        if (! in_array((int) $request->user()->jabatan, array_map('intval', $roles))) {
+        // Support both numeric jabatan (2,3,4) and role names (TU,Guru,Kepsek)
+        $roleMap = [
+            '2' => 'TU',
+            '3' => 'Guru',
+            '4' => 'Kepsek',
+        ];
+
+        $normalizedRoles = array_map(fn ($role) => $roleMap[$role] ?? $role, $roles);
+
+        if (! $request->user()->hasAnyRole($normalizedRoles)) {
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
 

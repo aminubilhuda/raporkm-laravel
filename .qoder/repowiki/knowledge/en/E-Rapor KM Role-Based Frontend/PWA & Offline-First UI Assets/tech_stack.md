@@ -1,0 +1,1 @@
+Service Workers API for offline caching and background sync; IndexedDB for local persistence of queued grade submissions; Web Push API with VAPID for notifications.

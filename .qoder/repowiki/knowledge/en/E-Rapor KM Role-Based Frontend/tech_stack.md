@@ -1,0 +1,1 @@
+Blade templating engine for server-side rendering, Vite for frontend asset bundling, Vanilla JavaScript for PWA service worker registration and background sync logic.

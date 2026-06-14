@@ -1,0 +1,1 @@
+GitHub Actions for CI/CD, systemd for process management, logrotate for log handling, and bash for maintenance scripting.

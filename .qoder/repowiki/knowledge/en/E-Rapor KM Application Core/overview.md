@@ -1,0 +1,1 @@
+Orchestrates a dual-panel academic reporting system by enforcing role-based access control across shared web and API routing layers.

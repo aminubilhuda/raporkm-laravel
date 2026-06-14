@@ -1,0 +1,3 @@
+- Controllers are strictly namespaced by user role (`App\Http\Controllers\Guru` vs `App\Http\Controllers\TU`) to enforce domain isolation.
+- Form Request validation classes are organized by role and feature (e.g., `App\Http\Requests\TU\P5bk`) to maintain clear input contracts.
+- API resources (e.g., `SiswaResource`, `KelasResource`) are centralized in `App\Http\Resources\V1` to provide a unified JSON response structure for all API consumers.

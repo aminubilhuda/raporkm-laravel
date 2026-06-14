@@ -1,0 +1,4 @@
+- Enforces strict role isolation via dedicated Blade layouts (`layouts/guru.blade.php`, `layouts/tu.blade.php`) that inject role-specific sidebars (`components/sidebar-guru`, `components/sidebar-tu`) and topbars.
+- Centralizes static asset bundling through `@vite` directives in all layouts, ensuring consistent loading of `app.css` and `app.js`.
+- Integrates Progressive Web App capabilities by embedding `pwa.js` and update prompts directly into role-based layouts, enabling offline-first features and background sync across all user sessions.
+- Utilizes a shared component library (`resources/views/components`) for consistent UI patterns (buttons, inputs, modals) while allowing layout-level customization for navigation structures.

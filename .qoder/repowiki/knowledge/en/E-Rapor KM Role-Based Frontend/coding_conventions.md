@@ -1,0 +1,3 @@
+- All role-specific layouts include the PWA script (`public/js/pwa.js`) and update prompt component (`<x-pwa-update-prompt />`) to ensure consistent offline capabilities.
+- Sidebar navigation items are defined as PHP arrays within Blade templates, filtered by permission slugs (`$guruMenus`, etc.) before rendering links.
+- Layouts use a consistent HTML structure with a fixed sidebar, overlay for mobile, and a main content area that yields specific sections or slots.

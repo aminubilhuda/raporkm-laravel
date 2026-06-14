@@ -1,0 +1,1 @@
+Laravel Sanctum for stateless API token authentication; DomPDF for server-side PDF generation in `RaporController`.

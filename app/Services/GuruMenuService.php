@@ -3,12 +3,14 @@
 namespace App\Services;
 
 use App\Models\GuruMenuAkses;
-use App\Models\Sekolah;
 use App\Models\SiswaPrakerin;
 use App\Models\User;
 
 class GuruMenuService
 {
+    public function __construct(private SekolahService $sekolahService)
+    {
+    }
     public const MENU_SLUGS = [
         'dashboard',
         'kelas-ku',
@@ -75,9 +77,8 @@ class GuruMenuService
     public function getVisibleMenus(User $user, ?int $taId = null, ?int $semesterId = null): array
     {
         if ($taId === null || $semesterId === null) {
-            $sekolah = Sekolah::first();
-            $taId = $taId ?? $sekolah?->tahun_aktif;
-            $semesterId = $semesterId ?? $sekolah?->semester_aktif;
+            $taId = $taId ?? $this->sekolahService->getTahunAktif();
+            $semesterId = $semesterId ?? $this->sekolahService->getSemesterAktif();
         }
 
         // Kepsek: akses semua menu

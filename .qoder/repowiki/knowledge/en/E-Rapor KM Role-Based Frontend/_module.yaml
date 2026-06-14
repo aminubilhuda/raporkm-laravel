@@ -1,0 +1,10 @@
+schema_version: 1
+module_path: laravel_frontend
+title: E-Rapor KM Role-Based Frontend
+scope:
+    - resources/
+    - public/
+source_files: []
+depends_on: []
+related_to:
+    - path: laravel_backend

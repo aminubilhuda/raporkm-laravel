@@ -1,0 +1,3 @@
+- Feature and Unit tests consistently use the `RefreshDatabase` trait to ensure a clean database state for each test method.
+- Browser UAT tests extend `UatBase` and utilize provided helper methods for role-based authentication instead of implementing login logic in each test.
+- API feature tests strictly validate JSON response structures and HTTP status codes using `assertJsonStructure` and specific status assertions like `assertUnprocessable`.

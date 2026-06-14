@@ -1,0 +1,3 @@
+- **Service Management**: Defines systemd units (`raporkm-queue-worker.service`) for background job processing and logrotate configurations for log retention.
+- **Maintenance Scripts**: Provides bash utilities (`backup-db.sh`) for automated database dumps and retention management, relying on environment variables from `.env`.
+- **CI/CD Pipelines**: Utilizes GitHub Actions (`deploy.yml`, `test.yml`) to orchestrate testing (PHPUnit, Dusk) and production deployments via SSH to aaPanel servers.

@@ -1,0 +1,1 @@
+Orchestrates role-specific (Guru/TU) Blade layouts, shared UI components, and PWA assets to deliver a unified, offline-capable educational reporting interface.

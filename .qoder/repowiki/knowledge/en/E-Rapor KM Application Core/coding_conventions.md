@@ -1,0 +1,2 @@
+- Controllers are strictly namespaced into `App\Http\Controllers\Guru` and `App\Http\Controllers\TU` to mirror the role-based UI panels.
+- Form request validation classes are organized into subdirectories matching their domain context, such as `App\Http\Requests\TU\P5bk`.

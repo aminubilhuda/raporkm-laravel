@@ -50,6 +50,7 @@ use App\Http\Controllers\TU\PrakerinController;
 use App\Http\Controllers\TU\PresensiController;
 use App\Http\Controllers\TU\PrestasiController;
 use App\Http\Controllers\TU\RaporController;
+use App\Http\Controllers\TU\RoleController;
 use App\Http\Controllers\TU\RombelController;
 use App\Http\Controllers\TU\SekolahController;
 use App\Http\Controllers\TU\TingkatController;
@@ -93,6 +94,14 @@ Route::middleware(['auth', 'role:2'])->prefix('tu')->name('tu.')->group(function
     Route::put('/sekolah', [SekolahController::class, 'update'])->name('sekolah.update');
     Route::resource('pegawai', PegawaiController::class);
     Route::post('pegawai/{pegawai}/restore', [PegawaiController::class, 'restore'])->withTrashed()->name('pegawai.restore');
+
+    // Role & Permission Management
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+    Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+
     Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
     Route::put('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
     Route::post('/pengaturan/push', [PengaturanController::class, 'sendPush'])->name('pengaturan.push');

@@ -37,6 +37,7 @@ class TujuanPembelajaranController extends Controller
                 ->where('kelas_id', $kelas->id)
                 ->when($taId, fn ($q) => $q->where('tahun_pelajaran_id', $taId))
                 ->when($semesterId, fn ($q) => $q->where('semester_id', $semesterId))
+                ->withCount('nilaiFormatif')
                 ->get();
         }
 

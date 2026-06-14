@@ -19,19 +19,15 @@ class PwaAuth
             return response()->json(['message' => 'PWA token tidak ditemukan.'], 401);
         }
 
-        $pwaToken = PwaToken::where('expires_at', '>', now())->first();
-
-        if (! $pwaToken) {
-            return response()->json(['message' => 'Token tidak valid atau sudah expired.'], 401);
-        }
-
-        // Verify hash
-        $validToken = PwaToken::where('expires_at', '>', now())->get()->first(function ($t) use ($token) {
-            return Hash::check($token, $t->token);
-        });
+        // Single query: fetch all non-expired tokens once
+        $validToken = PwaToken::where('expires_at', '>', now())
+            ->get()
+            ->first(function (PwaToken $pwaToken) use ($token) {
+                return Hash::check($token, $pwaToken->token);
+            });
 
         if (! $validToken) {
-            return response()->json(['message' => 'Token tidak valid.'], 401);
+            return response()->json(['message' => 'Token tidak valid atau sudah expired.'], 401);
         }
 
         $user = User::find($validToken->user_id);

@@ -1,0 +1,13 @@
+schema_version: 1
+module_path: laravel_backend
+title: E-Rapor KM Platform Orchestrator
+scope:
+    - app/
+    - routes/
+    - config/
+source_files: []
+depends_on: []
+related_to:
+    - path: laravel_frontend
+    - path: database_layer
+    - path: test_suite
