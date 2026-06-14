@@ -1,8 +1,6 @@
-const CACHE_NAME = 'erapor-v2';
+const CACHE_NAME = 'erapor-v3';
 const urlsToCache = [
     '/',
-    '/css/app.css',
-    '/js/app.js',
 ];
 
 // Install
@@ -15,34 +13,31 @@ self.addEventListener('install', (event) => {
     self.skipWaiting();
 });
 
-// Fetch
+// Fetch — network-first, cache fallback
 self.addEventListener('fetch', (event) => {
-    if (event.request.method !== 'GET') {
-        return;
-    }
-    if (event.request.url.includes('/api/')) {
-        return;
-    }
+    if (event.request.method !== 'GET') return;
+    if (event.request.url.includes('/api/') || event.request.url.includes('_boost')) return;
 
     event.respondWith(
-        caches.match(event.request)
+        fetch(event.request)
             .then((response) => {
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request).then((response) => {
-                    if (!response || response.status !== 200) {
-                        return response;
-                    }
-                    const responseToCache = response.clone();
+                if (response && response.status === 200) {
+                    const clone = response.clone();
                     caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, responseToCache);
+                        cache.put(event.request, clone);
                     });
-                    return response;
-                });
+                }
+                return response;
             })
             .catch(() => {
-                return caches.match('/');
+                return caches.match(event.request).then((cached) => {
+                    if (cached) return cached;
+                    const dest = event.request.destination;
+                    if (dest === 'style') return new Response('', { status: 200, headers: { 'Content-Type': 'text/css' } });
+                    if (dest === 'script') return new Response('', { status: 200, headers: { 'Content-Type': 'application/javascript' } });
+                    if (dest === 'image') return new Response('', { status: 200, headers: { 'Content-Type': 'image/png' } });
+                    return new Response('Offline', { status: 503 });
+                });
             })
     );
 });

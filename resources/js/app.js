@@ -1,3 +1,13 @@
+import $ from 'jquery';
+window.$ = window.jQuery = $;
+
+import select2 from 'select2';
+select2(window, $);
+
+import 'select2/dist/css/select2.min.css';
+
+document.dispatchEvent(new Event('jquery-ready'));
+
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);

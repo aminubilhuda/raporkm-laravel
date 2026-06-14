@@ -50,6 +50,43 @@
             </div>
         </div>
 
+        {{-- Logo Provinsi --}}
+        <div class="bg-white rounded-card shadow-card p-5 md:p-6 border-l-[6px] border-l-gold">
+            <h2 class="text-lg font-extrabold text-teal-primary-dark mb-4">Logo Provinsi</h2>
+            <div class="flex flex-col sm:flex-row gap-6 items-start">
+                <div class="flex-shrink-0">
+                    <div class="w-36 h-36 rounded-card border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden bg-gray-50">
+                        @if($sekolah->logo_prov)
+                            <img id="logo-prov-preview" src="{{ asset('storage/'.$sekolah->logo_prov) }}" alt="Logo Provinsi" class="w-full h-full object-contain">
+                        @else
+                            <img id="logo-prov-preview" src="" alt="" class="w-full h-full object-contain hidden">
+                            <div id="logo-prov-placeholder" class="text-center">
+                                <x-heroicon-o-photo class="w-10 h-10 text-gray-300 mx-auto" />
+                                <p class="text-xs text-gray-400 mt-1">Belum ada logo</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="flex-1 space-y-3">
+                    <div>
+                        <x-input-label for="logo_prov" value="Upload Logo Provinsi Baru" />
+                        <input type="file" id="logo_prov" name="logo_prov" accept="image/jpeg,image/png"
+                            class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-gold/10 file:text-gold hover:file:bg-gold/20"
+                            onchange="previewLogoProv(this)">
+                        <x-input-error :messages="$errors->get('logo_prov')" class="mt-1" />
+                        <p class="text-xs text-gray-400 mt-1">Format: JPG/PNG, maks 5MB. Logo ini ditampilkan di header rapor.</p>
+                    </div>
+                    @if($sekolah->logo_prov)
+                        <label class="flex items-center gap-2 text-sm text-coral cursor-pointer">
+                            <input type="checkbox" name="hapus_logo_prov" value="1" class="rounded border-coral text-coral focus:ring-coral">
+                            Hapus logo provinsi saat ini
+                        </label>
+                        <p class="text-xs text-gray-400">File: {{ basename($sekolah->logo_prov) }}</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+
         {{-- Identitas Sekolah --}}
         <div class="bg-white rounded-card shadow-card p-5 md:p-6 border-l-[6px] border-l-teal-primary">
             <h2 class="text-lg font-extrabold text-teal-primary-dark mb-4">Identitas Sekolah</h2>
@@ -350,6 +387,21 @@
     function previewLogo(input) {
         const preview = document.getElementById('logo-preview');
         const placeholder = document.getElementById('logo-placeholder');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
+                if (placeholder) placeholder.classList.add('hidden');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function previewLogoProv(input) {
+        const preview = document.getElementById('logo-prov-preview');
+        const placeholder = document.getElementById('logo-prov-placeholder');
 
         if (input.files && input.files[0]) {
             const reader = new FileReader();

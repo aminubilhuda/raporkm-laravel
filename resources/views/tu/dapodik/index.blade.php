@@ -30,8 +30,9 @@
     <form method="POST" action="{{ route('tu.dapodik.config') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
         @csrf
         <div>
-            <label class="block text-xs font-extrabold uppercase text-gray-500 mb-1">URL API</label>
-            <x-text-input name="url" :value="$config['url']" placeholder="http://192.168.11.207:5774/WebService" class="block w-full" required />
+            <label class="block text-xs font-extrabold uppercase text-gray-500 mb-1">IP Server Dapodik</label>
+            <x-text-input name="url" :value="$config['url']" placeholder="192.168.11.207" class="block w-full" required />
+            <p class="text-[11px] text-gray-400 mt-1">Port <strong>:5774/WebService</strong> akan ditambahkan otomatis</p>
             @error('url')<p class="text-coral text-sm mt-1">{{ $message }}</p>@enderror
         </div>
         <div>
@@ -119,7 +120,7 @@
     <div class="overflow-x-auto">
     <table class="w-full text-sm"><thead class="bg-surface-base text-left"><tr><th class="px-4 py-3 font-extrabold text-xs uppercase">Endpoint</th><th class="px-4 py-3 font-extrabold text-xs uppercase">Status</th><th class="px-4 py-3 font-extrabold text-xs uppercase">Records</th><th class="px-4 py-3 font-extrabold text-xs uppercase hidden lg:table-cell">Waktu</th></tr></thead>
     <tbody class="divide-y">@foreach($logs as $l)<tr class="hover:bg-teal-bg/30"><td class="px-4 py-3 font-bold">{{ $l->endpoint }}</td>
-    <td class="px-4 py-3">@if($l->status === 'success')<span class="text-success font-bold">✓ Sukses</span>@else<span class="text-coral font-bold">✗ Gagal</span>@endif</td>
+    <td class="px-4 py-3">@if($l->status === 'success')<span class="text-success font-bold">✓ Sukses</span>@elseif($l->status === 'batch_started')<span class="text-teal-primary font-bold animate-pulse">⏳ Diproses</span>@else<span class="text-coral font-bold">✗ Gagal</span>@endif</td>
     <td class="px-4 py-3">{{ $l->records_count }}</td>
     <td class="px-4 py-3 hidden lg:table-cell text-gray-500">{{ $l->created_at->format('d/m/Y H:i') }}</td></tr>@endforeach</tbody></table>
     </div>

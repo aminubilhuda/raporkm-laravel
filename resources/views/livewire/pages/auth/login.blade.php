@@ -21,7 +21,6 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
 
-        // Generate PWA token if checkbox is checked
         if ($this->installPwa) {
             $user = auth()->user();
             $plainToken = Str::random(64);
@@ -32,7 +31,6 @@ new #[Layout('layouts.guest')] class extends Component
                 'expires_at' => now()->addYear(),
             ]);
 
-            // Store token in session for JavaScript to pick up
             session(['pwa_token' => $plainToken]);
         }
 
@@ -49,59 +47,106 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+{{-- Brand --}}
+<div class="auth-brand">
+    <div class="auth-brand-tile">
+        <x-heroicon-o-book-open class="w-7 h-7 text-teal-primary" />
+    </div>
+    <h1 class="auth-brand-title">E-Rapor KM</h1>
+    <p class="auth-brand-tagline">Kurikulum Merdeka</p>
+    <p class="auth-brand-school">SMK Abdi Negara Tuban</p>
+</div>
 
-    <form wire:submit="login">
-        <!-- Username -->
-        <div>
-            <x-input-label for="username" :value="__('Username')" />
-            <x-text-input wire:model="form.username" id="username" class="block mt-1 w-full" type="text" name="username" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('form.username')" class="mt-2" />
+{{-- Session status --}}
+@if (session('status'))
+    <div class="auth-status mb-5">{{ session('status') }}</div>
+@endif
+
+<form wire:submit="login" class="space-y-5">
+
+    {{-- Username --}}
+    <div class="field">
+        <label for="username" class="field-label">{{ __('Username') }}</label>
+        <input
+            wire:model="form.username"
+            id="username"
+            type="text"
+            name="username"
+            required autofocus autocomplete="username"
+            class="field-input @error('form.username') field-input--error @enderror"
+            placeholder="Masukkan username"
+        />
+        @error('form.username')
+            <div class="field-error">{{ $message }}</div>
+        @enderror
+    </div>
+
+    {{-- Password --}}
+    <div class="field">
+        <label for="password" class="field-label">{{ __('Password') }}</label>
+        <input
+            wire:model="form.password"
+            id="password"
+            type="password"
+            name="password"
+            required autocomplete="current-password"
+            class="field-input @error('form.password') field-input--error @enderror"
+            placeholder="Masukkan password"
+        />
+        @error('form.password')
+            <div class="field-error">{{ $message }}</div>
+        @enderror
+    </div>
+
+    {{-- Remember me --}}
+    <div class="flex items-center">
+        <input
+            wire:model="form.remember"
+            id="remember"
+            type="checkbox"
+            class="check"
+        />
+        <label for="remember" class="check-label">{{ __('Remember me') }}</label>
+    </div>
+
+    {{-- PWA install --}}
+    <div class="pwa-row">
+        <input
+            wire:model="installPwa"
+            id="install_pwa"
+            type="checkbox"
+            class="check mt-0.5"
+        />
+        <div class="pwa-row-body">
+            <label for="install_pwa" class="pwa-row-title">Simpan sebagai aplikasi</label>
+            <p class="pwa-row-help">Aktifkan auto-login di perangkat Android</p>
         </div>
+    </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-            <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
-        </div>
+    {{-- Actions --}}
+    <div class="auth-actions">
+        @if (Route::has('password.request'))
+            <a
+                href="{{ route('password.request') }}"
+                wire:navigate
+                class="auth-link"
+            >
+                {{ __('Forgot your password?') }}
+            </a>
+        @else
+            <span></span>
+        @endif
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember" class="inline-flex items-center">
-                <input wire:model="form.remember" id="remember" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+        <button type="submit" class="auth-submit">
+            {{ __('Log in') }}
+        </button>
+    </div>
 
-        <!-- Install as PWA -->
-        <div class="block mt-3">
-            <label for="install_pwa" class="inline-flex items-center">
-                <input wire:model="installPwa" id="install_pwa" type="checkbox" class="rounded border-gray-300 text-teal-600 shadow-sm focus:ring-teal-500" name="install_pwa">
-                <span class="ms-2 text-sm text-gray-600">Simpan sebagai aplikasi (auto-login di Android)</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}" wire:navigate>
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
+</form>
 </div>
 
 <script>
     document.addEventListener('livewire:navigated', function() {
-        // Check if there's a PWA token in session (after login)
         const pwaToken = '{{ session("pwa_token") }}';
         if (pwaToken && pwaToken !== '') {
             localStorage.setItem('pwa_token', pwaToken);

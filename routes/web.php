@@ -96,6 +96,8 @@ Route::middleware(['auth', 'role:2'])->prefix('tu')->name('tu.')->group(function
     Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
     Route::put('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
     Route::post('/pengaturan/push', [PengaturanController::class, 'sendPush'])->name('pengaturan.push');
+    Route::post('/pengaturan/backup', [PengaturanController::class, 'backup'])->name('pengaturan.backup');
+    Route::post('/pengaturan/restore', [PengaturanController::class, 'restore'])->name('pengaturan.restore');
     Route::post('/set-semester', [PengaturanController::class, 'setSemester'])->name('set-semester');
     Route::resource('deskripsi-rapor', DeskripsiRaporController::class)->only(['index', 'store', 'update', 'destroy']);
 
@@ -112,10 +114,14 @@ Route::middleware(['auth', 'role:2'])->prefix('tu')->name('tu.')->group(function
     Route::get('/kesiswaan/import', [KesiswaanController::class, 'import'])->name('kesiswaan.import');
     Route::post('/kesiswaan/import', [KesiswaanController::class, 'doImport'])->name('kesiswaan.do-import');
     Route::resource('kesiswaan', KesiswaanController::class);
+    Route::patch('rombel/{rombel}/jurusan', [RombelController::class, 'updateJurusan'])->name('rombel.jurusan');
+    Route::patch('rombel/{rombel}/wali', [RombelController::class, 'updateWali'])->name('rombel.wali');
+    Route::post('rombel/batch-save', [RombelController::class, 'batchSave'])->name('rombel.batch-save');
     Route::resource('rombel', RombelController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/anggota-kelas', [AnggotaKelasController::class, 'index'])->name('anggota-kelas.index');
     Route::post('/anggota-kelas', [AnggotaKelasController::class, 'store'])->name('anggota-kelas.store');
     Route::delete('/anggota-kelas/{id}', [AnggotaKelasController::class, 'destroy'])->name('anggota-kelas.destroy');
+    Route::get('/rapor/{siswa}/identitas', [RaporController::class, 'identitas'])->name('rapor.identitas');
     Route::get('/mapel-kelas', [MapelKelasController::class, 'index'])->name('mapel-kelas.index');
     Route::post('/mapel-kelas', [MapelKelasController::class, 'store'])->name('mapel-kelas.store');
     Route::put('/mapel-kelas/{id}', [MapelKelasController::class, 'update'])->name('mapel-kelas.update');

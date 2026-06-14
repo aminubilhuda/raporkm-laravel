@@ -16,22 +16,13 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col justify-center items-center px-4 py-8 bg-gradient-to-br from-teal-bg to-teal-primary/10">
-        <div class="text-center mb-6">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-card bg-white shadow-teal-glow mb-4">
-                <x-heroicon-o-book-open class="w-8 h-8 text-teal-primary" />
-            </div>
-            <h1 class="text-3xl font-extrabold text-teal-primary-dark tracking-wide">E-Rapor KM</h1>
-            <p class="text-sm font-medium text-teal-primary/70 mt-1 tracking-widest uppercase">Kurikulum Merdeka</p>
-            <p class="text-xs text-gray-500 mt-0.5">SMK Abdi Negara Tuban</p>
-        </div>
-
-        <div class="w-full max-w-md bg-white rounded-card shadow-card overflow-hidden">
+<body>
+    <div class="auth-shell">
+        <div class="auth-card">
             {{ $slot }}
         </div>
 
-        <p class="mt-8 text-xs text-teal-primary/50">&copy; {{ date('Y') }} E-Rapor KM</p>
+        <p class="mt-8 text-[11px] font-medium text-teal-primary/50 tracking-wide">&copy; {{ date('Y') }} E-Rapor KM</p>
     </div>
 
     <script src="{{ asset('js/pwa.js') }}"></script>

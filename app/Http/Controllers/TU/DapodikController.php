@@ -15,10 +15,19 @@ class DapodikController extends Controller
 {
     public function __construct(private DapodikService $dapodik) {}
 
+    private function extractIp(string $url): string
+    {
+        if (preg_match('#^https?://([^:/]+)#', $url, $m)) {
+            return $m[1];
+        }
+        return $url;
+    }
+
     public function index()
     {
+        $rawUrl = DB::table('settings')->where('key', 'dapodik_url')->value('value') ?? '';
         $config = [
-            'url' => DB::table('settings')->where('key', 'dapodik_url')->value('value') ?? '',
+            'url' => $this->extractIp($rawUrl),
             'npsn' => DB::table('settings')->where('key', 'dapodik_npsn')->value('value') ?? '',
             'token' => DB::table('settings')->where('key', 'dapodik_token')->value('value') ?? '',
         ];
@@ -35,6 +44,12 @@ class DapodikController extends Controller
             'npsn' => 'required|string|max:20',
             'token' => 'required|string|max:255',
         ]);
+
+        $url = trim($validated['url']);
+        if (! str_starts_with($url, 'http://') && ! str_starts_with($url, 'https://')) {
+            $url = "http://{$url}:5774/WebService";
+        }
+        $validated['url'] = $url;
 
         foreach (['url' => 'dapodik_url', 'npsn' => 'dapodik_npsn', 'token' => 'dapodik_token'] as $input => $key) {
             DB::table('settings')->updateOrInsert(
@@ -57,29 +72,22 @@ class DapodikController extends Controller
 
             $batch = Bus::batch($jobs)
                 ->name('dapodik-sync-all')
-                ->then(function ($batch) {
+                ->allowFailures()
+                ->finally(function ($batch) {
+                    $isSuccess = $batch->failedJobs === 0;
+
                     DapodikSyncLog::create([
                         'endpoint' => 'sync-all',
-                        'status' => 'success',
-                        'records_count' => $batch->totalJobs,
-                        'message' => 'Sinkronisasi semua data selesai.',
-                        'batch_id' => $batch->id,
-                        'progress_current' => $batch->totalJobs,
-                        'progress_total' => $batch->totalJobs,
-                    ]);
-                })
-                ->catch(function ($batch, \Throwable $e) {
-                    DapodikSyncLog::create([
-                        'endpoint' => 'sync-all',
-                        'status' => 'error',
+                        'status' => $isSuccess ? 'success' : 'error',
                         'records_count' => $batch->processedJobs(),
-                        'message' => 'Sinkronisasi gagal: '.$e->getMessage(),
+                        'message' => $isSuccess
+                            ? 'Sinkronisasi semua data selesai.'
+                            : $batch->failedJobs.' job(s) gagal dari '.$batch->totalJobs.' total.',
                         'batch_id' => $batch->id,
                         'progress_current' => $batch->processedJobs(),
                         'progress_total' => $batch->totalJobs,
                     ]);
                 })
-                ->allowFailures()
                 ->dispatch();
 
             Cache::put('dapodik:active_batch_id', $batch->id, 600);

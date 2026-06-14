@@ -25,6 +25,13 @@ class SekolahController extends Controller
     {
         $sekolah = Sekolah::firstOrFail();
 
+        // Strip seconds dari time fields (07:00:00 → 07:00) agar lolos validasi H:i
+        foreach (['jam_masuk', 'jam_pulang'] as $field) {
+            if ($request->filled($field) && strlen($request->input($field)) === 8) {
+                $request->merge([$field => substr($request->input($field), 0, 5)]);
+            }
+        }
+
         $validated = $request->validate([
             'npsn' => ['required', 'string', 'max:20'],
             'nama_sekolah' => ['required', 'string', 'max:200'],
@@ -45,6 +52,8 @@ class SekolahController extends Controller
             'jam_pulang' => ['nullable', 'date_format:H:i'],
             'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:5120'],
             'hapus_logo' => ['nullable', 'boolean'],
+            'logo_prov' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:5120'],
+            'hapus_logo_prov' => ['nullable', 'boolean'],
         ]);
 
         // Handle hapus logo
@@ -60,23 +69,67 @@ class SekolahController extends Controller
         }
         unset($validated['hapus_logo']);
 
+        // Handle hapus logo provinsi
+        if ($request->boolean('hapus_logo_prov')) {
+            if ($sekolah->logo_prov) {
+                Storage::disk('public')->delete($sekolah->logo_prov);
+            }
+            $validated['logo_prov'] = null;
+        }
+        unset($validated['hapus_logo_prov']);
+
         // Handle upload logo baru
-        if ($request->hasFile('logo')) {
-            // Hapus file lama
-            if ($sekolah->logo) {
-                Storage::disk('public')->delete($sekolah->logo);
-            }
-            if ($sekolah->favicon) {
-                Storage::disk('public')->delete($sekolah->favicon);
-            }
+        if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
+            try {
+                if ($sekolah->logo) {
+                    Storage::disk('public')->delete($sekolah->logo);
+                }
+                if ($sekolah->favicon) {
+                    Storage::disk('public')->delete($sekolah->favicon);
+                }
 
-            // Simpan logo
-            $logoPath = $request->file('logo')->store('sekolah', 'public');
-            $validated['logo'] = $logoPath;
+                $logoPath = $request->file('logo')->store('sekolah', 'public');
 
-            // Auto-generate favicon
-            $faviconPath = $this->generateFavicon($request->file('logo'));
-            $validated['favicon'] = $faviconPath;
+                if (! $logoPath) {
+                    return back()->with('error', 'Logo gagal disimpan. Silakan coba lagi.');
+                }
+
+                $validated['logo'] = $logoPath;
+
+                try {
+                    $faviconPath = $this->generateFavicon($request->file('logo'));
+                    if ($faviconPath) {
+                        $validated['favicon'] = $faviconPath;
+                    }
+                } catch (\Throwable $e) {
+                    report($e);
+                }
+            } catch (\Throwable $e) {
+                report($e);
+
+                return back()->with('error', 'Upload logo gagal: ' . $e->getMessage());
+            }
+        }
+
+        // Handle upload logo provinsi
+        if ($request->hasFile('logo_prov') && $request->file('logo_prov')->isValid()) {
+            try {
+                if ($sekolah->logo_prov) {
+                    Storage::disk('public')->delete($sekolah->logo_prov);
+                }
+
+                $logoProvPath = $request->file('logo_prov')->store('sekolah', 'public');
+
+                if (! $logoProvPath) {
+                    return back()->with('error', 'Logo provinsi gagal disimpan. Silakan coba lagi.');
+                }
+
+                $validated['logo_prov'] = $logoProvPath;
+            } catch (\Throwable $e) {
+                report($e);
+
+                return back()->with('error', 'Upload logo provinsi gagal: ' . $e->getMessage());
+            }
         }
 
         $sekolah->update($validated);
@@ -87,7 +140,7 @@ class SekolahController extends Controller
     private function generateFavicon(UploadedFile $file): string
     {
         $sourcePath = $file->getRealPath();
-        $imageInfo = getimagesize($sourcePath);
+        $imageInfo = @getimagesize($sourcePath);
 
         if ($imageInfo === false) {
             return '';
@@ -96,10 +149,8 @@ class SekolahController extends Controller
         $mime = $imageInfo['mime'];
         $size = 64;
 
-        // Buat canvas baru
         $newImage = imagecreatetruecolor($size, $size);
 
-        // Load source image
         switch ($mime) {
             case 'image/jpeg':
                 $source = imagecreatefromjpeg($sourcePath);
@@ -119,22 +170,16 @@ class SekolahController extends Controller
             return '';
         }
 
-        // Resize dengan kualitas baik
         imagecopyresampled($newImage, $source, 0, 0, 0, 0, $size, $size, $imageInfo[0], $imageInfo[1]);
 
-        // Simpan sebagai PNG
         $faviconPath = 'sekolah/favicon.png';
-        $fullPath = Storage::disk('public')->path($faviconPath);
 
-        // Pastikan directory ada
-        $dir = dirname($fullPath);
-        if (! is_dir($dir)) {
-            mkdir($dir, 0755, true);
-        }
+        ob_start();
+        imagepng($newImage);
+        $imageBinary = ob_get_clean();
 
-        imagepng($newImage, $fullPath);
+        Storage::disk('public')->put($faviconPath, $imageBinary);
 
-        // Cleanup
         imagedestroy($source);
         imagedestroy($newImage);
 

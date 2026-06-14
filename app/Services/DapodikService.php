@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Kelas;
+use App\Models\KelasWali;
 use App\Models\KelompokMapel;
 use App\Models\KompetensiKeahlian;
 use App\Models\Mapel;
@@ -26,9 +27,24 @@ class DapodikService
         return DB::table('settings')->where('key', $key)->value('value') ?? $default;
     }
 
+    private function baseUrl(): string
+    {
+        $url = trim((string) $this->config('dapodik_url'));
+
+        if ($url === '') {
+            return '';
+        }
+
+        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
+            return rtrim($url, '/');
+        }
+
+        return "http://{$url}:5774/WebService";
+    }
+
     private function httpGet(string $endpoint): array
     {
-        $url = rtrim((string) $this->config('dapodik_url'), '/');
+        $url = $this->baseUrl();
         $npsn = (string) $this->config('dapodik_npsn');
         $token = (string) $this->config('dapodik_token');
 
@@ -269,6 +285,21 @@ class DapodikService
                         'semester_id' => $semesterAktif?->id,
                     ]
                 );
+
+                $ptkId = $item['ptk_id'] ?? null;
+                if ($ptkId && $tahunAktif?->id && $semesterAktif?->id) {
+                    $wali = Ptk::where('ptk_id', $ptkId)->value('user_id');
+                    if ($wali) {
+                        KelasWali::updateOrCreate(
+                            [
+                                'kelas_id' => $kelas->id,
+                                'tahun_pelajaran_id' => $tahunAktif->id,
+                                'semester_id' => $semesterAktif->id,
+                            ],
+                            ['user_id' => $wali]
+                        );
+                    }
+                }
 
                 $anggota = $item['anggota_rombel'] ?? [];
                 if (is_array($anggota) && $tahunAktif && $semesterAktif) {
